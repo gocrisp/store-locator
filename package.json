@@ -1,6 +1,6 @@
 {
   "name": "store-locator",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Store locator widget, intended for use with the Crisp GeoJSON connector.",
   "main": "dist/store-locator.js",
   "umd:main": "dist/store-locator.umd.js",
@@ -15,13 +15,11 @@
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "eslint": "^7.9.0",
-    "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.1.0",
-    "eslint-formatter-pretty": "^4.0.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jest": "^24.0.2",
+    "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-unicorn": "^28.0.2",
     "jest": "^26.4.2",
     "microbundle": "^0.13.0",
     "prettier": "^2.0.4",
@@ -32,7 +30,7 @@
     "build": "microbundle -o dist/ --sourcemap false --compress false",
     "dev": "microbundle watch -o dist/ --sourcemap false --compress false",
     "test": "jest --coverage",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src --report-unused-disable-directives --max-warnings 0"
   },
   "repository": {
     "type": "git",
