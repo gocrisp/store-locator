@@ -1,1 +1,1 @@
-# store-locator
+# @crisp/store-locator
