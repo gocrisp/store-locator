@@ -23,7 +23,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "jest": "^26.4.2",
     "microbundle": "^0.13.0",
-    "parcel-bundler": "^1.12.5",
+    "parcel": "^2.0.0-beta.2",
     "prettier": "^2.0.4",
     "ts-jest": "^26.3.0",
     "typescript": "^4.0.3"
@@ -31,7 +31,7 @@
   "scripts": {
     "build": "microbundle -o dist/ --sourcemap false --compress false",
     "dev": "microbundle watch -o dist/ --sourcemap false --compress false --name @gocrisp/store-locator",
-    "example": "parcel example/index.html --out-dir example/dist",
+    "example": "parcel serve example/index.html --dist-dir example/dist",
     "test": "jest --coverage",
     "test-ci": "jest --ci",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --report-unused-disable-directives --max-warnings 0"
