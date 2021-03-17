@@ -12,3 +12,5 @@ yarn build
 yarn example
 ```
 
+The example is automatically updated from the `main` branch and served here:
+https://gocrisp.github.io/store-locator
