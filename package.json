@@ -33,6 +33,7 @@
     "dev": "microbundle watch -o dist/ --sourcemap false --compress false --name @gocrisp/store-locator",
     "example": "parcel example/index.html --out-dir example/dist",
     "test": "jest --coverage",
+    "test-ci": "jest --ci",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --report-unused-disable-directives --max-warnings 0"
   },
   "repository": {
