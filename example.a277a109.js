@@ -3,6 +3,6 @@ parcelRequire=function(e,r,t,n){var i,o="function"==typeof parcelRequire&&parcel
 },{}],"o2OF":[function(require,module,exports) {
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0});var e=require("./src");Object.keys(e).forEach(function(r){"default"!==r&&"__esModule"!==r&&(r in exports&&exports[r]===e[r]||Object.defineProperty(exports,r,{enumerable:!0,get:function(){return e[r]}}))});
 },{"./src":"fUdq"}],"QCba":[function(require,module,exports) {
-"use strict";var e=require("../");document.addEventListener("DOMContentLoaded",function(){var t=document.getElementById("map-container");t&&(t.textContent="Add a map here! Function outputs: ".concat((0,e.hello)(),". Test Change."))});
+"use strict";var t=require("../");document.addEventListener("DOMContentLoaded",function(){var e=document.getElementById("map-container");e&&(e.textContent="Add a map here! Function outputs: ".concat((0,t.hello)()))});
 },{"../":"o2OF"}]},{},["QCba"], null)
-//# sourceMappingURL=/example.3f247e0e.js.map
+//# sourceMappingURL=/example.a277a109.js.map
