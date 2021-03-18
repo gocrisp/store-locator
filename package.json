@@ -35,7 +35,7 @@
     "build": "microbundle -o dist/ --sourcemap false --compress false",
     "dev": "microbundle watch -o dist/ --sourcemap false --compress false",
     "start": "yarn build && echo '----\nIf you want to see changes to the /src files automatically, please run `yarn dev` in a separate console\n----' && yarn example",
-    "build-docs": "parcel build example/index.html --out-dir example/dist",
+    "build-docs": "parcel build example/index.html --out-dir example/dist --public-url /store-locator/",
     "example": "parcel example/index.html --out-dir example/dist",
     "test": "jest --coverage",
     "test-ci": "jest --ci",
