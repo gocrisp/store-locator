@@ -10,8 +10,11 @@
     "dist",
     "readme.md"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@googlemaps/js-api-loader": "^1.11.3"
+  },
   "devDependencies": {
+    "@types/google.maps": "^3.44.2",
     "@types/jest": "^26.0.14",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
