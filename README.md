@@ -2,8 +2,6 @@
 
 Store locator template page for use on any website. Intended for use with the Crisp GeoJSON connector.
 
-----
-
 ## Add the store locator to your site
 
 1. First, go set up a GeoJSON outbound connector on https://platform.gocrisp.com/. It will give you an identifier to use later.
@@ -24,8 +22,6 @@ storeLocator.init({
 ```
 
 By default, this will use the center of the US and a zoom level of 4, but all [google maps options](https://developers.google.com/maps/documentation/javascript/overview#MapOptions) are configurable with the `googleMapsOptions` property.
-
-----
 
 
 ## Example App
