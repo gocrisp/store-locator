@@ -4,7 +4,7 @@ Store locator template page for use on any website. Intended for use with the Cr
 
 ## Add the store locator to your site
 
-1. First, go set up a GeoJSON outbound connector on https://platform.gocrisp.com/. It will give you an identifier to use later.
+1. First, go set up a GeoJSON outbound connector on https://platform.gocrisp.com/. It will give you a URL to use later.
 2. Create a [Google Maps API Key](https://developers.google.com/maps/gmp-get-started).
 3. Install this package
 ```bash
@@ -16,7 +16,7 @@ import storeLocator from '@gocrisp/store-locator';
 
 storeLocator.init({
   component: document.getElementById('store-locator-map'),
-  identifier: '<identifier from the GeoJSON connector>',
+  geoJsonUrl: '<URL from the GeoJSON connector>',
   googleMapsApiKey: '<your Google Maps API key>',
 });
 ```
