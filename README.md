@@ -8,7 +8,7 @@ Store locator template page for use on any website. Intended for use with the Cr
 2. Create a [Google Maps API Key](https://developers.google.com/maps/gmp-get-started).
 3. Install this package
 ```bash
-yarn install @gocrisp/store-locator
+yarn add @gocrisp/store-locator
 ```
 4. Then, wherever you want to include the store locator map, insert this snippet:
 ```javascript
