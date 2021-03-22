@@ -9,17 +9,31 @@ type StoreLocatorOptions = {
   mapOptions?: google.maps.MapOptions;
 };
 
+type StoreLocatorMap = {
+  map: google.maps.Map;
+  infoWindow: google.maps.InfoWindow;
+};
+
 export const defaultCenter = { lat: 52.632469, lng: -1.689423 };
 export const defaultZoom = 7;
 
 const defaultMapOptions = { center: defaultCenter, zoom: defaultZoom };
+
+// TODO make this overrideable
+const infoWindowContentTemplate = (feature: google.maps.Data.Feature) =>
+  `<h2>${feature.getProperty('name')}</h2>
+  <p>${feature.getProperty('description')}</p>
+  <p>
+  <b>Open:</b> ${feature.getProperty('hours')}
+  <br/><b>Phone:</b> ${feature.getProperty('phone')}
+  </p>`;
 
 export const createStoreLocatorMap = ({
   container,
   loaderOptions,
   geoJsonUrl,
   mapOptions,
-}: StoreLocatorOptions): Promise<google.maps.Map> => {
+}: StoreLocatorOptions): Promise<StoreLocatorMap> => {
   if (!container) {
     throw new Error('You must define a `container` element to put the map in.');
   }
@@ -37,6 +51,15 @@ export const createStoreLocatorMap = ({
 
     map.data.loadGeoJson(geoJsonUrl);
 
-    return map;
+    const infoWindow = new google.maps.InfoWindow();
+    infoWindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) });
+
+    map.data.addListener('click', ({ feature }: { feature: google.maps.Data.Feature }) => {
+      infoWindow.setContent(infoWindowContentTemplate(feature));
+      infoWindow.setPosition((feature.getGeometry() as google.maps.Data.Point).get());
+      infoWindow.open(map);
+    });
+
+    return { map, infoWindow };
   });
 };
