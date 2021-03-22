@@ -17,11 +17,11 @@ import storeLocator from '@gocrisp/store-locator';
 storeLocator.init({
   component: document.getElementById('store-locator-map'),
   geoJsonUrl: '<URL from the GeoJSON connector>',
-  googleMapsApiKey: '<your Google Maps API key>',
+  loaderOptions: { apiKey: '<your Google Maps API key>' },
 });
 ```
 
-By default, this will use the center of the US and a zoom level of 4, but all [google maps options](https://developers.google.com/maps/documentation/javascript/overview#MapOptions) are configurable with the `googleMapsOptions` property.
+By default, this will use the center of the US and a zoom level of 4, but all [google maps options](https://developers.google.com/maps/documentation/javascript/overview#MapOptions) are configurable with the `mapsOptions` property.
 
 
 ## Example App
