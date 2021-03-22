@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createStoreLocatorMap({
     container: document.getElementById('map-container'),
     loaderOptions: { apiKey: 'AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk' },
+    geoJsonUrl: './sample.json',
   });
 
   //   const marker = new google.maps.Marker({
@@ -16,7 +17,4 @@ document.addEventListener('DOMContentLoaded', () => {
   //   });
 
   //   google.maps.event.addListener(marker, 'click', () => infoWindow.open(map, marker));
-
-  //   return map;
-  // });
 });

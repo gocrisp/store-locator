@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { mocked } from 'ts-jest/utils';
 import { Loader } from '@googlemaps/js-api-loader';
-import { createStoreLocatorMap, defaultZoom, unitedStatesCenterLatLng } from '../';
+import { createStoreLocatorMap, defaultZoom, defaultCenter } from '../';
 
 const getRandomInt = () => Math.floor(Math.random() * Math.floor(10000));
 
@@ -10,6 +10,8 @@ const mockLoader = mocked(Loader, true);
 
 describe('storeLocator', () => {
   const loaderOptions = { apiKey: getRandomInt() + '' };
+  const geoJsonUrl = 'http://example.com/geo.json';
+  const loadGeoJsonMock = jest.fn();
 
   let container: HTMLElement | null;
 
@@ -27,12 +29,18 @@ describe('storeLocator', () => {
         Map: jest.fn(),
       },
     };
+
+    (global.google.maps.Map as jest.Mock).mockImplementation(() => ({
+      data: {
+        loadGeoJson: loadGeoJsonMock,
+      },
+    }));
   });
 
-  it('will throw an error if there is no container', () => {
+  it('will throw an error if there is no `container`', () => {
     expect(() => {
       createStoreLocatorMap({});
-    }).toThrowError('You must define a `container` to put the map in.');
+    }).toThrowError('You must define a `container` element to put the map in.');
   });
 
   it('will throw an error if there is no Google maps API key', () => {
@@ -42,7 +50,7 @@ describe('storeLocator', () => {
   });
 
   it('will load the google maps api js with the provided options', () => {
-    createStoreLocatorMap({ container, loaderOptions });
+    createStoreLocatorMap({ container, loaderOptions, geoJsonUrl });
 
     expect(mockLoader).toHaveBeenCalledWith(expect.objectContaining(loaderOptions));
   });
@@ -55,15 +63,17 @@ describe('storeLocator', () => {
       load: () => Promise.reject(error),
     }));
 
-    await expect(createStoreLocatorMap({ container, loaderOptions })).rejects.toEqual(error);
+    await expect(createStoreLocatorMap({ container, loaderOptions, geoJsonUrl })).rejects.toEqual(
+      error,
+    );
   });
 
   it('will create a basic map in the given container', async () => {
-    const map = await createStoreLocatorMap({ container, loaderOptions });
+    const map = await createStoreLocatorMap({ container, loaderOptions, geoJsonUrl });
 
     expect(map).not.toBeUndefined();
     expect(google.maps.Map).toHaveBeenCalledWith(container, {
-      center: unitedStatesCenterLatLng,
+      center: defaultCenter,
       zoom: defaultZoom,
     });
   });
@@ -72,6 +82,7 @@ describe('storeLocator', () => {
     await createStoreLocatorMap({
       container,
       loaderOptions,
+      geoJsonUrl,
       mapOptions: {
         zoom: 3,
         maxZoom: 8,
@@ -79,9 +90,22 @@ describe('storeLocator', () => {
     });
 
     expect(google.maps.Map).toHaveBeenCalledWith(expect.any(HTMLElement), {
-      center: unitedStatesCenterLatLng,
+      center: defaultCenter,
       zoom: 3,
       maxZoom: 8,
     });
+  });
+
+  it('throws an error if there is no `geoJsonUrl`', () => {
+    expect(() => {
+      createStoreLocatorMap({ container, loaderOptions });
+    }).toThrowError('You must define the `geoJsonUrl`.');
+  });
+
+  it('loads locations from the GeoJSON', async () => {
+    const geoJsonUrl = 'http://www.example.com/geoJson.json';
+    await createStoreLocatorMap({ container, loaderOptions, geoJsonUrl });
+
+    expect(loadGeoJsonMock).toHaveBeenCalledWith(geoJsonUrl);
   });
 });
