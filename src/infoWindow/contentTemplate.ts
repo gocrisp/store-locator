@@ -25,8 +25,8 @@ export default ({
       ${
         banner && logoRootPath
           ? `<img role="img" className="styles.logo" src="${logoRootPath}${banner.replace(
-              / /g,
-              '_',
+              /[^A-Za-z0-9]/g,
+              '',
             )}.${logoExtension}" alt="" />`
           : ''
       }

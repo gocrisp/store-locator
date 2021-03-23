@@ -22,7 +22,7 @@ describe('infoWindow template', () => {
   });
 
   it('will not show `undefined` for non-existent properties', async () => {
-    container.innerHTML = contentTemplate({ feature: fakeFeature({}), apiKey: ''});
+    container.innerHTML = contentTemplate({ feature: fakeFeature({}), apiKey: '' });
 
     expect(container).toHaveTextContent('');
     expect(container.querySelectorAll('img').length).toBeFalsy();
@@ -57,7 +57,7 @@ describe('infoWindow template', () => {
       throw new Error('expected 1 image');
     }
 
-    expect(img.src).toEqual('http://localhost/img/Fake_Cafe.png');
+    expect(img.src).toEqual('http://localhost/img/FakeCafe.png');
   });
 
   it('will show a streetview if the position is defined and we have an api key', () => {

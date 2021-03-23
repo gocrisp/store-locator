@@ -10,6 +10,8 @@ type StoreLocatorOptions = {
   geoJsonUrl?: string;
   mapOptions?: google.maps.MapOptions;
   infoWindowTemplate?: (args: ContentTemplateArgs) => string;
+  logoRootPath?: string;
+  logoExtension?: string;
 };
 
 type StoreLocatorMap = {
@@ -28,6 +30,8 @@ export const createStoreLocatorMap = ({
   geoJsonUrl,
   mapOptions,
   infoWindowTemplate,
+  logoRootPath,
+  logoExtension,
 }: StoreLocatorOptions): Promise<StoreLocatorMap> => {
   if (!container) {
     throw new Error('You must define a `container` element to put the map in.');
@@ -46,7 +50,13 @@ export const createStoreLocatorMap = ({
 
     map.data.loadGeoJson(geoJsonUrl);
 
-    const infoWindow = addInfoWindowListenerToMap(map, loaderOptions.apiKey, infoWindowTemplate);
+    const infoWindow = addInfoWindowListenerToMap(
+      map,
+      loaderOptions.apiKey,
+      infoWindowTemplate,
+      logoRootPath,
+      logoExtension,
+    );
 
     return { map, infoWindow };
   });
