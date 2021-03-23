@@ -16,30 +16,27 @@ export default ({
   const name = feature.getProperty('name');
   const address = feature.getProperty('formattedAddress');
 
-  return `<div className="styles.infoBoxContainer">
-    <div className="styles.content">
-      <div className="styles.info">
-        ${banner || name ? `<h2>${banner ?? ''} ${name ?? ''}</h2>` : ''}
-        ${address ? `<p>${address}</p>` : ''}
-      </div>
-      ${
-        banner && logoRootPath
-          ? `<img role="img" className="styles.logo" src="${logoRootPath}${banner.replace(
-              /[^A-Za-z0-9]/g,
-              '',
-            )}.${logoExtension}" alt="" />`
-          : ''
-      }
-      ${
-        position && position.lat() && position.lng() && apiKey
-          ? `<img
-            role="img"
-            className={styles.streetView}
-            src="https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}"
-            alt=""
-          />`
-          : ''
-      }
+  return `<div class="map_infowindow_content">
+    <div class="map_info">
+      ${banner || name ? `<h2>${banner ?? ''} ${name ?? ''}</h2>` : ''}
+      ${address ? `<p>${address}</p>` : ''}
     </div>
+    ${
+      banner && logoRootPath
+        ? `<img class="map_logo" src="${logoRootPath}${banner.replace(
+            /[^A-Za-z0-9]/g,
+            '',
+          )}.${logoExtension}" alt="" />`
+        : ''
+    }
+    ${
+      position && position.lat() && position.lng() && apiKey
+        ? `<img
+          class="map_streetview"
+          src="https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}"
+          alt=""
+        />`
+        : ''
+    }
   </div>`;
 };
