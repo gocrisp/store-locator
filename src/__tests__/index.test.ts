@@ -2,8 +2,7 @@ import '@testing-library/jest-dom';
 import { mocked } from 'ts-jest/utils';
 import { Loader } from '@googlemaps/js-api-loader';
 import { createStoreLocatorMap, defaultZoom, defaultCenter } from '../';
-
-const getRandomInt = () => Math.floor(Math.random() * Math.floor(10000));
+import { getRandomInt } from '../../test-lib';
 
 jest.mock('@googlemaps/js-api-loader');
 const mockLoader = mocked(Loader, true);
@@ -11,9 +10,6 @@ const mockLoader = mocked(Loader, true);
 describe('storeLocator', () => {
   const loaderOptions = { apiKey: getRandomInt() + '' };
   const geoJsonUrl = 'http://example.com/geo.json';
-  const addListenerMock = jest.fn();
-
-  let clickHandler: (properties: Record<string, unknown>) => void;
 
   let container: HTMLElement | null;
 
@@ -35,9 +31,10 @@ describe('storeLocator', () => {
     };
 
     (global.google.maps.Map as jest.Mock).mockImplementation(() => ({
+      addListener: jest.fn(),
       data: {
         loadGeoJson: jest.fn(),
-        addListener: addListenerMock,
+        addListener: jest.fn(),
       },
     }));
 
@@ -47,20 +44,6 @@ describe('storeLocator', () => {
       setOptions: jest.fn(),
       open: jest.fn(),
     }));
-
-    addListenerMock.mockImplementation(
-      (_, handler: (event: { feature: google.maps.Data.Feature }) => void) => {
-        clickHandler = (properties: Record<string, unknown>) => {
-          const feature = ({
-            getProperty: (name: string) => properties[name],
-            getGeometry: () => ({
-              get: () => ({ lat: 1, lng: 2 }),
-            }),
-          } as unknown) as google.maps.Data.Feature;
-          handler({ feature });
-        };
-      },
-    );
   });
 
   it('will throw an error if there is no `container`', () => {
@@ -134,20 +117,14 @@ describe('storeLocator', () => {
     expect(map.data.loadGeoJson).toHaveBeenCalledWith(geoJsonUrl);
   });
 
-  it('will wire up the click listeners for the map points', async () => {
+  it('will provide defaults for the info window', async () => {
     const { map, infoWindow } = await createStoreLocatorMap({
       container,
       loaderOptions,
       geoJsonUrl,
     });
 
-    expect(addListenerMock).toHaveBeenCalledWith('click', expect.any(Function));
-
-    clickHandler({ name: 'Store 1' });
-
-    expect(infoWindow.setOptions).toHaveBeenCalled();
-    expect(infoWindow.setContent).toHaveBeenCalledWith(expect.stringContaining('Store 1'));
-    expect(infoWindow.setPosition).toHaveBeenCalledWith({ lat: 1, lng: 2 });
-    expect(infoWindow.open).toHaveBeenCalledWith(map);
+    expect(infoWindow).not.toBeUndefined();
+    expect(map.data.addListener).toHaveBeenCalledWith('click', expect.any(Function));
   });
 });

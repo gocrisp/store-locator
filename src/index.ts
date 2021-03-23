@@ -1,4 +1,5 @@
 import { Loader, LoaderOptions } from '@googlemaps/js-api-loader';
+import { addInfoWindowListenerToMap } from './infoWindow';
 
 type StoreLocatorOptions = {
   // These are "optional" because we can't rely on TS to check things
@@ -18,15 +19,6 @@ export const defaultCenter = { lat: 52.632469, lng: -1.689423 };
 export const defaultZoom = 7;
 
 const defaultMapOptions = { center: defaultCenter, zoom: defaultZoom };
-
-// TODO make this overrideable
-const infoWindowContentTemplate = (feature: google.maps.Data.Feature) =>
-  `<h2>${feature.getProperty('name')}</h2>
-  <p>${feature.getProperty('description')}</p>
-  <p>
-  <b>Open:</b> ${feature.getProperty('hours')}
-  <br/><b>Phone:</b> ${feature.getProperty('phone')}
-  </p>`;
 
 export const createStoreLocatorMap = ({
   container,
@@ -51,14 +43,7 @@ export const createStoreLocatorMap = ({
 
     map.data.loadGeoJson(geoJsonUrl);
 
-    const infoWindow = new google.maps.InfoWindow();
-    infoWindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) });
-
-    map.data.addListener('click', ({ feature }: { feature: google.maps.Data.Feature }) => {
-      infoWindow.setContent(infoWindowContentTemplate(feature));
-      infoWindow.setPosition((feature.getGeometry() as google.maps.Data.Point).get());
-      infoWindow.open(map);
-    });
+    const infoWindow = addInfoWindowListenerToMap(map, loaderOptions.apiKey);
 
     return { map, infoWindow };
   });
