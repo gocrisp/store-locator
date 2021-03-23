@@ -1,5 +1,6 @@
 import { Loader, LoaderOptions } from '@googlemaps/js-api-loader';
 import { addInfoWindowListenerToMap } from './infoWindow';
+import { ContentTemplateArgs } from './infoWindow/contentTemplate';
 
 type StoreLocatorOptions = {
   // These are "optional" because we can't rely on TS to check things
@@ -8,6 +9,7 @@ type StoreLocatorOptions = {
   loaderOptions?: LoaderOptions;
   geoJsonUrl?: string;
   mapOptions?: google.maps.MapOptions;
+  infoWindowTemplate?: (args: ContentTemplateArgs) => string;
 };
 
 type StoreLocatorMap = {
@@ -25,6 +27,7 @@ export const createStoreLocatorMap = ({
   loaderOptions,
   geoJsonUrl,
   mapOptions,
+  infoWindowTemplate,
 }: StoreLocatorOptions): Promise<StoreLocatorMap> => {
   if (!container) {
     throw new Error('You must define a `container` element to put the map in.');
@@ -43,7 +46,7 @@ export const createStoreLocatorMap = ({
 
     map.data.loadGeoJson(geoJsonUrl);
 
-    const infoWindow = addInfoWindowListenerToMap(map, loaderOptions.apiKey);
+    const infoWindow = addInfoWindowListenerToMap(map, loaderOptions.apiKey, infoWindowTemplate);
 
     return { map, infoWindow };
   });

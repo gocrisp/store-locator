@@ -3,6 +3,7 @@ import { mocked } from 'ts-jest/utils';
 import { Loader } from '@googlemaps/js-api-loader';
 import { createStoreLocatorMap, defaultZoom, defaultCenter } from '../';
 import { getRandomInt } from '../../test-lib';
+import { ContentTemplateArgs } from '../infoWindow/contentTemplate';
 
 jest.mock('@googlemaps/js-api-loader');
 const mockLoader = mocked(Loader, true);
@@ -10,6 +11,8 @@ const mockLoader = mocked(Loader, true);
 describe('storeLocator', () => {
   const loaderOptions = { apiKey: getRandomInt() + '' };
   const geoJsonUrl = 'http://example.com/geo.json';
+  const dataAddListenerMock = jest.fn();
+  let clickItemHandler: (properties: Record<string, unknown>) => void;
 
   let container: HTMLElement | null;
 
@@ -34,7 +37,7 @@ describe('storeLocator', () => {
       addListener: jest.fn(),
       data: {
         loadGeoJson: jest.fn(),
-        addListener: jest.fn(),
+        addListener: dataAddListenerMock,
       },
     }));
 
@@ -44,6 +47,20 @@ describe('storeLocator', () => {
       setOptions: jest.fn(),
       open: jest.fn(),
     }));
+
+    dataAddListenerMock.mockImplementation(
+      (_, handler: (event: { feature: google.maps.Data.Feature }) => void) => {
+        clickItemHandler = (properties: Record<string, unknown>) => {
+          const feature = ({
+            getProperty: (name: string) => properties[name],
+            getGeometry: () => ({
+              get: () => ({ lat: () => 1, lng: () => 2, positionName: 'testPosition' }),
+            }),
+          } as unknown) as google.maps.Data.Feature;
+          handler({ feature });
+        };
+      },
+    );
   });
 
   it('will throw an error if there is no `container`', () => {
@@ -126,5 +143,20 @@ describe('storeLocator', () => {
 
     expect(infoWindow).not.toBeUndefined();
     expect(map.data.addListener).toHaveBeenCalledWith('click', expect.any(Function));
+  });
+
+  it('will allow for a custom infoWindow template', async () => {
+    const { infoWindow } = await createStoreLocatorMap({
+      container,
+      loaderOptions,
+      geoJsonUrl,
+      infoWindowTemplate: ({ feature }: ContentTemplateArgs) => `custom template ${feature.getProperty('name')}`,
+    });
+
+    expect(infoWindow).not.toBeUndefined();
+
+    clickItemHandler({ name: 'Store 2' });
+
+    expect(infoWindow.setContent).toHaveBeenCalledWith('custom template Store 2');
   });
 });
