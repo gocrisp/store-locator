@@ -23,10 +23,9 @@ export default ({
     </div>
     ${
       banner && logoRootPath
-        ? `<img class="map_logo" src="${logoRootPath}${banner.replace(
-            /[^A-Za-z0-9]/g,
-            '',
-          )}.${logoExtension}" alt="" />`
+        ? `<img class="map_logo" src="${logoRootPath}${banner
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, '')}.${logoExtension}" alt="" />`
         : ''
     }
     ${
