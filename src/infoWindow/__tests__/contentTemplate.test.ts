@@ -54,7 +54,7 @@ describe('infoWindow template', () => {
     const img = container.querySelector('img');
 
     expect(img).toBeDefined();
-    expect(img?.src).toEqual('http://localhost/img/FakeCafe.png');
+    expect(img?.src).toEqual('http://localhost/img/fakecafe.png');
   });
 
   it('will show a streetview if the position is defined and we have an api key', () => {
