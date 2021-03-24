@@ -53,11 +53,8 @@ describe('infoWindow template', () => {
 
     const img = container.querySelector('img');
 
-    if (!img) {
-      throw new Error('expected 1 image');
-    }
-
-    expect(img.src).toEqual('http://localhost/img/FakeCafe.png');
+    expect(img).toBeDefined();
+    expect(img?.src).toEqual('http://localhost/img/FakeCafe.png');
   });
 
   it('will show a streetview if the position is defined and we have an api key', () => {
@@ -68,11 +65,8 @@ describe('infoWindow template', () => {
 
     const img = container.querySelector('img');
 
-    if (!img) {
-      throw new Error('expected 1 image');
-    }
-
-    expect(img.src).toEqual(
+    expect(img).toBeDefined();
+    expect(img?.src).toEqual(
       `https://maps.googleapis.com/maps/api/streetview?size=350x120&location=1,2&key=${apiKey}`,
     );
   });

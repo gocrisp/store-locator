@@ -14,12 +14,12 @@ describe('storeLocator', () => {
   const dataAddListenerMock = jest.fn();
   let clickItemHandler: (properties: Record<string, unknown>) => void;
 
-  let container: HTMLElement | null;
+  let container: HTMLElement;
 
   beforeEach(() => {
     mockLoader.mockClear();
     document.body.innerHTML = '<div id="map-container"></div>';
-    container = document.getElementById('map-container');
+    container = document.getElementById('map-container') as HTMLElement;
 
     // @ts-expect-error: not mocking the whole thing
     mockLoader.mockImplementation(() => ({ load: () => Promise.resolve() }));
@@ -63,15 +63,24 @@ describe('storeLocator', () => {
     );
   });
 
+  it('will throw an error if there are no options', () => {
+    expect(() => {
+      // @ts-expect-error: we're testing the non-ts version
+      createStoreLocatorMap();
+    }).toThrowError('You must define the required options');
+  });
+
   it('will throw an error if there is no `container`', () => {
     expect(() => {
-      createStoreLocatorMap({});
+      // @ts-expect-error: we're testing the non-ts version
+      createStoreLocatorMap({ loaderOptions, geoJsonUrl });
     }).toThrowError('You must define a `container` element to put the map in.');
   });
 
   it('will throw an error if there is no Google maps API key', () => {
     expect(() => {
-      createStoreLocatorMap({ container });
+      // @ts-expect-error: we're testing the non-ts version
+      createStoreLocatorMap({ container, geoJsonUrl });
     }).toThrowError('You must define the `loaderOptions` and its `apiKey`.');
   });
 
@@ -124,6 +133,7 @@ describe('storeLocator', () => {
 
   it('throws an error if there is no `geoJsonUrl`', () => {
     expect(() => {
+      // @ts-expect-error: we're testing the non-ts version
       createStoreLocatorMap({ container, loaderOptions });
     }).toThrowError('You must define the `geoJsonUrl`.');
   });

@@ -3,7 +3,7 @@ import { getRandomInt } from '../../../test-lib';
 
 describe('InfoWindow', () => {
   const apiKey = getRandomInt() + '';
-  let container: HTMLElement | null;
+  let container: HTMLElement;
   const mapAddListenerMock = jest.fn();
   const dataAddListenerMock = jest.fn();
 
@@ -12,7 +12,7 @@ describe('InfoWindow', () => {
 
   beforeEach(() => {
     document.body.innerHTML = '<div id="map-container"></div>';
-    container = document.getElementById('map-container');
+    container = document.getElementById('map-container') as HTMLElement;
 
     global.google = {
       // @ts-expect-error: not mocking the whole thing
@@ -59,10 +59,6 @@ describe('InfoWindow', () => {
   });
 
   it('will wire up the click listeners for the map points', async () => {
-    if (!container) {
-      throw new Error('No container');
-    }
-
     const map = new google.maps.Map(container);
 
     const infoWindow = addInfoWindowListenerToMap(map, apiKey);
@@ -78,10 +74,6 @@ describe('InfoWindow', () => {
   });
 
   it('will close the info window when clicked away', () => {
-    if (!container) {
-      throw new Error('No container');
-    }
-
     const map = new google.maps.Map(container);
 
     const infoWindow = addInfoWindowListenerToMap(map, apiKey);

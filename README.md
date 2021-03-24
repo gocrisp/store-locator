@@ -21,7 +21,7 @@ storeLocator.init({
 });
 ```
 
-By default, this will use the center of the US and a zoom level of 4, but all [google maps options](https://developers.google.com/maps/documentation/javascript/overview#MapOptions) are configurable with the `mapsOptions` property.
+By default, this will use the center of the US and a zoom level of 4, but all [google maps options](https://developers.google.com/maps/documentation/javascript/overview#MapOptions) are configurable with the `mapOptions` property.
 
 
 ## Example App

@@ -3,11 +3,9 @@ import { addInfoWindowListenerToMap } from './infoWindow';
 import { ContentTemplateArgs } from './infoWindow/contentTemplate';
 
 type StoreLocatorOptions = {
-  // These are "optional" because we can't rely on TS to check things
-  // in the case that users aren't using TS
-  container?: HTMLElement | null;
-  loaderOptions?: LoaderOptions;
-  geoJsonUrl?: string;
+  container: HTMLElement;
+  loaderOptions: LoaderOptions;
+  geoJsonUrl: string;
   mapOptions?: google.maps.MapOptions;
   infoWindowTemplate?: (args: ContentTemplateArgs) => string;
   logoRootPath?: string;
@@ -24,24 +22,33 @@ export const defaultZoom = 7;
 
 const defaultMapOptions = { center: defaultCenter, zoom: defaultZoom };
 
-export const createStoreLocatorMap = ({
-  container,
-  loaderOptions,
-  geoJsonUrl,
-  mapOptions,
-  infoWindowTemplate,
-  logoRootPath,
-  logoExtension,
-}: StoreLocatorOptions): Promise<StoreLocatorMap> => {
-  if (!container) {
+const validateOptionsJs = (options?: Partial<StoreLocatorOptions>) => {
+  if (!options) {
+    throw new Error('You must define the required options.');
+  }
+  if (!options.container) {
     throw new Error('You must define a `container` element to put the map in.');
   }
-  if (!loaderOptions || !loaderOptions.apiKey) {
+  if (!options.loaderOptions || !options.loaderOptions.apiKey) {
     throw new Error('You must define the `loaderOptions` and its `apiKey`.');
   }
-  if (!geoJsonUrl) {
+  if (!options.geoJsonUrl) {
     throw new Error('You must define the `geoJsonUrl`.');
   }
+};
+
+export const createStoreLocatorMap = (options: StoreLocatorOptions): Promise<StoreLocatorMap> => {
+  validateOptionsJs(options);
+
+  const {
+    container,
+    loaderOptions,
+    geoJsonUrl,
+    mapOptions,
+    infoWindowTemplate,
+    logoRootPath,
+    logoExtension,
+  } = options;
 
   const loader = new Loader(loaderOptions);
 
