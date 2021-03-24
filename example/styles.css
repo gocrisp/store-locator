@@ -21,3 +21,19 @@ body {
   padding-right: 0 !important;
   padding-left: 0 !important;
 }
+
+footer a {
+  color: gray;
+  text-decoration: none;
+  font-size: .8rem;
+}
+
+footer a:hover, footer a:active {
+  color: darkgray;
+  text-decoration: underline;
+}
+
+footer img {
+  margin-right: 10px;
+  height: 50px;
+}

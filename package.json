@@ -14,6 +14,8 @@
     "@googlemaps/js-api-loader": "^1.11.3"
   },
   "devDependencies": {
+    "@testing-library/dom": "^7.30.0",
+    "@testing-library/jest-dom": "^5.11.9",
     "@types/google.maps": "^3.44.2",
     "@types/jest": "^26.0.14",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
@@ -22,11 +24,14 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jest": "^24.0.2",
+    "eslint-plugin-jest-dom": "^3.6.5",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-testing-library": "^3.10.1",
     "jest": "^26.4.2",
     "microbundle": "^0.13.0",
     "parcel-bundler": "^1.12.5",
+    "parcel-plugin-static-files-copy": "^2.6.0",
     "prettier": "^2.0.4",
     "ts-jest": "^26.3.0",
     "typescript": "^4.0.3"
@@ -37,7 +42,7 @@
     "start": "yarn build && echo '----\nIf you want to see changes to the /src files automatically, please run `yarn dev` in a separate console\n----' && yarn example",
     "build-docs": "parcel build example/index.html --out-dir example/dist --public-url /store-locator/",
     "example": "parcel example/index.html --out-dir example/dist",
-    "test": "jest --coverage",
+    "test": "jest --watch",
     "test-ci": "jest --ci",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --report-unused-disable-directives --max-warnings 0"
   },
@@ -47,7 +52,7 @@
   },
   "keywords": [],
   "jest": {
-    "testEnvironment": "node",
+    "testEnvironment": "jsdom",
     "testPathIgnorePatterns": [
       "node_modules",
       "dist",

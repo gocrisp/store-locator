@@ -4,7 +4,9 @@ module.exports = {
     "@typescript-eslint",
     "jest",
     "promise",
-    "prettier"
+    "prettier",
+    "testing-library",
+    "jest-dom"
   ],
   extends: [
     "plugin:@typescript-eslint/recommended",
@@ -14,6 +16,8 @@ module.exports = {
     "plugin:jest/recommended",
     "plugin:promise/recommended",
     "prettier",
+    "plugin:testing-library/recommended",
+    "plugin:jest-dom/recommended"
   ],
   parserOptions: {
     project: "tsconfig.json"
