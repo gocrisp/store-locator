@@ -5,11 +5,11 @@ const content = JSON.parse(fs.readFileSync("./package.json"));
 const { name, version } = content;
 console.log(version === execSync(`npm show ${name} version`).toString().trim());
 ')
-echo $REQUIRES_VERSION_INCREMENT;
 if [ "$REQUIRES_VERSION_INCREMENT" == "true" ];
 then
-  yarn version --new-version minor
+  echo "Incrementing minor version"
+  yarn version --new-version patch
 fi
 
-#npm publish --access public
+npm publish --access public
 
