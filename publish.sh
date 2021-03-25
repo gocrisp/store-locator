@@ -5,7 +5,6 @@ const content = JSON.parse(fs.readFileSync("./package.json"));
 const { name, version } = content;
 console.log(version === execSync(`npm show ${name} version`).toString().trim());
 ')
-echo "Value of A: $A"
 if [ "$REQUIRES_VERSION_INCREMENT" == "true" ];
 then
   echo "Incrementing minor version"
