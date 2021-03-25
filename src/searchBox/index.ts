@@ -1,7 +1,7 @@
 import defaultTemplate from './contentTemplate';
 
 export type SearchBoxOptions = {
-  /* https://developers.google.com/maps/documentation/javascript/places-autocomplete */
+  /** https://developers.google.com/maps/documentation/javascript/places-autocomplete */
   autocompleteOptions?: google.maps.places.AutocompleteOptions;
   controlPosition?: google.maps.ControlPosition;
   template?: string;

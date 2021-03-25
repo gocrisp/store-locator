@@ -1,14 +1,20 @@
 import { Loader, LoaderOptions } from '@googlemaps/js-api-loader';
 import { addInfoWindowListenerToMap, InfoWindowOptions } from './infoWindow';
-import { ContentTemplateArgs } from './infoWindow/contentTemplate';
 import { addSearchBoxToMap, SearchBoxOptions } from './searchBox';
 
 type StoreLocatorOptions = {
+  /** DOM element that the map will be inserted into */
   container: HTMLElement;
+  /** From https://www.npmjs.com/package/@googlemaps/js-api-loader
+   * We are enforcing the use of `libraries: ['places']`.
+   * You should also at least include an `apiKey`.
+   */
   loaderOptions: LoaderOptions;
+  /** The URL provided from your GeoJSON destination connector */
   geoJsonUrl: string;
+  /** By default we are centering on the entire US */
   mapOptions?: google.maps.MapOptions;
-  /* Optional - if you don't include this then logos won't be shown */
+  /** Optional - if you don't include this then logos won't be shown */
   formatLogoPath?: (feature: google.maps.Data.Feature) => string;
   infoWindowOptions?: InfoWindowOptions;
   searchBoxOptions?: SearchBoxOptions;
@@ -20,8 +26,8 @@ type StoreLocatorMap = {
   searchBox: google.maps.places.Autocomplete;
 };
 
-export const defaultCenter = { lat: 52.632469, lng: -1.689423 };
-export const defaultZoom = 7;
+export const defaultCenter = { lat: 39.8283, lng: -98.5795 };
+export const defaultZoom = 4;
 
 const defaultMapOptions = { center: defaultCenter, zoom: defaultZoom };
 
