@@ -1,10 +1,10 @@
 import { mocked } from 'ts-jest/utils';
 import { Loader } from '@googlemaps/js-api-loader';
+import userEvent from '@testing-library/user-event';
+import { getByTestId } from '@testing-library/dom';
 import { createStoreLocatorMap, defaultZoom, defaultCenter } from '../';
 import { getRandomInt, mockGoogleMaps } from '../../test-lib';
 import { ContentTemplateArgs } from '../infoWindow/contentTemplate';
-import userEvent from '@testing-library/user-event';
-import { getByTestId } from '@testing-library/dom';
 
 jest.mock('@googlemaps/js-api-loader');
 const mockLoader = mocked(Loader, true);
