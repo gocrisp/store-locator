@@ -1,3 +1,6 @@
+# The following script will attempt to increment patch version if the published version is equal to the existing version.
+# Otherwise, it will just publish the version as given by the package.json property.
+
 REQUIRES_VERSION_INCREMENT=$(node -e '
 const fs = require("fs");
 const { execSync } = require("child_process");
