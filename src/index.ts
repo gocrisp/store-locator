@@ -1,6 +1,6 @@
 import { Loader, LoaderOptions } from '@googlemaps/js-api-loader';
 import { addInfoWindowListenerToMap, InfoWindowOptions } from './infoWindow';
-import { addSearchBoxToMap, SearchBoxOptions } from './searchBox';
+import { addSearchBoxToMap, SearchBox, SearchBoxOptions } from './searchBox';
 
 type StoreLocatorOptions = {
   /** DOM element that the map will be inserted into */
@@ -23,7 +23,7 @@ type StoreLocatorOptions = {
 type StoreLocatorMap = {
   map: google.maps.Map;
   infoWindow: google.maps.InfoWindow;
-  searchBox: google.maps.places.Autocomplete;
+  searchBox: SearchBox;
 };
 
 export const defaultCenter = { lat: 39.8283, lng: -98.5795 };

@@ -28,6 +28,8 @@ export const mockGoogleMaps = (container: HTMLElement): void => {
   global.google = {
     maps: {
       Map: jest.fn(),
+      // @ts-expect-error: not mocking the whole thing
+      Marker: jest.fn(),
       InfoWindow: jest.fn(),
       Size: jest.fn(),
       ControlPosition,
@@ -39,6 +41,9 @@ export const mockGoogleMaps = (container: HTMLElement): void => {
   };
 
   (global.google.maps.Map as jest.Mock).mockImplementation(() => ({
+    setZoom: jest.fn(),
+    setCenter: jest.fn(),
+    getCenter: () => 'map-center',
     addListener: mapAddListenerMock,
     data: {
       loadGeoJson: jest.fn(),
@@ -59,6 +64,17 @@ export const mockGoogleMaps = (container: HTMLElement): void => {
     setPosition: jest.fn(),
     open: jest.fn(),
     close: jest.fn(),
+  }));
+
+  (global.google.maps.places.Autocomplete as jest.Mock).mockImplementation(() => ({
+    addListener: jest.fn(),
+    getPlace: jest.fn(),
+  }));
+
+  // @ts-expect-error: not mocking the whole thing
+  (global.google.maps.Marker as jest.Mock).mockImplementation(() => ({
+    setVisible: jest.fn(),
+    setPosition: jest.fn(),
   }));
 
   mapAddListenerMock.mockImplementation((_, handler: () => void) => {

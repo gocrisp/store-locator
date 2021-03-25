@@ -5,6 +5,12 @@ export type SearchBoxOptions = {
   autocompleteOptions?: google.maps.places.AutocompleteOptions;
   controlPosition?: google.maps.ControlPosition;
   template?: string;
+  searchZoom?: number;
+};
+
+export type SearchBox = {
+  autocomplete: google.maps.places.Autocomplete;
+  originMarker: google.maps.Marker;
 };
 
 const defaultAutocompleteOptions = {
@@ -15,16 +21,45 @@ const defaultAutocompleteOptions = {
 
 export const addSearchBoxToMap = (
   map: google.maps.Map,
-  { autocompleteOptions, controlPosition, template = defaultTemplate }: SearchBoxOptions,
-): google.maps.places.Autocomplete => {
+  {
+    autocompleteOptions,
+    controlPosition,
+    template = defaultTemplate,
+    searchZoom = 9,
+  }: SearchBoxOptions,
+): SearchBox => {
   const container = document.createElement('div');
   container.innerHTML = template;
   const input = container.querySelector('input') as HTMLInputElement;
 
   map.controls[controlPosition ?? google.maps.ControlPosition.TOP_RIGHT].push(container);
 
-  return new google.maps.places.Autocomplete(input, {
+  const autocomplete = new google.maps.places.Autocomplete(input, {
     ...defaultAutocompleteOptions,
     ...autocompleteOptions,
   });
+
+  const originMarker = new google.maps.Marker({ map, visible: false, position: map.getCenter() });
+
+  // Add a marker on search
+  autocomplete.addListener('place_changed', () => {
+    const place = autocomplete.getPlace();
+
+    if (!place.geometry || !place.geometry.location) {
+      originMarker.setVisible(false);
+      global.window.alert(`No address available for input: ${place.name}`);
+      return;
+    }
+
+    const originLocation = place.geometry.location;
+    map.setCenter(originLocation);
+    map.setZoom(searchZoom);
+
+    originMarker.setPosition(originLocation);
+    originMarker.setVisible(true);
+
+    // show stores list
+  });
+
+  return { autocomplete, originMarker };
 };

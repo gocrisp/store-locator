@@ -15,7 +15,7 @@ describe('Search Box', () => {
   it('will be added to the map that is passed in', () => {
     const map = new google.maps.Map(container);
 
-    const autocomplete = addSearchBoxToMap(map, {});
+    const { autocomplete } = addSearchBoxToMap(map, {});
 
     expect(autocomplete).toBeDefined();
 
@@ -51,5 +51,70 @@ describe('Search Box', () => {
     expect(autocomplete).toBeDefined();
 
     expect(screen.getByLabelText('Find the closest Crisp Cafe')).toBeInTheDocument();
+  });
+
+  describe('on search', () => {
+    let onSearch: () => void;
+    let map: google.maps.Map;
+    let autocomplete: google.maps.places.Autocomplete;
+    let originMarker: google.maps.Marker;
+
+    beforeEach(() => {
+      map = new google.maps.Map(container);
+
+      const searchBox = addSearchBoxToMap(map, { searchZoom: 8 });
+      autocomplete = searchBox.autocomplete;
+      originMarker = searchBox.originMarker;
+
+      onSearch = (autocomplete.addListener as jest.Mock).mock.calls[0][1];
+
+      (autocomplete.getPlace as jest.Mock).mockImplementation(() => ({
+        geometry: {
+          location: 'fake-location',
+        },
+      }));
+
+      global.window.alert = jest.fn();
+    });
+
+    it('will use the place_changed listener', () => {
+      expect(autocomplete.addListener).toHaveBeenCalledWith('place_changed', expect.any(Function));
+    });
+
+    it('will not show the marker on load', () => {
+      expect(google.maps.Marker).toHaveBeenCalledWith({
+        map,
+        visible: false,
+        position: 'map-center',
+      });
+    });
+
+    it('will pop up an alert if the place is invalid', () => {
+      (autocomplete.getPlace as jest.Mock).mockImplementationOnce(() => ({
+        geometry: undefined,
+      }));
+
+      onSearch();
+
+      expect(window.alert).toHaveBeenCalled();
+      expect(map.setCenter).not.toHaveBeenCalled();
+    });
+
+    it('will show a marker', () => {
+      onSearch();
+      expect(originMarker.setVisible).toHaveBeenCalledWith(true);
+      expect(originMarker.setPosition).toHaveBeenCalledWith('fake-location');
+    });
+
+    it('will center on the autocomplete place', () => {
+      onSearch();
+
+      expect(map.setCenter).toHaveBeenCalledWith('fake-location');
+    });
+
+    it('will zoom in', () => {
+      onSearch();
+      expect(map.setZoom).toHaveBeenCalledWith(8);
+    });
   });
 });
