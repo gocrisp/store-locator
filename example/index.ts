@@ -7,5 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     geoJsonUrl: './sample.json', // ./static/sample.json
     logoRootPath: 'img/',
     logoExtension: 'png',
+    searchBoxOptions: {
+      autocompleteOptions: {
+        componentRestrictions: { country: 'gb' },
+      },
+    },
   });
 });

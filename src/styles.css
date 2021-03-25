@@ -23,3 +23,35 @@
   display: inline-block;
   margin-top: 15px;
 }
+
+/* Search Box */
+.map_search-box-card {
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  margin: 10px 10px 0 0;
+  -moz-box-sizing: border-box;
+  width: 300px;
+}
+
+.map_search-box-card label {
+  color: #fff;
+  background-color: #374f63;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  width: 100%;
+}
+
+.map_search-box-input-container {
+  padding: 0.9rem;
+}
+
+.map_search-box-card input {
+  font-size: 1rem;
+  font-weight: lighter;
+  padding: 0.3rem 0.8rem;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+

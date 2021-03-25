@@ -8,6 +8,21 @@ import { ContentTemplateArgs } from '../infoWindow/contentTemplate';
 jest.mock('@googlemaps/js-api-loader');
 const mockLoader = mocked(Loader, true);
 
+enum ControlPosition {
+  BOTTOM_CENTER = 0.0,
+  BOTTOM_LEFT = 1.0,
+  BOTTOM_RIGHT = 2.0,
+  LEFT_BOTTOM = 3.0,
+  LEFT_CENTER = 4.0,
+  LEFT_TOP = 5.0,
+  RIGHT_BOTTOM = 6.0,
+  RIGHT_CENTER = 7.0,
+  RIGHT_TOP = 8.0,
+  TOP_CENTER = 9.0,
+  TOP_LEFT = 10.0,
+  TOP_RIGHT = 11.0,
+}
+
 describe('storeLocator', () => {
   const loaderOptions = { apiKey: getRandomInt() + '' };
   const geoJsonUrl = 'http://example.com/geo.json';
@@ -25,11 +40,15 @@ describe('storeLocator', () => {
     mockLoader.mockImplementation(() => ({ load: () => Promise.resolve() }));
 
     global.google = {
-      // @ts-expect-error: not mocking the whole thing
       maps: {
         Map: jest.fn(),
         InfoWindow: jest.fn(),
         Size: jest.fn(),
+        ControlPosition,
+        // @ts-expect-error: not mocking the whole thing
+        places: {
+          Autocomplete: jest.fn(),
+        },
       },
     };
 
@@ -38,6 +57,11 @@ describe('storeLocator', () => {
       data: {
         loadGeoJson: jest.fn(),
         addListener: dataAddListenerMock,
+      },
+      controls: {
+        [google.maps.ControlPosition.TOP_RIGHT]: {
+          push: jest.fn(component => container.appendChild(component)),
+        },
       },
     }));
 
@@ -169,5 +193,17 @@ describe('storeLocator', () => {
     clickItemHandler({ name: 'Store 2' });
 
     expect(infoWindow.setContent).toHaveBeenCalledWith('custom template Store 2');
+  });
+
+  it('will add a search box to the map', async () => {
+    const { searchBox } = await createStoreLocatorMap({
+      container,
+      loaderOptions,
+      geoJsonUrl,
+      searchBoxOptions: { template: 'custom search box <input>' },
+    });
+
+    expect(searchBox).not.toBeUndefined();
+    expect(container).toHaveTextContent('x');
   });
 });
