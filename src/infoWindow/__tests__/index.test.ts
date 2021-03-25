@@ -34,7 +34,6 @@ describe('InfoWindow', () => {
     (global.google.maps.InfoWindow as jest.Mock).mockImplementation(() => ({
       setContent: jest.fn(),
       setPosition: jest.fn(),
-      setOptions: jest.fn(),
       open: jest.fn(),
       close: jest.fn(),
     }));
@@ -65,12 +64,22 @@ describe('InfoWindow', () => {
 
     clickItemHandler({ name: 'Store 1' });
 
-    expect(infoWindow.setOptions).toHaveBeenCalled();
     expect(infoWindow.setContent).toHaveBeenCalledWith(expect.stringContaining('Store 1'));
     expect(infoWindow.setPosition).toHaveBeenCalledWith(
       expect.objectContaining({ positionName: 'testPosition' }),
     );
     expect(infoWindow.open).toHaveBeenCalledWith(map);
+  });
+
+  it('will apply custom options to the InfoWindow', () => {
+    const map = new google.maps.Map(container);
+
+    addInfoWindowListenerToMap(map, apiKey, { infoWindowOptions: { maxWidth: 500 } });
+
+    expect(google.maps.InfoWindow).toHaveBeenCalledWith({
+      pixelOffset: new google.maps.Size(0, -30),
+      maxWidth: 500,
+    });
   });
 
   it('will close the info window when clicked away', () => {
