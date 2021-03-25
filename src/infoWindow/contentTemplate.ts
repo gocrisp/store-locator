@@ -1,16 +1,10 @@
 export type ContentTemplateArgs = {
   feature: google.maps.Data.Feature;
   apiKey: string;
-  logoRootPath?: string;
-  logoExtension?: string;
+  formatLogoPath?: (feature: google.maps.Data.Feature) => string;
 };
 
-export default ({
-  feature,
-  apiKey,
-  logoRootPath,
-  logoExtension = 'png',
-}: ContentTemplateArgs): string => {
+export default ({ feature, apiKey, formatLogoPath }: ContentTemplateArgs): string => {
   const position = (feature.getGeometry() as google.maps.Data.Point).get();
   const banner = feature.getProperty('banner');
   const name = feature.getProperty('name');
@@ -22,10 +16,8 @@ export default ({
       ${address ? `<p>${address}</p>` : ''}
     </div>
     ${
-      banner && logoRootPath
-        ? `<img class="map_logo" src="${logoRootPath}${banner
-            .toLowerCase()
-            .replace(/[^a-z0-9]/g, '')}.${logoExtension}" alt="" />`
+      banner && formatLogoPath
+        ? `<img class="map_logo" src="${formatLogoPath(feature)}" alt="" />`
         : ''
     }
     ${

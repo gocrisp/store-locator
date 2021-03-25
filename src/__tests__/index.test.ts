@@ -1,8 +1,9 @@
-import '@testing-library/jest-dom';
 import { mocked } from 'ts-jest/utils';
 import { Loader } from '@googlemaps/js-api-loader';
+import userEvent from '@testing-library/user-event';
+import { getByTestId, screen } from '@testing-library/dom';
 import { createStoreLocatorMap, defaultZoom, defaultCenter } from '../';
-import { getRandomInt } from '../../test-lib';
+import { getRandomInt, mockGoogleMaps } from '../../test-lib';
 import { ContentTemplateArgs } from '../infoWindow/contentTemplate';
 
 jest.mock('@googlemaps/js-api-loader');
@@ -11,8 +12,6 @@ const mockLoader = mocked(Loader, true);
 describe('storeLocator', () => {
   const loaderOptions = { apiKey: getRandomInt() + '' };
   const geoJsonUrl = 'http://example.com/geo.json';
-  const dataAddListenerMock = jest.fn();
-  let clickItemHandler: (properties: Record<string, unknown>) => void;
 
   let container: HTMLElement;
 
@@ -24,43 +23,7 @@ describe('storeLocator', () => {
     // @ts-expect-error: not mocking the whole thing
     mockLoader.mockImplementation(() => ({ load: () => Promise.resolve() }));
 
-    global.google = {
-      // @ts-expect-error: not mocking the whole thing
-      maps: {
-        Map: jest.fn(),
-        InfoWindow: jest.fn(),
-        Size: jest.fn(),
-      },
-    };
-
-    (global.google.maps.Map as jest.Mock).mockImplementation(() => ({
-      addListener: jest.fn(),
-      data: {
-        loadGeoJson: jest.fn(),
-        addListener: dataAddListenerMock,
-      },
-    }));
-
-    (global.google.maps.InfoWindow as jest.Mock).mockImplementation(() => ({
-      setContent: jest.fn(),
-      setPosition: jest.fn(),
-      setOptions: jest.fn(),
-      open: jest.fn(),
-    }));
-
-    dataAddListenerMock.mockImplementation(
-      (_, handler: (event: { feature: google.maps.Data.Feature }) => void) => {
-        clickItemHandler = (properties: Record<string, unknown>) => {
-          const feature = ({
-            getProperty: (name: string) => properties[name],
-            getGeometry: () => ({
-              get: () => ({ lat: () => 1, lng: () => 2, positionName: 'testPosition' }),
-            }),
-          } as unknown) as google.maps.Data.Feature;
-          handler({ feature });
-        };
-      },
-    );
+    mockGoogleMaps(container);
   });
 
   it('will throw an error if there are no options', () => {
@@ -160,14 +123,58 @@ describe('storeLocator', () => {
       container,
       loaderOptions,
       geoJsonUrl,
-      infoWindowTemplate: ({ feature }: ContentTemplateArgs) =>
-        `custom template ${feature.getProperty('name')}`,
+      infoWindowOptions: {
+        template: ({ feature }: ContentTemplateArgs) =>
+          `custom template ${feature.getProperty('name')}`,
+      },
     });
 
     expect(infoWindow).not.toBeUndefined();
 
-    clickItemHandler({ name: 'Store 2' });
+    userEvent.click(getByTestId(container, 'mock-marker'));
 
     expect(infoWindow.setContent).toHaveBeenCalledWith('custom template Store 2');
+  });
+
+  it('will add a search box to the map', async () => {
+    const { searchBox } = await createStoreLocatorMap({
+      container,
+      loaderOptions,
+      geoJsonUrl,
+      searchBoxOptions: { template: 'custom search box <input>' },
+    });
+
+    expect(searchBox).not.toBeUndefined();
+    expect(container).toHaveTextContent('x');
+  });
+
+  it('will add the store list panel to the map container', async () => {
+    await createStoreLocatorMap({
+      container,
+      loaderOptions,
+      geoJsonUrl,
+      storeListOptions: {
+        panelTemplate: `<h2 id="store-list-header">Store Locations</h2>`,
+      },
+    });
+
+    expect(screen.getByRole('region', { name: 'Store Locations' })).toBeInTheDocument();
+  });
+
+  it('will show the side panel on search', async () => {
+    await createStoreLocatorMap({
+      container,
+      loaderOptions,
+      geoJsonUrl,
+    });
+
+    const searchBox = screen.getByLabelText('Find nearest store');
+
+    userEvent.type(searchBox, 'Anything{enter}');
+
+    expect(screen.getByRole('region', { name: 'Nearby Locations' })).toBeInTheDocument();
+
+    const result = await screen.findByText("Josie's Patisserie Bristol");
+    expect(result).toBeInTheDocument();
   });
 });

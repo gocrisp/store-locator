@@ -16,13 +16,15 @@
   "devDependencies": {
     "@testing-library/dom": "^7.30.0",
     "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/user-event": "^13.0.16",
     "@types/google.maps": "^3.44.2",
     "@types/jest": "^26.0.14",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
+    "babel-polyfill": "^6.26.0",
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.0.2",
     "eslint-plugin-jest-dom": "^3.6.5",
     "eslint-plugin-prettier": "^3.3.1",
@@ -42,8 +44,8 @@
     "start": "yarn build && echo '----\nIf you want to see changes to the /src files automatically, please run `yarn dev` in a separate console\n----' && yarn example",
     "build-docs": "parcel build example/index.html --out-dir example/dist --public-url /store-locator/",
     "example": "parcel example/index.html --out-dir example/dist",
-    "test": "jest --watch",
-    "test-ci": "jest --ci",
+    "test": "jest --watch --setupTestFrameworkScriptFile=./test-setup.ts",
+    "test-ci": "jest --ci --coverage --setupTestFrameworkScriptFile=./test-setup.ts",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --report-unused-disable-directives --max-warnings 0"
   },
   "repository": {
