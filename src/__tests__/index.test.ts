@@ -1,32 +1,17 @@
 import { mocked } from 'ts-jest/utils';
 import { Loader } from '@googlemaps/js-api-loader';
 import { createStoreLocatorMap, defaultZoom, defaultCenter } from '../';
-import { getRandomInt } from '../../test-lib';
+import { getRandomInt, mockGoogleMaps } from '../../test-lib';
 import { ContentTemplateArgs } from '../infoWindow/contentTemplate';
+import userEvent from '@testing-library/user-event';
+import { getByTestId } from '@testing-library/dom';
 
 jest.mock('@googlemaps/js-api-loader');
 const mockLoader = mocked(Loader, true);
 
-enum ControlPosition {
-  BOTTOM_CENTER = 0.0,
-  BOTTOM_LEFT = 1.0,
-  BOTTOM_RIGHT = 2.0,
-  LEFT_BOTTOM = 3.0,
-  LEFT_CENTER = 4.0,
-  LEFT_TOP = 5.0,
-  RIGHT_BOTTOM = 6.0,
-  RIGHT_CENTER = 7.0,
-  RIGHT_TOP = 8.0,
-  TOP_CENTER = 9.0,
-  TOP_LEFT = 10.0,
-  TOP_RIGHT = 11.0,
-}
-
 describe('storeLocator', () => {
   const loaderOptions = { apiKey: getRandomInt() + '' };
   const geoJsonUrl = 'http://example.com/geo.json';
-  const dataAddListenerMock = jest.fn();
-  let clickItemHandler: (properties: Record<string, unknown>) => void;
 
   let container: HTMLElement;
 
@@ -38,52 +23,7 @@ describe('storeLocator', () => {
     // @ts-expect-error: not mocking the whole thing
     mockLoader.mockImplementation(() => ({ load: () => Promise.resolve() }));
 
-    global.google = {
-      maps: {
-        Map: jest.fn(),
-        InfoWindow: jest.fn(),
-        Size: jest.fn(),
-        ControlPosition,
-        // @ts-expect-error: not mocking the whole thing
-        places: {
-          Autocomplete: jest.fn(),
-        },
-      },
-    };
-
-    (global.google.maps.Map as jest.Mock).mockImplementation(() => ({
-      addListener: jest.fn(),
-      data: {
-        loadGeoJson: jest.fn(),
-        addListener: dataAddListenerMock,
-      },
-      controls: {
-        [google.maps.ControlPosition.TOP_RIGHT]: {
-          push: jest.fn(component => container.appendChild(component)),
-        },
-      },
-    }));
-
-    (global.google.maps.InfoWindow as jest.Mock).mockImplementation(() => ({
-      setContent: jest.fn(),
-      setPosition: jest.fn(),
-      setOptions: jest.fn(),
-      open: jest.fn(),
-    }));
-
-    dataAddListenerMock.mockImplementation(
-      (_, handler: (event: { feature: google.maps.Data.Feature }) => void) => {
-        clickItemHandler = (properties: Record<string, unknown>) => {
-          const feature = ({
-            getProperty: (name: string) => properties[name],
-            getGeometry: () => ({
-              get: () => ({ lat: () => 1, lng: () => 2, positionName: 'testPosition' }),
-            }),
-          } as unknown) as google.maps.Data.Feature;
-          handler({ feature });
-        };
-      },
-    );
+    mockGoogleMaps(container);
   });
 
   it('will throw an error if there are no options', () => {
@@ -191,7 +131,7 @@ describe('storeLocator', () => {
 
     expect(infoWindow).not.toBeUndefined();
 
-    clickItemHandler({ name: 'Store 2' });
+    userEvent.click(getByTestId(container, 'mock-marker'));
 
     expect(infoWindow.setContent).toHaveBeenCalledWith('custom template Store 2');
   });

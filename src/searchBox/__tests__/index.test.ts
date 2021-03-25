@@ -1,20 +1,6 @@
 import { screen } from '@testing-library/dom';
 import { addSearchBoxToMap } from '..';
-
-enum ControlPosition {
-  BOTTOM_CENTER = 0.0,
-  BOTTOM_LEFT = 1.0,
-  BOTTOM_RIGHT = 2.0,
-  LEFT_BOTTOM = 3.0,
-  LEFT_CENTER = 4.0,
-  LEFT_TOP = 5.0,
-  RIGHT_BOTTOM = 6.0,
-  RIGHT_CENTER = 7.0,
-  RIGHT_TOP = 8.0,
-  TOP_CENTER = 9.0,
-  TOP_LEFT = 10.0,
-  TOP_RIGHT = 11.0,
-}
+import { mockGoogleMaps } from '../../../test-lib';
 
 describe('Search Box', () => {
   let container: HTMLElement;
@@ -23,27 +9,7 @@ describe('Search Box', () => {
     document.body.innerHTML = '<div id="map-container"></div>';
     container = document.getElementById('map-container') as HTMLElement;
 
-    global.google = {
-      maps: {
-        Map: jest.fn(),
-        ControlPosition,
-        // @ts-expect-error: not mocking the whole thing
-        places: {
-          Autocomplete: jest.fn(),
-        },
-      },
-    };
-
-    (global.google.maps.Map as jest.Mock).mockImplementation(() => ({
-      controls: {
-        [google.maps.ControlPosition.BOTTOM_RIGHT]: {
-          push: jest.fn(component => container.appendChild(component)),
-        },
-        [google.maps.ControlPosition.TOP_RIGHT]: {
-          push: jest.fn(component => container.appendChild(component)),
-        },
-      },
-    }));
+    mockGoogleMaps(container);
   });
 
   it('will be added to the map that is passed in', () => {
