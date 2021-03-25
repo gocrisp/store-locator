@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { mocked } from 'ts-jest/utils';
 import { Loader } from '@googlemaps/js-api-loader';
 import { createStoreLocatorMap, defaultZoom, defaultCenter } from '../';
