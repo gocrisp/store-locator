@@ -8,9 +8,8 @@ type StoreLocatorOptions = {
   loaderOptions: LoaderOptions;
   geoJsonUrl: string;
   mapOptions?: google.maps.MapOptions;
+  formatLogoPath?: (feature: google.maps.Data.Feature) => string;
   infoWindowTemplate?: (args: ContentTemplateArgs) => string;
-  logoRootPath?: string;
-  logoExtension?: string;
   searchBoxOptions?: SearchBoxOptions;
 };
 
@@ -49,8 +48,7 @@ export const createStoreLocatorMap = (options: StoreLocatorOptions): Promise<Sto
     geoJsonUrl,
     mapOptions,
     infoWindowTemplate,
-    logoRootPath,
-    logoExtension,
+    formatLogoPath,
     searchBoxOptions,
   } = options;
 
@@ -65,8 +63,7 @@ export const createStoreLocatorMap = (options: StoreLocatorOptions): Promise<Sto
       map,
       loaderOptions.apiKey,
       infoWindowTemplate,
-      logoRootPath,
-      logoExtension,
+      formatLogoPath,
     );
 
     const searchBox = addSearchBoxToMap(map, searchBoxOptions ?? {});

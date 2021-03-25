@@ -47,14 +47,13 @@ describe('infoWindow template', () => {
     container.innerHTML = contentTemplate({
       feature: fakeFeature({ banner: 'Fake Cafe' }),
       apiKey: '',
-      logoRootPath: '/img/',
-      logoExtension: 'png',
+      formatLogoPath: feature => `/img/${feature.getProperty('banner').replace(' ', '')}.png`,
     });
 
     const img = container.querySelector('img');
 
     expect(img).toBeDefined();
-    expect(img?.src).toEqual('http://localhost/img/fakecafe.png');
+    expect(img?.src).toEqual('http://localhost/img/FakeCafe.png');
   });
 
   it('will show a streetview if the position is defined and we have an api key', () => {
