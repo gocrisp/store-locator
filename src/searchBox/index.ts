@@ -15,10 +15,10 @@ const defaultAutocompleteOptions = {
 
 export const addSearchBoxToMap = (
   map: google.maps.Map,
-  { autocompleteOptions, controlPosition, template }: SearchBoxOptions,
+  { autocompleteOptions, controlPosition, template = defaultTemplate }: SearchBoxOptions,
 ): google.maps.places.Autocomplete => {
   const container = document.createElement('div');
-  container.innerHTML = template ?? defaultTemplate;
+  container.innerHTML = template;
   const input = container.querySelector('input') as HTMLInputElement;
 
   map.controls[controlPosition ?? google.maps.ControlPosition.TOP_RIGHT].push(container);

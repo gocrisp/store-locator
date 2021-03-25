@@ -1,5 +1,5 @@
 import { Loader, LoaderOptions } from '@googlemaps/js-api-loader';
-import { addInfoWindowListenerToMap } from './infoWindow';
+import { addInfoWindowListenerToMap, InfoWindowOptions } from './infoWindow';
 import { ContentTemplateArgs } from './infoWindow/contentTemplate';
 import { addSearchBoxToMap, SearchBoxOptions } from './searchBox';
 
@@ -8,8 +8,9 @@ type StoreLocatorOptions = {
   loaderOptions: LoaderOptions;
   geoJsonUrl: string;
   mapOptions?: google.maps.MapOptions;
+  /* Optional - if you don't include this then logos won't be shown */
   formatLogoPath?: (feature: google.maps.Data.Feature) => string;
-  infoWindowTemplate?: (args: ContentTemplateArgs) => string;
+  infoWindowOptions?: InfoWindowOptions;
   searchBoxOptions?: SearchBoxOptions;
 };
 
@@ -47,8 +48,8 @@ export const createStoreLocatorMap = (options: StoreLocatorOptions): Promise<Sto
     loaderOptions,
     geoJsonUrl,
     mapOptions,
-    infoWindowTemplate,
     formatLogoPath,
+    infoWindowOptions,
     searchBoxOptions,
   } = options;
 
@@ -62,7 +63,7 @@ export const createStoreLocatorMap = (options: StoreLocatorOptions): Promise<Sto
     const infoWindow = addInfoWindowListenerToMap(
       map,
       loaderOptions.apiKey,
-      infoWindowTemplate,
+      infoWindowOptions ?? {},
       formatLogoPath,
     );
 

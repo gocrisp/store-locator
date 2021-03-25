@@ -184,8 +184,10 @@ describe('storeLocator', () => {
       container,
       loaderOptions,
       geoJsonUrl,
-      infoWindowTemplate: ({ feature }: ContentTemplateArgs) =>
-        `custom template ${feature.getProperty('name')}`,
+      infoWindowOptions: {
+        template: ({ feature }: ContentTemplateArgs) =>
+          `custom template ${feature.getProperty('name')}`,
+      },
     });
 
     expect(infoWindow).not.toBeUndefined();

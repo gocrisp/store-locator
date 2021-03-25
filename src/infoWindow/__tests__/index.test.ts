@@ -61,7 +61,7 @@ describe('InfoWindow', () => {
   it('will wire up the click listeners for the map points', async () => {
     const map = new google.maps.Map(container);
 
-    const infoWindow = addInfoWindowListenerToMap(map, apiKey);
+    const infoWindow = addInfoWindowListenerToMap(map, apiKey, {});
 
     clickItemHandler({ name: 'Store 1' });
 
@@ -76,7 +76,7 @@ describe('InfoWindow', () => {
   it('will close the info window when clicked away', () => {
     const map = new google.maps.Map(container);
 
-    const infoWindow = addInfoWindowListenerToMap(map, apiKey);
+    const infoWindow = addInfoWindowListenerToMap(map, apiKey, {});
 
     expect(map.addListener).toHaveBeenCalledWith('click', expect.any(Function));
 
