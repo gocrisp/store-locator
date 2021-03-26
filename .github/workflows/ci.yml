@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches-ignore: [main]
+    branches-ignore: [ciprian/BYT-575]
 
 jobs:
   test-and-lint:

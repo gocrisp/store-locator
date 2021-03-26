@@ -1,5 +1,5 @@
 {
-  "name": "@gocrisp/store-locator",
+  "name": "@gocrisp/store-locator-test",
   "version": "0.1.0",
   "description": "Store locator widget, intended for use with the Crisp GeoJSON connector.",
   "main": "dist/store-locator.js",
