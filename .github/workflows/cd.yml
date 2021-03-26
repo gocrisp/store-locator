@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ciprian/BYT-575]
+    branches: [main]
 
 jobs:
   test-lint-publish:
