@@ -62,7 +62,10 @@ describe('Search Box', () => {
     beforeEach(() => {
       map = new google.maps.Map(container);
 
-      const searchBox = addSearchBoxToMap(map, { searchZoom: 8 });
+      const searchBox = addSearchBoxToMap(map, {
+        searchZoom: 8,
+        originMarkerOptions: { icon: 'http://google.com/custom-marker.jpg' },
+      });
       autocomplete = searchBox.autocomplete;
       originMarker = searchBox.originMarker;
 
@@ -82,11 +85,19 @@ describe('Search Box', () => {
     });
 
     it('will not show the marker on load', () => {
-      expect(google.maps.Marker).toHaveBeenCalledWith({
-        map,
-        visible: false,
-        position: 'map-center',
-      });
+      expect(google.maps.Marker).toHaveBeenCalledWith(expect.objectContaining({ visible: false }));
+    });
+
+    it('will center the (hidden) marker on the map', () => {
+      expect(google.maps.Marker).toHaveBeenCalledWith(
+        expect.objectContaining({ map, position: 'map-center' }),
+      );
+    });
+
+    it('will have a configurable map marker options', () => {
+      expect(google.maps.Marker).toHaveBeenCalledWith(
+        expect.objectContaining({ icon: 'http://google.com/custom-marker.jpg' }),
+      );
     });
 
     it('will pop up an alert if the place is invalid', () => {
