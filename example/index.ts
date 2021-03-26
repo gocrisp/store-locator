@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import { createStoreLocatorMap } from '../src';
 
 document.addEventListener('DOMContentLoaded', () => {
