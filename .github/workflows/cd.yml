@@ -20,7 +20,7 @@ jobs:
       - run: yarn run lint
       - run: yarn build
       - run: |
-          bash ./publish.sh
+          bash ./.github/scripts/publish.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
