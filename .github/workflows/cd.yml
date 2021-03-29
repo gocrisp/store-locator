@@ -2,10 +2,10 @@ name: CI
 
 on:
   push:
-    branches-ignore: [main]
+    branches: [main]
 
 jobs:
-  test-and-lint:
+  test-lint-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,3 +18,9 @@ jobs:
         env:
           CI: true
       - run: yarn run lint
+      - run: yarn build
+      - run: |
+          bash ./.github/scripts/publish.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
