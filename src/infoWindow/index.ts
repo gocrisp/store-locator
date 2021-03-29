@@ -1,19 +1,22 @@
-import contentTemplate, { ContentTemplateArgs } from './contentTemplate';
+import defaultTemplate, { ContentTemplateArgs } from './contentTemplate';
+
+export type InfoWindowOptions = {
+  infoWindowOptions?: google.maps.InfoWindowOptions;
+  template?: (args: ContentTemplateArgs) => string;
+};
 
 export const addInfoWindowListenerToMap = (
   map: google.maps.Map,
   apiKey: string,
-  infoWindowTemplate: (args: ContentTemplateArgs) => string = contentTemplate,
-  logoRootPath?: string,
-  logoExtension?: string,
+  { template = defaultTemplate, infoWindowOptions }: InfoWindowOptions,
+  formatLogoPath?: (feature: google.maps.Data.Feature) => string,
 ): google.maps.InfoWindow => {
   const defaultOptions = { pixelOffset: new google.maps.Size(0, -30) };
 
-  const infoWindow = new google.maps.InfoWindow();
-  infoWindow.setOptions(defaultOptions);
+  const infoWindow = new google.maps.InfoWindow({ ...defaultOptions, ...infoWindowOptions });
 
   map.data.addListener('click', ({ feature }: { feature: google.maps.Data.Feature }) => {
-    infoWindow.setContent(infoWindowTemplate({ feature, apiKey, logoRootPath, logoExtension }));
+    infoWindow.setContent(template({ feature, apiKey, formatLogoPath }));
     infoWindow.setPosition((feature.getGeometry() as google.maps.Data.Point).get());
     infoWindow.open(map);
   });

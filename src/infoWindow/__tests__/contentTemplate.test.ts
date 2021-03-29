@@ -1,15 +1,6 @@
-import '@testing-library/jest-dom';
 import { screen } from '@testing-library/dom';
 import contentTemplate from '../contentTemplate';
-import { getRandomInt } from '../../../test-lib';
-
-const fakeFeature = (properties: Record<string, unknown>) =>
-  (({
-    getProperty: (name: string) => properties[name],
-    getGeometry: () => ({
-      get: () => ({ lat: () => 1, lng: () => 2, positionName: 'testPosition' }),
-    }),
-  } as unknown) as google.maps.Data.Feature);
+import { getRandomInt, mockFeature } from '../../../test-lib';
 
 describe('infoWindow template', () => {
   const apiKey = getRandomInt() + '';
@@ -22,7 +13,7 @@ describe('infoWindow template', () => {
   });
 
   it('will not show `undefined` for non-existent properties', async () => {
-    container.innerHTML = contentTemplate({ feature: fakeFeature({}), apiKey: '' });
+    container.innerHTML = contentTemplate({ feature: mockFeature({}), apiKey: '' });
 
     expect(container).toHaveTextContent('');
     expect(container.querySelectorAll('img').length).toBeFalsy();
@@ -30,7 +21,7 @@ describe('infoWindow template', () => {
 
   it('will show the banner, name, and address', () => {
     container.innerHTML = contentTemplate({
-      feature: fakeFeature({
+      feature: mockFeature({
         banner: 'Fake Cafe',
         name: 'Buffalo',
         formattedAddress: '123 Main St, Buffalo, NY 12345',
@@ -45,21 +36,20 @@ describe('infoWindow template', () => {
 
   it('will show the banner logo if there is a banner and a `logoRootDir`', () => {
     container.innerHTML = contentTemplate({
-      feature: fakeFeature({ banner: 'Fake Cafe' }),
+      feature: mockFeature({ banner: 'Fake Cafe' }),
       apiKey: '',
-      logoRootPath: '/img/',
-      logoExtension: 'png',
+      formatLogoPath: feature => `/img/${feature.getProperty('banner').replace(' ', '')}.png`,
     });
 
     const img = container.querySelector('img');
 
     expect(img).toBeDefined();
-    expect(img?.src).toEqual('http://localhost/img/fakecafe.png');
+    expect(img?.src).toEqual('http://localhost/img/FakeCafe.png');
   });
 
   it('will show a streetview if the position is defined and we have an api key', () => {
     container.innerHTML = contentTemplate({
-      feature: fakeFeature({ banner: 'Fake Cafe' }),
+      feature: mockFeature({ banner: 'Fake Cafe' }),
       apiKey,
     });
 

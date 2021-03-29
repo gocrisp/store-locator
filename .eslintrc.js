@@ -6,9 +6,11 @@ module.exports = {
     "promise",
     "prettier",
     "testing-library",
-    "jest-dom"
+    "jest-dom",
+    "import"
   ],
   extends: [
+    "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
@@ -17,7 +19,10 @@ module.exports = {
     "plugin:promise/recommended",
     "prettier",
     "plugin:testing-library/recommended",
-    "plugin:jest-dom/recommended"
+    "plugin:jest-dom/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
   ],
   parserOptions: {
     project: "tsconfig.json"
@@ -32,5 +37,6 @@ module.exports = {
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/explicit-function-return-type": ["off"],
     "@typescript-eslint/explicit-member-accessibility": ["off"],
+    "import/order": ["error"]
   },
 }
