@@ -2,7 +2,7 @@ import { Loader, LoaderOptions } from '@googlemaps/js-api-loader';
 import { addInfoWindowListenerToMap, InfoWindowOptions } from './infoWindow';
 import { addSearchBoxToMap, SearchBox, SearchBoxOptions } from './searchBox';
 
-type StoreLocatorOptions = {
+export type StoreLocatorOptions = {
   /** DOM element that the map will be inserted into */
   container: HTMLElement;
   /** From https://www.npmjs.com/package/@googlemaps/js-api-loader
@@ -20,7 +20,7 @@ type StoreLocatorOptions = {
   searchBoxOptions?: SearchBoxOptions;
 };
 
-type StoreLocatorMap = {
+export type StoreLocatorMap = {
   map: google.maps.Map;
   infoWindow: google.maps.InfoWindow;
   searchBox: SearchBox;
