@@ -94,8 +94,8 @@ export const mockGoogleMaps = (container: HTMLElement): void => {
       forEach: jest.fn().mockImplementation((callback: () => void) =>
         geoJson.features
           .map(f => ({
-            // @ts-expect-error typescript lies
-            getProperty: (name: string) => f.properties[name] as string,
+            getProperty: (name: 'banner' | 'name' | 'formattedAddress') =>
+              f.properties[name] as string,
             getGeometry: () => ({
               get: () => ({
                 lng: () => f.geometry.coordinates[0],
