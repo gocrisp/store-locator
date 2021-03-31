@@ -22,7 +22,7 @@ type StoreLocatorOptions = {
   storeListOptions?: StoreListOptions;
 };
 
-type StoreLocatorMap = {
+export type StoreLocatorMap = {
   map: google.maps.Map;
   infoWindow: google.maps.InfoWindow;
   searchBox: SearchBox;

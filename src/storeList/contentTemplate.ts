@@ -17,7 +17,11 @@ export const storeTemplate = ({ store, formatLogoPath }: ContentTemplateArgs): s
 
   return `
     <li>
-      <button data-lat="${location.lat()}" data-lng="${location.lng()}" title="${banner ?? ''} ${name ?? ''}">
+      <button
+        data-lat="${location.lat()}"
+        data-lng="${location.lng()}"
+        title="${banner ?? ''} ${name ?? ''}"
+      >
         ${banner || name ? `<p class="map_banner">${banner ?? ''} ${name ?? ''}</p>` : ''}
         ${
           banner && formatLogoPath

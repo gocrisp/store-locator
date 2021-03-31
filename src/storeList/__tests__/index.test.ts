@@ -1,4 +1,4 @@
-import { screen, getByText, getByRole, findAllByRole } from '@testing-library/dom';
+import { screen, getByRole, findAllByRole } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import { addStoreListToMapContainer } from '..';
 import { mockGoogleMaps } from '../../../test-lib';
