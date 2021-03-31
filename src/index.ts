@@ -76,7 +76,12 @@ export const createStoreLocatorMap = (options: StoreLocatorOptions): Promise<Sto
       formatLogoPath,
     );
 
-    const { showStoreList } = addStoreListToMapContainer(container, map, storeListOptions ?? {}, formatLogoPath);
+    const { showStoreList } = addStoreListToMapContainer(
+      container,
+      map,
+      storeListOptions ?? {},
+      formatLogoPath,
+    );
 
     const searchBox = addSearchBoxToMap(map, showStoreList, searchBoxOptions ?? {});
 

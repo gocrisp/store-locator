@@ -92,9 +92,18 @@
 
 .map_store-list-panel li {
   padding: 10px;
-  /* cursor: pointer */
   border-top: 1px solid lightgray;
   position: relative;
+}
+
+.map_store-list-panel li button {
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  text-align: left;
 }
 
 .map_store-list-panel .map_banner {

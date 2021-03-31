@@ -72,6 +72,20 @@ describe('Store List', () => {
       userEvent.click(closeButton);
       expect(panel).not.toHaveClass('open');
     });
+
+    it('will zoom in on the location when a result is clicked', async () => {
+      await showStoreList();
+
+      const panel = screen.getByRole('region', { name: 'Nearby Locations' });
+
+      const cardiffItem = getByRole(panel, 'button', { name: "Josie's Patisserie Cardiff" });
+
+      userEvent.click(cardiffItem);
+
+      expect(map.setCenter).toHaveBeenCalledWith(expect.objectContaining({ lat: 51.479756 }));
+      expect(map.setCenter).toHaveBeenCalledWith(expect.objectContaining({ lng: -3.155305 }));
+      expect(map.setZoom).toHaveBeenCalledWith(13);
+    });
   });
 
   describe('when there are no results', () => {

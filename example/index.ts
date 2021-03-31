@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     },
     storeListOptions: {
+      maxStoresToDisplay: 10,
       unitSystem: 'metric',
     },
   });

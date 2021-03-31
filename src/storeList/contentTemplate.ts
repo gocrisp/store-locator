@@ -13,16 +13,20 @@ export const storeTemplate = ({ store, formatLogoPath }: ContentTemplateArgs): s
   const banner = store.feature.getProperty('banner');
   const name = store.feature.getProperty('name');
   const address = store.feature.getProperty('formattedAddress');
+  const location = (store.feature.getGeometry() as google.maps.Data.Point).get();
+
   return `
     <li>
-      ${banner || name ? `<p class="map_banner">${banner ?? ''} ${name ?? ''}</p>` : ''}
-      ${
-        banner && formatLogoPath
-          ? `<img class="map_logo" alt="" src="${formatLogoPath(store.feature)}" />`
-          : ''
-      }
-      <p class="map_distance">${store.distanceText}</p>
-      ${address ? `<p class="map_address">${address}</p>` : ''}
+      <button data-lat="${location.lat()}" data-lng="${location.lng()}" title="${banner ?? ''} ${name ?? ''}">
+        ${banner || name ? `<p class="map_banner">${banner ?? ''} ${name ?? ''}</p>` : ''}
+        ${
+          banner && formatLogoPath
+            ? `<img class="map_logo" alt="" src="${formatLogoPath(store.feature)}" />`
+            : ''
+        }
+        <p class="map_distance">${store.distanceText}</p>
+        ${address ? `<p class="map_address">${address}</p>` : ''}
+      </button>
     </li>
   `;
 };

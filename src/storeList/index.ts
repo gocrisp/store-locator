@@ -101,6 +101,11 @@ const getStoresClosestToCenterOfMap = async (
     .slice(0, maxStoresToDisplay);
 };
 
+const zoomInOnLocation = (map: google.maps.Map, lat: number, lng: number) => {
+  map.setCenter({ lat, lng });
+  map.setZoom(13);
+};
+
 const showStoreList = (
   map: google.maps.Map,
   options: StoreListOptions,
@@ -116,6 +121,15 @@ const showStoreList = (
     const template = options.storeTemplate ?? storeTemplate;
     list.innerHTML = sortedStores.map(store => template({ store, formatLogoPath })).join('');
     message.innerHTML = '';
+
+    list.querySelectorAll('button').forEach(button => {
+      button.onclick = () =>
+        zoomInOnLocation(
+          map,
+          +(button.getAttribute('data-lat') || 0),
+          +(button.getAttribute('data-lng') || 0),
+        );
+    });
   } else {
     list.innerHTML = '';
     message.innerHTML = 'There are no locations that match the given criteria.';
