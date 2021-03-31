@@ -62,7 +62,7 @@ export const createStoreLocatorMap = (options: StoreLocatorOptions): Promise<Sto
     storeListOptions,
   } = options;
 
-  const loader = new Loader({ ...loaderOptions, libraries: ['places', 'geometry'] });
+  const loader = new Loader({ ...loaderOptions, libraries: ['places'] });
 
   return loader.load().then(() => {
     const map = new google.maps.Map(container, { ...defaultMapOptions, ...mapOptions });
