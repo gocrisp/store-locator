@@ -94,7 +94,7 @@ describe('Store List', () => {
     beforeEach(() => {
       map = new google.maps.Map(container);
 
-      (map.data.forEach as jest.Mock).mockImplementationOnce(() => {}); // eslint-disable-line @typescript-eslint/no-empty-function
+      (map.data.forEach as jest.Mock).mockImplementationOnce(() => jest.fn());
     });
     it('will show a message', async () => {
       const { showStoreList } = addStoreListToMapContainer(container, map, {});
