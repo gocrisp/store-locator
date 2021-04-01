@@ -15,7 +15,7 @@ describe('Store List', () => {
 
   it('will not show a store list on load', () => {
     const map = new google.maps.Map(container);
-    addStoreListToMapContainer(container, map, {});
+    addStoreListToMapContainer(container, map, jest.fn(), {});
 
     const panel = screen.getByRole('region', { name: 'Nearby Locations' });
     expect(panel).toBeInTheDocument();
@@ -28,7 +28,9 @@ describe('Store List', () => {
 
     beforeEach(() => {
       map = new google.maps.Map(container);
-      const storeList = addStoreListToMapContainer(container, map, { maxStoresToDisplay: 3 });
+      const storeList = addStoreListToMapContainer(container, map, jest.fn(), {
+        maxStoresToDisplay: 3,
+      });
       showStoreList = storeList.showStoreList;
     });
 
@@ -97,7 +99,7 @@ describe('Store List', () => {
       (map.data.forEach as jest.Mock).mockImplementationOnce(() => jest.fn());
     });
     it('will show a message', async () => {
-      const { showStoreList } = addStoreListToMapContainer(container, map, {});
+      const { showStoreList } = addStoreListToMapContainer(container, map, jest.fn(), {});
       await showStoreList();
 
       const panel = screen.getByRole('region', { name: 'Nearby Locations' });

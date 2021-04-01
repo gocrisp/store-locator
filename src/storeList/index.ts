@@ -101,13 +101,26 @@ const getStoresClosestToCenterOfMap = async (
     .slice(0, maxStoresToDisplay);
 };
 
-const zoomInOnLocation = (map: google.maps.Map, lat: number, lng: number) => {
+const showLocation = (
+  map: google.maps.Map,
+  showInfoWindow: (feature: google.maps.Data.Feature) => void,
+  lat: number,
+  lng: number,
+) => {
   map.setCenter({ lat, lng });
   map.setZoom(13);
+
+  map.data.forEach(feature => {
+    const location = (feature.getGeometry() as google.maps.Data.Point).get();
+    if (location.lat() == lat && location.lng() == lng) {
+      showInfoWindow(feature);
+    }
+  });
 };
 
 const showStoreList = (
   map: google.maps.Map,
+  showInfoWindow: (feature: google.maps.Data.Feature) => void,
   options: StoreListOptions,
   formatLogoPath?: (feature: google.maps.Data.Feature) => string,
 ) => async (): Promise<void> => {
@@ -124,8 +137,9 @@ const showStoreList = (
 
     list.querySelectorAll('button').forEach(button => {
       button.onclick = () =>
-        zoomInOnLocation(
+        showLocation(
           map,
+          showInfoWindow,
           +(button.getAttribute('data-lat') || 0),
           +(button.getAttribute('data-lng') || 0),
         );
@@ -141,6 +155,7 @@ const showStoreList = (
 export const addStoreListToMapContainer = (
   container: HTMLElement,
   map: google.maps.Map,
+  showInfoWindow: (feature: google.maps.Data.Feature) => void,
   options: StoreListOptions,
   formatLogoPath?: (feature: google.maps.Data.Feature) => string,
 ): StoreList => {
@@ -160,6 +175,6 @@ export const addStoreListToMapContainer = (
   }
 
   return {
-    showStoreList: showStoreList(map, options, formatLogoPath),
+    showStoreList: showStoreList(map, showInfoWindow, options, formatLogoPath),
   };
 };

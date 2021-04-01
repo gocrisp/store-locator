@@ -69,7 +69,7 @@ export const createStoreLocatorMap = (options: StoreLocatorOptions): Promise<Sto
 
     map.data.loadGeoJson(geoJsonUrl);
 
-    const infoWindow = addInfoWindowListenerToMap(
+    const { infoWindow, showInfoWindow } = addInfoWindowListenerToMap(
       map,
       loaderOptions.apiKey,
       infoWindowOptions ?? {},
@@ -79,6 +79,7 @@ export const createStoreLocatorMap = (options: StoreLocatorOptions): Promise<Sto
     const { showStoreList } = addStoreListToMapContainer(
       container,
       map,
+      showInfoWindow,
       storeListOptions ?? {},
       formatLogoPath,
     );
