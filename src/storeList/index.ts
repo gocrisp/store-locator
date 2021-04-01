@@ -101,12 +101,12 @@ const getStoresClosestToCenterOfMap = async (
     .slice(0, maxStoresToDisplay);
 };
 
-const findFeatureByLatLng = (
-  map: google.maps.Map,
-  lat: number,
-  lng: number,
-) => {
-  const featuresWithLatLng = Array<{ lat: number; lng: number; feature: google.maps.Data.Feature }>;
+const findFeatureByLatLng = (map: google.maps.Map, lat: number, lng: number) => {
+  const featuresWithLatLng: Array<{
+    lat: number;
+    lng: number;
+    feature: google.maps.Data.Feature;
+  }> = [];
 
   map.data.forEach(feature => {
     const location = (feature.getGeometry() as google.maps.Data.Point).get();
@@ -118,7 +118,7 @@ const findFeatureByLatLng = (
   });
 
   return featuresWithLatLng.find(f => f.lat === lat && f.lng === lng)?.feature;
-}
+};
 
 const showLocation = (
   map: google.maps.Map,
