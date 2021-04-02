@@ -1,3 +1,5 @@
+import geoJson from './static/sample.json';
+
 export const getRandomInt = (): number => Math.floor(Math.random() * Math.floor(10000));
 
 // from google.maps.ControlPosition
@@ -14,6 +16,25 @@ enum ControlPosition {
   TOP_CENTER = 9.0,
   TOP_LEFT = 10.0,
   TOP_RIGHT = 11.0,
+}
+enum TravelMode {
+  BICYCLING = 'BICYCLING',
+  DRIVING = 'DRIVING',
+  TRANSIT = 'TRANSIT',
+  WALKING = 'WALKING',
+}
+enum UnitSystem {
+  IMPERIAL = 0.0,
+  METRIC = 1.0,
+}
+enum DistanceMatrixStatus {
+  INVALID_REQUEST = 'INVALID_REQUEST',
+  MAX_DIMENSIONS_EXCEEDED = 'MAX_DIMENSIONS_EXCEEDED',
+  MAX_ELEMENTS_EXCEEDED = 'MAX_ELEMENTS_EXCEEDED',
+  OK = 'OK',
+  OVER_QUERY_LIMIT = 'OVER_QUERY_LIMIT',
+  REQUEST_DENIED = 'REQUEST_DENIED',
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
 export const mockGoogleMaps = (container: HTMLElement): void => {
@@ -37,17 +58,54 @@ export const mockGoogleMaps = (container: HTMLElement): void => {
       places: {
         Autocomplete: jest.fn(),
       },
+      DistanceMatrixService: jest.fn(),
+      TravelMode,
+      UnitSystem,
+      DistanceMatrixStatus,
     },
   };
+
+  (global.google.maps.DistanceMatrixService as jest.Mock).mockImplementation(() => ({
+    getDistanceMatrix: jest.fn().mockImplementation((_, callback) => {
+      const elements = geoJson.features.map(f => {
+        let value = getRandomInt() + 4;
+        if (f.properties.name === 'Bristol') {
+          value = 1;
+        } else if (f.properties.name === 'Cardiff') {
+          value = 2;
+        } else if (f.properties.name === 'Wimborne') {
+          value = 3;
+        }
+        return { distance: { value, text: 'distance' } };
+      });
+
+      callback({ rows: [{ elements }] }, google.maps.DistanceMatrixStatus.OK);
+    }),
+  }));
 
   (global.google.maps.Map as jest.Mock).mockImplementation(() => ({
     setZoom: jest.fn(),
     setCenter: jest.fn(),
-    getCenter: () => 'map-center',
+    getCenter: jest.fn().mockImplementation(() => 'map-center'),
     addListener: mapAddListenerMock,
     data: {
       loadGeoJson: jest.fn(),
+      addGeoJson: jest.fn(),
       addListener: dataAddListenerMock,
+      forEach: jest.fn().mockImplementation((callback: () => void) =>
+        geoJson.features
+          .map(f => ({
+            getProperty: (name: 'banner' | 'name' | 'formattedAddress') =>
+              f.properties[name] as string,
+            getGeometry: () => ({
+              get: () => ({
+                lng: () => f.geometry.coordinates[0],
+                lat: () => f.geometry.coordinates[1],
+              }),
+            }),
+          }))
+          .forEach(callback),
+      ),
     },
     controls: {
       [google.maps.ControlPosition.BOTTOM_RIGHT]: {
@@ -66,10 +124,24 @@ export const mockGoogleMaps = (container: HTMLElement): void => {
     close: jest.fn(),
   }));
 
-  (global.google.maps.places.Autocomplete as jest.Mock).mockImplementation(() => ({
-    addListener: jest.fn(),
-    getPlace: jest.fn(),
-  }));
+  (global.google.maps.places.Autocomplete as jest.Mock).mockImplementation(function (
+    input: HTMLInputElement,
+  ) {
+    return {
+      addListener: jest.fn().mockImplementation((type: string, callback: () => Promise<void>) => {
+        if (type === 'place_changed') {
+          input.onkeypress = (e: KeyboardEvent) => {
+            if (e.key === 'Enter') {
+              callback();
+            }
+          };
+        }
+      }),
+      getPlace: jest
+        .fn()
+        .mockImplementation(() => ({ geometry: { location: { lat: 1, lng: 2 } } })),
+    };
+  });
 
   // @ts-expect-error: not mocking the whole thing
   (global.google.maps.Marker as jest.Mock).mockImplementation(() => ({

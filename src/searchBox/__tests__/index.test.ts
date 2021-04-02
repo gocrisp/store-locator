@@ -14,10 +14,12 @@ describe('Search Box', () => {
 
   it('will be added to the map that is passed in', () => {
     const map = new google.maps.Map(container);
+    const onUpdate = jest.fn();
 
-    const { autocomplete } = addSearchBoxToMap(map, {});
+    const { autocomplete } = addSearchBoxToMap(map, onUpdate, {});
 
     expect(autocomplete).toBeDefined();
+    expect(onUpdate).not.toHaveBeenCalled();
 
     expect(map.controls[google.maps.ControlPosition.TOP_RIGHT].push).toHaveBeenCalled();
     expect(screen.getByLabelText('Find nearest store')).toBeInTheDocument();
@@ -26,7 +28,7 @@ describe('Search Box', () => {
   it('will have an autocomplete field', () => {
     const map = new google.maps.Map(container);
 
-    addSearchBoxToMap(map, {
+    addSearchBoxToMap(map, jest.fn(), {
       controlPosition: google.maps.ControlPosition.BOTTOM_RIGHT,
       autocompleteOptions: { componentRestrictions: { country: 'ca' }, fields: ['geometry'] },
     });
@@ -46,7 +48,7 @@ describe('Search Box', () => {
     const template = `<label for="search-box">Find the closest Crisp Cafe</label>
       <input id="search-box" />`;
 
-    const autocomplete = addSearchBoxToMap(map, { template });
+    const autocomplete = addSearchBoxToMap(map, jest.fn(), { template });
 
     expect(autocomplete).toBeDefined();
 
@@ -58,11 +60,13 @@ describe('Search Box', () => {
     let map: google.maps.Map;
     let autocomplete: google.maps.places.Autocomplete;
     let originMarker: google.maps.Marker;
+    let onUpdate: jest.Mock;
 
     beforeEach(() => {
       map = new google.maps.Map(container);
+      onUpdate = jest.fn();
 
-      const searchBox = addSearchBoxToMap(map, {
+      const searchBox = addSearchBoxToMap(map, onUpdate, {
         searchZoom: 8,
         originMarkerOptions: { icon: 'http://google.com/custom-marker.jpg' },
       });
@@ -126,6 +130,11 @@ describe('Search Box', () => {
     it('will zoom in', () => {
       onSearch();
       expect(map.setZoom).toHaveBeenCalledWith(8);
+    });
+
+    it('will trigger the onUpdate that is passed in', () => {
+      onSearch();
+      expect(onUpdate).toHaveBeenCalledTimes(1);
     });
   });
 });

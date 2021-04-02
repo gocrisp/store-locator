@@ -23,13 +23,13 @@ body {
 }
 
 footer a {
-  color: gray;
+  color: #666;
   text-decoration: none;
   font-size: .8rem;
 }
 
 footer a:hover, footer a:active {
-  color: darkgray;
+  color: #333;
   text-decoration: underline;
 }
 

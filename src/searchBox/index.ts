@@ -22,6 +22,7 @@ const defaultAutocompleteOptions = {
 
 export const addSearchBoxToMap = (
   map: google.maps.Map,
+  onUpdate: () => Promise<void>,
   {
     autocompleteOptions,
     originMarkerOptions,
@@ -66,7 +67,7 @@ export const addSearchBoxToMap = (
     originMarker.setPosition(originLocation);
     originMarker.setVisible(true);
 
-    // show stores list
+    await onUpdate();
   });
 
   return { autocomplete, originMarker };
