@@ -10,7 +10,8 @@ import {
 const storeListPanelId = 'map_store-list-panel';
 
 export type StoreListOptions = {
-  maxStoresToDisplay?: number;
+  // maxStoresToDisplay?: number;
+  filterFn?: (item: DistanceResult, index: number, map: google.maps.Map) => boolean;
   travelMode?: google.maps.TravelMode;
   unitSystem?: 'imperial' | 'metric';
   panelTemplate?: string;
@@ -53,7 +54,7 @@ const getDistanceMatrix = (
 const getStoresClosestToCenterOfMap = async (
   map: google.maps.Map,
   {
-    maxStoresToDisplay = 5,
+    filterFn = (_, i) => i < 10,
     travelMode = google.maps.TravelMode.DRIVING,
     unitSystem, // defaults to 'imperial' in ternary below
   }: StoreListOptions,
@@ -98,7 +99,7 @@ const getStoresClosestToCenterOfMap = async (
       feature: s.store,
       distanceText: s.distanceText,
     }))
-    .slice(0, maxStoresToDisplay);
+    .filter((result, index) => filterFn(result, index, map));
 };
 
 const findFeatureByLatLng = (map: google.maps.Map, lat: number, lng: number) => {

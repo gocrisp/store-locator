@@ -90,6 +90,7 @@ export const mockGoogleMaps = (container: HTMLElement): void => {
     addListener: mapAddListenerMock,
     data: {
       loadGeoJson: jest.fn(),
+      addGeoJson: jest.fn(),
       addListener: dataAddListenerMock,
       forEach: jest.fn().mockImplementation((callback: () => void) =>
         geoJson.features

@@ -29,7 +29,7 @@ describe('Store List', () => {
     beforeEach(() => {
       map = new google.maps.Map(container);
       const storeList = addStoreListToMapContainer(container, map, jest.fn(), {
-        maxStoresToDisplay: 3,
+        filterFn: (_, i) => i < 3,
       });
       showStoreList = storeList.showStoreList;
     });
