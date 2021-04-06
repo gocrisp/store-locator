@@ -711,4 +711,4 @@ var e=arguments[3];Object.defineProperty(exports,"__esModule",{value:!0}),export
 },{"@googlemaps/js-api-loader":"fojl","./infoWindow":"vhDa","./searchBox":"O7D6","./storeList":"bmJ3"}],"QCba":[function(require,module,exports) {
 "use strict";require("babel-polyfill");var e=require("../src");document.addEventListener("DOMContentLoaded",function(){(0,e.createStoreLocatorMap)({container:document.getElementById("map-container"),loaderOptions:{apiKey:"AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk"},geoJson:"./sample.json",mapOptions:{center:{lat:52.632469,lng:-1.689423},zoom:7},formatLogoPath:function(e){return"img/".concat(e.getProperty("banner").toLowerCase().replace(/[^a-z0-9]/g,""),".png")},searchBoxOptions:{autocompleteOptions:{componentRestrictions:{country:"gb"}}},storeListOptions:{filterFn:function(e,t){return t<12},unitSystem:"metric"}})});
 },{"babel-polyfill":"wllv","../src":"fUdq"}]},{},["QCba"], null)
-//# sourceMappingURL=/store-locator/example.89d48a42.js.map
+//# sourceMappingURL=/store-locator/example.e2d19ad8.js.map
