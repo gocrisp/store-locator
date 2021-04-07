@@ -38,8 +38,10 @@ const getDistanceMatrix = (
 ): Promise<Array<DistanceMatrixValue>> =>
   new Promise((resolve, reject) => {
     service.getDistanceMatrix(parameters, (response, status) => {
-      if (status != google.maps.DistanceMatrixStatus.OK || !response) {
-        reject(response);
+      if (status != google.maps.DistanceMatrixStatus.OK) {
+        reject(`DistanceMatrixService Response Status: ${status}`);
+      } else if (!response) {
+        reject('DistanceMatrixService returned no response');
       } else {
         resolve(
           response.rows[0].elements.map(e => ({
@@ -141,11 +143,20 @@ const showStoreList = (
   options: StoreListOptions,
   formatLogoPath?: (feature: google.maps.Data.Feature) => string,
 ) => async (): Promise<void> => {
-  const sortedStores = await getStoresClosestToCenterOfMap(map, options);
-
   const panel = document.getElementById(storeListPanelId) as HTMLElement;
   const list = document.getElementById(listId) as HTMLElement;
   const message = document.getElementById(messageId) as HTMLElement;
+
+  let sortedStores;
+  try {
+    sortedStores = await getStoresClosestToCenterOfMap(map, options);
+  } catch (e) {
+    console.error(e);
+    list.innerHTML = '';
+    message.innerHTML = 'There was an error determining the closest stores.';
+    panel.classList.add('open');
+    return;
+  }
 
   if (sortedStores.length) {
     const template = options.storeTemplate ?? storeTemplate;

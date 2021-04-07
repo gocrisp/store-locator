@@ -107,4 +107,69 @@ describe('Store List', () => {
       expect(panel).toHaveTextContent('There are no locations');
     });
   });
+
+  describe('when the api returns a rejection status', () => {
+    let map: google.maps.Map;
+
+    beforeEach(() => {
+      map = new google.maps.Map(container);
+
+      (global.google.maps.DistanceMatrixService as jest.Mock).mockImplementation(() => ({
+        getDistanceMatrix: jest.fn().mockImplementation((_, callback) => {
+          callback({ rows: [] }, google.maps.DistanceMatrixStatus.MAX_DIMENSIONS_EXCEEDED);
+        }),
+      }));
+
+      global.console.error = jest.fn();
+    });
+    it('will show an error message', async () => {
+      const { showStoreList } = addStoreListToMapContainer(container, map, jest.fn(), {});
+      await showStoreList();
+
+      const panel = screen.getByRole('region', { name: 'Nearby Locations' });
+
+      expect(panel).toHaveClass('open');
+      expect(panel).toHaveTextContent('There was an error');
+    });
+    it('will log the error details to the console', async () => {
+      const { showStoreList } = addStoreListToMapContainer(container, map, jest.fn(), {});
+      await showStoreList();
+
+      expect(global.console.error).toHaveBeenCalledWith(
+        expect.stringContaining('MAX_DIMENSIONS_EXCEEDED'),
+      );
+    });
+  });
+
+  describe('when the api returns an empty response', () => {
+    let map: google.maps.Map;
+
+    beforeEach(() => {
+      map = new google.maps.Map(container);
+
+      (global.google.maps.DistanceMatrixService as jest.Mock).mockImplementation(() => ({
+        getDistanceMatrix: jest.fn().mockImplementation((_, callback) => {
+          callback(undefined, google.maps.DistanceMatrixStatus.OK);
+        }),
+      }));
+
+      global.console.error = jest.fn();
+    });
+
+    it('will show an error message', async () => {
+      const { showStoreList } = addStoreListToMapContainer(container, map, jest.fn(), {});
+      await showStoreList();
+
+      const panel = screen.getByRole('region', { name: 'Nearby Locations' });
+
+      expect(panel).toHaveClass('open');
+      expect(panel).toHaveTextContent('There was an error');
+    });
+    it('will log the error details to the console', async () => {
+      const { showStoreList } = addStoreListToMapContainer(container, map, jest.fn(), {});
+      await showStoreList();
+
+      expect(global.console.error).toHaveBeenCalledWith(expect.stringContaining('no response'));
+    });
+  });
 });
