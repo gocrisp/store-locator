@@ -3,6 +3,8 @@ import { addInfoWindowListenerToMap, InfoWindowOptions } from './infoWindow';
 import { addSearchBoxToMap, SearchBox, SearchBoxOptions } from './searchBox';
 import { addStoreListToMapContainer, StoreListOptions } from './storeList';
 
+import './styles.css';
+
 export type StoreLocatorOptions = {
   /** DOM element that the map will be inserted into */
   container: HTMLElement;

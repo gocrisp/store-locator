@@ -37,3 +37,10 @@ footer img {
   margin-right: 10px;
   height: 50px;
 }
+
+/* Undo the reboot.scss from bootstrap so we aren't assuming things! */
+#map-container *,
+#map-container *::before,
+#map-container *::after {
+  box-sizing: content-box;
+}

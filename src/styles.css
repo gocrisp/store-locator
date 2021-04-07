@@ -35,11 +35,12 @@
 }
 
 .map_search-box-card label {
+  display: block;
   color: #fff;
   background-color: #374f63;
   font-size: 1.1rem;
   padding: 0.5rem 1rem;
-  width: 100%;
+  width: calc(100% - 2rem);
 }
 
 .map_search-box-input-container {
@@ -51,7 +52,7 @@
   font-weight: lighter;
   padding: 0.3rem 0.8rem;
   text-overflow: ellipsis;
-  width: 100%;
+  width: calc(100% - 1.6rem);
 }
 
 /* Store List */
