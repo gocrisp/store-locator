@@ -60,9 +60,15 @@ const getStoresClosestToCenterOfMap = async (
     travelMode = google.maps.TravelMode.DRIVING,
     unitSystem, // defaults to 'imperial' in ternary below
   }: StoreListOptions,
+  maxDestinationsPerDistanceMatrixRequest: number,
 ): Promise<Array<DistanceResult>> => {
-  const stores: Array<google.maps.Data.Feature> = [];
-  const destinations: Array<google.maps.LatLng> = [];
+  type StoreWithStraightLineDistance = {
+    store: google.maps.Data.Feature;
+    location: google.maps.LatLng;
+    distance: number;
+  };
+
+  const stores: Array<StoreWithStraightLineDistance> = [];
 
   const center = map.getCenter();
   if (!center) {
@@ -72,30 +78,39 @@ const getStoresClosestToCenterOfMap = async (
   // Get locations and create array for stores
   map.data.forEach(store => {
     const location = (store.getGeometry() as google.maps.Data.Point).get();
-    destinations.push(location);
-    stores.push(store);
+    stores.push({
+      store,
+      location,
+      distance: google.maps.geometry.spherical.computeDistanceBetween(center, location),
+    });
   });
+
+  // sort by straight-line distance to the center
+  const closestStores = stores
+    .sort((s1, s2) => s1.distance - s2.distance)
+    .slice(0, maxDestinationsPerDistanceMatrixRequest);
 
   // find driving distances from center of map
   const service = new google.maps.DistanceMatrixService();
 
   const distancesList = await getDistanceMatrix(service, {
     origins: [center],
-    destinations,
+    destinations: closestStores.map(({ location }) => location),
     travelMode,
     unitSystem:
       unitSystem === 'metric' ? google.maps.UnitSystem.METRIC : google.maps.UnitSystem.IMPERIAL,
   });
 
   // apply distance info to our stores list
-  const storesWithDistances = stores.map((store, i) => ({
-    store,
+  const storesWithDrivingDistances = closestStores.map((store, i) => ({
+    ...store,
+    // they are returned in teh same order as we pass them in as destinations
     distanceText: distancesList[i].text,
     distanceValue: distancesList[i].value,
   }));
 
   // Sort and format for display
-  return storesWithDistances
+  return storesWithDrivingDistances
     .sort((s1, s2) => s1.distanceValue - s2.distanceValue)
     .map(s => ({
       feature: s.store,
@@ -141,6 +156,7 @@ const showStoreList = (
   map: google.maps.Map,
   showInfoWindow: (feature: google.maps.Data.Feature) => void,
   options: StoreListOptions,
+  maxDestinationsPerDistanceMatrixRequest: number,
   formatLogoPath?: (feature: google.maps.Data.Feature) => string,
 ) => async (): Promise<void> => {
   const panel = document.getElementById(storeListPanelId) as HTMLElement;
@@ -149,7 +165,11 @@ const showStoreList = (
 
   let sortedStores;
   try {
-    sortedStores = await getStoresClosestToCenterOfMap(map, options);
+    sortedStores = await getStoresClosestToCenterOfMap(
+      map,
+      options,
+      maxDestinationsPerDistanceMatrixRequest,
+    );
   } catch (e) {
     console.error(e);
     list.innerHTML = '';
@@ -186,6 +206,8 @@ export const addStoreListToMapContainer = (
   showInfoWindow: (feature: google.maps.Data.Feature) => void,
   options: StoreListOptions,
   formatLogoPath?: (feature: google.maps.Data.Feature) => string,
+  /* As restricted by the google maps api - only exposed here for testing */
+  maxDestinationsPerDistanceMatrixRequest = 25,
 ): StoreList => {
   const panel = document.createElement('section');
   panel.id = storeListPanelId;
@@ -203,6 +225,12 @@ export const addStoreListToMapContainer = (
   }
 
   return {
-    showStoreList: showStoreList(map, showInfoWindow, options, formatLogoPath),
+    showStoreList: showStoreList(
+      map,
+      showInfoWindow,
+      options,
+      maxDestinationsPerDistanceMatrixRequest,
+      formatLogoPath,
+    ),
   };
 };

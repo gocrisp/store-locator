@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { addStoreListToMapContainer } from '..';
 import { mockGoogleMaps } from '../../../test-lib';
 
+const testMaxDestinationsPerRequest = 5;
+
 describe('Store List', () => {
   let container: HTMLElement;
 
@@ -10,12 +12,19 @@ describe('Store List', () => {
     document.body.innerHTML = '<div id="map-container"></div>';
     container = document.getElementById('map-container') as HTMLElement;
 
-    mockGoogleMaps(container);
+    mockGoogleMaps(container, testMaxDestinationsPerRequest);
   });
 
   it('will not show a store list on load', () => {
     const map = new google.maps.Map(container);
-    addStoreListToMapContainer(container, map, jest.fn(), {});
+    addStoreListToMapContainer(
+      container,
+      map,
+      jest.fn(),
+      {},
+      undefined,
+      testMaxDestinationsPerRequest,
+    );
 
     const panel = screen.getByRole('region', { name: 'Nearby Locations' });
     expect(panel).toBeInTheDocument();
@@ -28,9 +37,16 @@ describe('Store List', () => {
 
     beforeEach(() => {
       map = new google.maps.Map(container);
-      const storeList = addStoreListToMapContainer(container, map, jest.fn(), {
-        filterFn: (_, i) => i < 3,
-      });
+      const storeList = addStoreListToMapContainer(
+        container,
+        map,
+        jest.fn(),
+        {
+          filterFn: (_, i) => i < 3,
+        },
+        undefined,
+        testMaxDestinationsPerRequest,
+      );
       showStoreList = storeList.showStoreList;
     });
 
@@ -54,7 +70,7 @@ describe('Store List', () => {
       expect(listItems[2]).toHaveTextContent("Josie's Patisserie Wimborne");
     });
 
-    it('will truncate the list based on the `maxStoresToDisplay` setting', async () => {
+    it('will truncate the list based on the `filterFn` setting', async () => {
       await showStoreList();
 
       const panel = screen.getByRole('region', { name: 'Nearby Locations' });
@@ -99,7 +115,14 @@ describe('Store List', () => {
       (map.data.forEach as jest.Mock).mockImplementationOnce(() => jest.fn());
     });
     it('will show a message', async () => {
-      const { showStoreList } = addStoreListToMapContainer(container, map, jest.fn(), {});
+      const { showStoreList } = addStoreListToMapContainer(
+        container,
+        map,
+        jest.fn(),
+        {},
+        undefined,
+        testMaxDestinationsPerRequest,
+      );
       await showStoreList();
 
       const panel = screen.getByRole('region', { name: 'Nearby Locations' });
@@ -123,7 +146,14 @@ describe('Store List', () => {
       global.console.error = jest.fn();
     });
     it('will show an error message', async () => {
-      const { showStoreList } = addStoreListToMapContainer(container, map, jest.fn(), {});
+      const { showStoreList } = addStoreListToMapContainer(
+        container,
+        map,
+        jest.fn(),
+        {},
+        undefined,
+        testMaxDestinationsPerRequest,
+      );
       await showStoreList();
 
       const panel = screen.getByRole('region', { name: 'Nearby Locations' });
@@ -132,7 +162,14 @@ describe('Store List', () => {
       expect(panel).toHaveTextContent('There was an error');
     });
     it('will log the error details to the console', async () => {
-      const { showStoreList } = addStoreListToMapContainer(container, map, jest.fn(), {});
+      const { showStoreList } = addStoreListToMapContainer(
+        container,
+        map,
+        jest.fn(),
+        {},
+        undefined,
+        testMaxDestinationsPerRequest,
+      );
       await showStoreList();
 
       expect(global.console.error).toHaveBeenCalledWith(
@@ -157,7 +194,14 @@ describe('Store List', () => {
     });
 
     it('will show an error message', async () => {
-      const { showStoreList } = addStoreListToMapContainer(container, map, jest.fn(), {});
+      const { showStoreList } = addStoreListToMapContainer(
+        container,
+        map,
+        jest.fn(),
+        {},
+        undefined,
+        testMaxDestinationsPerRequest,
+      );
       await showStoreList();
 
       const panel = screen.getByRole('region', { name: 'Nearby Locations' });
@@ -166,7 +210,14 @@ describe('Store List', () => {
       expect(panel).toHaveTextContent('There was an error');
     });
     it('will log the error details to the console', async () => {
-      const { showStoreList } = addStoreListToMapContainer(container, map, jest.fn(), {});
+      const { showStoreList } = addStoreListToMapContainer(
+        container,
+        map,
+        jest.fn(),
+        {},
+        undefined,
+        testMaxDestinationsPerRequest,
+      );
       await showStoreList();
 
       expect(global.console.error).toHaveBeenCalledWith(expect.stringContaining('no response'));
