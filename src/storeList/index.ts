@@ -206,7 +206,7 @@ export const addStoreListToMapContainer = (
   showInfoWindow: (feature: google.maps.Data.Feature) => void,
   options: StoreListOptions,
   formatLogoPath?: (feature: google.maps.Data.Feature) => string,
-  /* As restricted by the google maps api - only exposed here for testing */
+  /* As restricted by the google maps api - only exposed here for tests */
   maxDestinationsPerDistanceMatrixRequest = 25,
 ): StoreList => {
   const panel = document.createElement('section');
