@@ -10,8 +10,6 @@ This package is intended to be framework-agnostic. We are using [microbundle](ht
 
 Please refer to [our example page](https://gocrisp.github.io/store-locator/) to see this package in action and for more advanced usage examples. The steps below will provide the minimum for creating a store locator.
 
-----
-
 ## Create a Store Locator
 
 ### Set up services
@@ -43,7 +41,6 @@ createStoreLocatorMap({
 
 Most of the Google Maps JavaScript API options and objects are available for customization as well. More details are available in the [examples and documentation](todo).
 
-----
 ## Run the Example App Locally
 
 To run the [example app](https://gocrisp.github.io/store-locator) locally, you need to build the npm package into `dist` and then run the example app. You can either run the store-locator code with `yarn dev` to watch for changes or build it once with `yarn build`, but with the former you will need to run `dev` and `example` simultaneously.
