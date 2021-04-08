@@ -4,7 +4,7 @@
   "description": "Store locator widget, intended for use with the Crisp GeoJSON connector.",
   "main": "dist/store-locator.js",
   "umd:main": "dist/store-locator.umd.js",
-  "module": "dist/store-locator.mjs",
+  "module": "dist/store-locator.esm.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
@@ -56,7 +56,7 @@
     "type": "git",
     "url": "git+https://github.com/gocrisp/store-locator"
   },
-  "keywords": [],
+  "keywords": ["crisp", "gocrisp", "geojson", "google maps", "store locator"],
   "jest": {
     "testEnvironment": "jsdom",
     "testPathIgnorePatterns": [
@@ -73,5 +73,5 @@
   },
   "author": "Crisp",
   "license": "MIT",
-  "homepage": "https://github.com/gocrisp/store-locator#readme"
+  "homepage": "https://gocrisp.github.io/store-locator/"
 }
