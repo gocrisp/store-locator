@@ -3,6 +3,8 @@ import { addInfoWindowListenerToMap, InfoWindowOptions } from './infoWindow';
 import { addSearchBoxToMap, SearchBox, SearchBoxOptions } from './searchBox';
 import { addStoreListToMapContainer, StoreListOptions } from './storeList';
 
+import './styles.css';
+
 export type StoreLocatorOptions = {
   /** DOM element that the map will be inserted into */
   container: HTMLElement;
@@ -62,7 +64,7 @@ export const createStoreLocatorMap = (options: StoreLocatorOptions): Promise<Sto
     storeListOptions,
   } = options;
 
-  const loader = new Loader({ ...loaderOptions, libraries: ['places'] });
+  const loader = new Loader({ ...loaderOptions, libraries: ['places', 'geometry'] });
 
   return loader.load().then(() => {
     const map = new google.maps.Map(container, { ...defaultMapOptions, ...mapOptions });

@@ -37,7 +37,10 @@ enum DistanceMatrixStatus {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
-export const mockGoogleMaps = (container: HTMLElement): void => {
+export const mockGoogleMaps = (
+  container: HTMLElement,
+  limitDistanceMatrixService?: number,
+): void => {
   const mapAddListenerMock = jest.fn();
   const dataAddListenerMock = jest.fn();
 
@@ -45,6 +48,13 @@ export const mockGoogleMaps = (container: HTMLElement): void => {
   const marker = document.createElement('button');
   marker.setAttribute('data-testid', 'mock-marker');
   container.appendChild(marker);
+
+  const getStoreByLocation = (location: google.maps.LatLng) =>
+    geoJson.features.find(
+      s =>
+        s.geometry.coordinates[0] === location.lng() &&
+        s.geometry.coordinates[1] === location.lat(),
+    );
 
   global.google = {
     maps: {
@@ -62,25 +72,56 @@ export const mockGoogleMaps = (container: HTMLElement): void => {
       TravelMode,
       UnitSystem,
       DistanceMatrixStatus,
+      geometry: {
+        // @ts-expect-error: not mocking the whole thing
+        spherical: {
+          computeDistanceBetween: jest
+            .fn()
+            .mockImplementation((_, location: google.maps.LatLng) => {
+              // Should be the same three as defined in the getDistanceMatrix mock plus two others
+              const returnInFirstSort = ['Bristol', 'Cardiff', 'Wimborne', 'Brighton', 'Newtown'];
+              const store = getStoreByLocation(location);
+              if (store && returnInFirstSort.includes(store.properties.name)) {
+                return 0;
+              }
+
+              return 1;
+            }),
+        },
+      },
     },
   };
 
   (global.google.maps.DistanceMatrixService as jest.Mock).mockImplementation(() => ({
-    getDistanceMatrix: jest.fn().mockImplementation((_, callback) => {
-      const elements = geoJson.features.map(f => {
-        let value = getRandomInt() + 4;
-        if (f.properties.name === 'Bristol') {
-          value = 1;
-        } else if (f.properties.name === 'Cardiff') {
-          value = 2;
-        } else if (f.properties.name === 'Wimborne') {
-          value = 3;
-        }
-        return { distance: { value, text: 'distance' } };
-      });
+    getDistanceMatrix: jest
+      .fn()
+      .mockImplementation(
+        ({ destinations }: { destinations: Array<google.maps.LatLng> }, callback) => {
+          // this tests to make sure that we are truncating the original list properly
+          // google maps api DistanceMatrixService will fail if we pass in >25 destinations
+          if (limitDistanceMatrixService && destinations.length > limitDistanceMatrixService) {
+            throw new Error(
+              `Too many destinations passed into the DistanceMatrixService request (${destinations.length})`,
+            );
+          }
 
-      callback({ rows: [{ elements }] }, google.maps.DistanceMatrixStatus.OK);
-    }),
+          const elements = destinations.map((location: google.maps.LatLng) => {
+            const store = getStoreByLocation(location);
+            let value = getRandomInt() + 4;
+            if (store?.properties.name === 'Bristol') {
+              value = 1;
+            } else if (store?.properties.name === 'Cardiff') {
+              value = 2;
+            } else if (store?.properties.name === 'Wimborne') {
+              value = 3;
+            }
+
+            return { distance: { value, text: 'distance' } };
+          });
+
+          callback({ rows: [{ elements }] }, google.maps.DistanceMatrixStatus.OK);
+        },
+      ),
   }));
 
   (global.google.maps.Map as jest.Mock).mockImplementation(() => ({
