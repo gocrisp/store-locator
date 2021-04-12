@@ -34,6 +34,7 @@
     "jest": "^26.4.2",
     "microbundle": "^0.13.0",
     "parcel-bundler": "^1.12.5",
+    "parcel-plugin-markdown-it": "^1.0.0",
     "parcel-plugin-static-files-copy": "^2.6.0",
     "prettier": "^2.0.4",
     "ts-jest": "^26.3.0",
@@ -56,7 +57,13 @@
     "type": "git",
     "url": "git+https://github.com/gocrisp/store-locator"
   },
-  "keywords": ["crisp", "gocrisp", "geojson", "google maps", "store locator"],
+  "keywords": [
+    "crisp",
+    "gocrisp",
+    "geojson",
+    "google maps",
+    "store locator"
+  ],
   "jest": {
     "testEnvironment": "jsdom",
     "testPathIgnorePatterns": [
