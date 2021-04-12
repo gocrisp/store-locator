@@ -1,4 +1,6 @@
 import 'babel-polyfill';
+import 'highlight.js/styles/tomorrow-night-blue.css';
+
 import { StoreLocatorMap } from '../src';
 
 import BasicUsageMd from './basic.md';
@@ -25,20 +27,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const navContainer = document.querySelector('nav ul') as HTMLElement;
   const exampleContainer = document.getElementById('example-container') as HTMLElement;
 
-  const onClick = (page: Page) => (event: Event) => {
-    if (!(event.target instanceof Element)) {
-      return;
-    }
-
+  const onClick = (page: Page) => () => {
     // update active nav item
     const oldNav = navContainer.querySelector('a.active');
     oldNav?.classList.remove('active');
     oldNav?.setAttribute('aria-current', '');
-    event.target.classList.add('active');
-    event.target.setAttribute('aria-current', 'page');
+    const newActiveLink = navContainer.querySelector(`a[href="${page.href}"]`) as HTMLAnchorElement;
+    newActiveLink.classList.add('active');
+    newActiveLink.setAttribute('aria-current', 'page');
 
     // update displayed doc
     exampleContainer.innerHTML = page.html;
+    // for bootstrap styles
+    exampleContainer.querySelector('table')?.classList.add('table');
+    // make sure relative links do the onclick
+    document.querySelectorAll('a[href^="#"]').forEach(e => {
+      const link = e as HTMLAnchorElement;
+      const pageLink = '#' + link.href.split('#')[1];
+      const matchingPage = links.find(l => l.href === pageLink);
+      if (matchingPage) {
+        link.onclick = onClick(matchingPage);
+      }
+    });
 
     // update map
     page.example();
@@ -54,14 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
     a.innerText = page.title;
     a.onclick = onClick(page);
 
-    if (
-      page.href === window.location.hash ||
-      (window.location.hash === '' && page.href === '#')
-    ) {
-      a.click();
-    }
-
     li.appendChild(a);
     navContainer?.appendChild(li);
+
+    if (page.href === window.location.hash || (window.location.hash === '' && page.href === '#')) {
+      a.click();
+    }
   });
 });

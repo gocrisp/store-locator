@@ -50,6 +50,15 @@ footer img {
   top: -1px;
 }
 
+a {
+  color: #00807f;
+  text-decoration: none;
+}
+a:hover, a:active {
+  color: #00807f;
+  text-decoration: underline;
+}
+
 /* Undo the reboot.scss from bootstrap so we aren't assuming things! */
 #map-container *,
 #map-container *::before,
