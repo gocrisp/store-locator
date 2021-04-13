@@ -137,14 +137,15 @@ describe('storeLocator', () => {
   });
 
   it('will add a search box to the map', async () => {
-    const { searchBox } = await createStoreLocatorMap({
+    const { autocomplete, originMarker } = await createStoreLocatorMap({
       container,
       loaderOptions,
       geoJson,
       searchBoxOptions: { template: 'custom search box <input>' },
     });
 
-    expect(searchBox).not.toBeUndefined();
+    expect(autocomplete).not.toBeUndefined();
+    expect(originMarker).not.toBeUndefined();
     expect(container).toHaveTextContent('x');
   });
 

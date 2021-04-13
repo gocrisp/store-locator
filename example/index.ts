@@ -10,6 +10,7 @@ import OptionsExample from './options';
 import TemplatesMd from './templates.md';
 import TemplatesExample from './templates';
 import ObjectsMd from './objects.md';
+import ObjectsExample from './objects';
 
 type Page = {
   title: string;
@@ -22,7 +23,7 @@ const links: Page[] = [
   { ...BasicUsageMd.meta, html: BasicUsageMd.html, example: BasicUsageExample },
   { ...OptionsMd.meta, html: OptionsMd.html, example: OptionsExample },
   { ...TemplatesMd.meta, html: TemplatesMd.html, example: TemplatesExample },
-  { ...ObjectsMd.meta, html: ObjectsMd.html, example: BasicUsageExample },
+  { ...ObjectsMd.meta, html: ObjectsMd.html, example: ObjectsExample },
 ];
 
 document.addEventListener('DOMContentLoaded', () => {

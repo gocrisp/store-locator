@@ -9,7 +9,7 @@ export type SearchBoxOptions = {
   searchZoom?: number;
 };
 
-export type SearchBox = {
+type SearchBox = {
   autocomplete: google.maps.places.Autocomplete;
   originMarker: google.maps.Marker;
 };
