@@ -14,7 +14,7 @@ Please refer to [our example page](https://gocrisp.github.io/store-locator/) to 
 
 ### Set up services
 
-First, go set up a GeoJSON outbound connector on https://platform.gocrisp.com/. It will give you a URL to use later. <!--TODO: needs details/link to BYT-573 or updates if we aren't using an outbound connector -->
+First, go set up a GeoJSON outbound connector on https://platform.gocrisp.com/. It will give you a URL to use later. <!--TODO: needs details/link to BYT-573 -->
 
 Create a [Google Maps API Key](https://developers.google.com/maps/gmp-get-started) with the following APIs enabled:
 - `Maps JavaScript API`
@@ -41,7 +41,7 @@ createStoreLocatorMap({
 });
 ```
 
-Most of the Google Maps JavaScript API options and objects are available for customization as well. More details are available in the [examples and documentation](todo).
+Most of the Google Maps JavaScript API options and objects are available for customization as well. More details are available in the [examples and documentation](https://gocrisp.github.io/store-locator/).
 
 ## Run the Example App Locally
 
