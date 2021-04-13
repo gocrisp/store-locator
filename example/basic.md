@@ -7,16 +7,20 @@ href: '#'
 
 Please refer to the [README on Github](https://github.com/gocrisp/store-locator) for basic installation instructions. Below is how we are initializing the example above.
 
-### References
+### See Also
 
 - [Google Maps Javascript API](https://developers.google.com/maps/documentation/javascript/overview)
+- [Google Maps Basic Store Locator Tutorial](https://developers.google.com/codelabs/maps-platform/google-maps-simple-store-locator)
+- [sample.json](/sample.json)
 
 ### Code
 
 ```TypeScript
 import { createStoreLocatorMap, StoreLocatorMap } from '@gocrisp/store-locator';
 
-export default (): Promise<StoreLocatorMap> =>
+import '@gocrisp/store-locator/dist/store-locator.css';
+
+document.addEventListener('DOMContentLoaded', () => {
   createStoreLocatorMap({
     container: document.getElementById('map-container') as HTMLElement,
     loaderOptions: { apiKey: 'AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk' },
@@ -37,6 +41,7 @@ export default (): Promise<StoreLocatorMap> =>
       unitSystem: 'metric',
     },
   });
+});
 ```
 
 ## Options
@@ -134,7 +139,7 @@ All of the available configurations options are listed below. More customization
   <a href="https://developers.google.com/maps/documentation/distance-matrix/overview?hl=en#travel_modes">travelMode</a>,
   unitSystem: 'imperial' | 'metric',
   <a href="#templates">panelTemplate</a>: string;
-  <a href="#templates">storeTemplate</a>: string;
+  <a href="#templates">storeTemplate</a>: () => string;
 }</pre>
       </td>
       <td>
