@@ -125,7 +125,7 @@ describe('storeLocator', () => {
       geoJson,
       infoWindowOptions: {
         template: ({ feature }: ContentTemplateArgs) =>
-          `custom template ${feature.getProperty('name')}`,
+          `custom template ${feature.getProperty('store')}`,
       },
     });
 
@@ -190,9 +190,8 @@ describe('storeLocator', () => {
           },
           type: 'Feature',
           properties: {
-            banner: "Josie's Other Cafe",
-            name: 'Custom Json',
-            formattedAddress: '123 Main St',
+            store: "Josie's Other Cafe Custom Json",
+            storeFullAddress: '123 Main St',
           },
         },
       ],

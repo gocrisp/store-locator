@@ -10,9 +10,8 @@ export type ContentTemplateArgs = {
 };
 
 export const storeTemplate = ({ store, formatLogoPath }: ContentTemplateArgs): string => {
-  const banner = store.feature.getProperty('banner');
-  const name = store.feature.getProperty('name');
-  const address = store.feature.getProperty('formattedAddress');
+  const storeName = store.feature.getProperty('store');
+  const address = store.feature.getProperty('storeFullAddress');
   const location = (store.feature.getGeometry() as google.maps.Data.Point).get();
 
   return `
@@ -20,11 +19,11 @@ export const storeTemplate = ({ store, formatLogoPath }: ContentTemplateArgs): s
       <button
         data-lat="${location.lat()}"
         data-lng="${location.lng()}"
-        title="${banner ?? ''} ${name ?? ''}"
+        title="${storeName ?? ''}"
       >
-        ${banner || name ? `<p class="map_banner">${banner ?? ''} ${name ?? ''}</p>` : ''}
+        ${storeName ? `<p class="map_banner">${storeName}</p>` : ''}
         ${
-          banner && formatLogoPath
+          formatLogoPath
             ? `<img class="map_logo" alt="" src="${formatLogoPath(store.feature)}" />`
             : ''
         }

@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     geoJson: './sample.json',
     mapOptions: { center: { lat: 52.632469, lng: -1.689423 }, zoom: 7 },
     infoWindowOptions: {
-      template: ({ feature }) => feature.getProperty('banner'),
+      template: ({ feature }) => feature.getProperty('store'),
     },
     searchBoxOptions: {
       autocompleteOptions: {
@@ -62,8 +62,8 @@ const template = ({ feature, apiKey, formatLogoPath }: ContentTemplateArgs): str
 
   return `<div class="map_infowindow_content">
     <div class="map_info">
-      <h2>${feature.getProperty('banner')} ${feature.getProperty('name')}</h2>
-      <p>${feature.getProperty('formattedAddress')}</p>
+      <h2>${feature.getProperty('store')}</h2>
+      <p>${feature.getProperty('storeFullAddress')}</p>
     </div>
     <img class="map_logo" src="${formatLogoPath(feature)}" alt="" />
     <img
@@ -121,9 +121,8 @@ type ContentTemplateArgs = {
 };
 
 const storeTemplate = ({ store, formatLogoPath }: ContentTemplateArgs): string => {
-  const banner = store.feature.getProperty('banner');
-  const name = store.feature.getProperty('name');
-  const address = store.feature.getProperty('formattedAddress');
+  const storeName = store.feature.getProperty('store');
+  const address = store.feature.getProperty('storeFullAddress');
   const location = (store.feature.getGeometry() as google.maps.Data.Point).get();
 
   return `
@@ -131,9 +130,9 @@ const storeTemplate = ({ store, formatLogoPath }: ContentTemplateArgs): string =
       <button
         data-lat="${location.lat()}"
         data-lng="${location.lng()}"
-        title="${banner} ${name}"
+        title="${storeName}"
       >
-        <p class="map_banner">${banner} ${name}</p>
+        <p class="map_banner">${storeName}</p>
         <img class="map_logo" alt="" src="${formatLogoPath(store.feature)}" />
         <p class="map_distance">${store.distanceText}</p>
         <p class="map_address">${address}</p>

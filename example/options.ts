@@ -14,9 +14,8 @@ export default (): Promise<StoreLocatorMap> =>
             coordinates: [-98.7625347, 38.3627242],
           },
           properties: {
-            banner: "Fred's Smoothies",
-            name: 'Great Bend',
-            formattedAddress: '123 Main St, Great Bend, KS',
+            store: "Fred's Smoothies, Great Bend",
+            storeFullAddress: '123 Main St, Great Bend, KS',
           },
         },
         {
@@ -26,9 +25,8 @@ export default (): Promise<StoreLocatorMap> =>
             coordinates: [-98.3407384, 40.9212822],
           },
           properties: {
-            banner: "Fred's Smoothies",
-            name: 'Grand Island',
-            formattedAddress: '123 Main St, Grand Island, NE',
+            store: "Fred's Smoothies Grand Island",
+            storeFullAddress: '123 Main St, Grand Island, NE',
           },
         },
       ],

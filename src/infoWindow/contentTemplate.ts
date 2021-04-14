@@ -6,20 +6,15 @@ export type ContentTemplateArgs = {
 
 export default ({ feature, apiKey, formatLogoPath }: ContentTemplateArgs): string => {
   const position = (feature.getGeometry() as google.maps.Data.Point).get();
-  const banner = feature.getProperty('banner');
-  const name = feature.getProperty('name');
-  const address = feature.getProperty('formattedAddress');
+  const storeName = feature.getProperty('store');
+  const address = feature.getProperty('storeFullAddress');
 
   return `<div class="map_infowindow_content">
     <div class="map_info">
-      ${banner || name ? `<h2>${banner ?? ''} ${name ?? ''}</h2>` : ''}
+      ${storeName ? `<h2>${storeName}</h2>` : ''}
       ${address ? `<p>${address}</p>` : ''}
     </div>
-    ${
-      banner && formatLogoPath
-        ? `<img class="map_logo" src="${formatLogoPath(feature)}" alt="" />`
-        : ''
-    }
+    ${formatLogoPath ? `<img class="map_logo" src="${formatLogoPath(feature)}" alt="" />` : ''}
     ${
       position && position.lat() && position.lng() && apiKey
         ? `<img
