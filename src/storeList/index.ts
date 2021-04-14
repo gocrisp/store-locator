@@ -10,7 +10,6 @@ import {
 const storeListPanelId = 'map_store-list-panel';
 
 export type StoreListOptions = {
-  // maxStoresToDisplay?: number;
   filterFn?: (item: DistanceResult, index: number, map: google.maps.Map) => boolean;
   travelMode?: google.maps.TravelMode;
   unitSystem?: 'imperial' | 'metric';
