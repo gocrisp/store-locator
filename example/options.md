@@ -16,12 +16,21 @@ Google Enums: Note that for any options that require the <code>google.maps.*</co
 ### Code
 
 ```TypeScript
+import { Loader } from '@googlemaps/js-api-loader';
 import { createStoreLocatorMap, StoreLocatorMap } from '@gocrisp/store-locator';
 
 import '@gocrisp/store-locator/dist/store-locator.css';
 
 document.addEventListener('DOMContentLoaded', () => {
-  createStoreLocatorMap((loaded: boolean) => ({
+  // We need to load `google.maps.*` first so that we have access to the enum for `controlPosition` below
+  // And then we use `skipLoadingGoogleMaps` so that it is not loaded twice
+  const loader = new Loader({
+    apiKey: 'AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk',
+    libraries: ['places', 'geometry'],
+  });
+  await loader.load();
+
+  createStoreLocatorMap({
     container: document.getElementById('map-container') as HTMLElement,
     loaderOptions: { apiKey: 'AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk' },
     geoJson: {
@@ -34,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             coordinates: [-98.7625347, 38.3627242],
           },
           properties: {
-            store: "Fred's Smoothies Great Bend',
+            store: "Fred's Smoothies Great Bend",
             storeFullAddress: '123 Main St, Great Bend, KS',
           },
         },
@@ -45,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             coordinates: [-98.3407384, 40.9212822],
           },
           properties: {
-            store: "Fred's Smoothies Grand Island',
+            store: "Fred's Smoothies Grand Island",
             storeFullAddress: '123 Main St, Grand Island, NE',
           },
         },
@@ -68,13 +77,14 @@ document.addEventListener('DOMContentLoaded', () => {
       originMarkerOptions: {
         label: 'Search Label',
       },
-      controlPosition: loaded ? google.maps.ControlPosition.BOTTOM_CENTER : undefined,
+      controlPosition: google.maps.ControlPosition.BOTTOM_CENTER,
     },
     storeListOptions: {
       filterFn: () => true,
       unitSystem: 'imperial',
     },
-  }));
+    skipLoadingGoogleMaps: true,
+  });
 });
 ```
 

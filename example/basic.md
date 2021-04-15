@@ -151,5 +151,13 @@ All of the available configurations options are listed below. More customization
         This will define how the results are calculated and how the results are displayed in the left panel when searching.
       </td>
     </tr>
+    <tr>
+      <td><code>skipLoadingGoogleMaps</code></td>
+      <td></td>
+      <td><code>boolean</code></td>
+      <td>Defaults to false. Set this if you want to load the google maps library before initializing this component. This can be useful if you need to reference any <code>google.maps.*</code> enums or if you have multiple maps on a page.
+        <br/><br/>
+        Be sure to load the <code>places</code> and <code>geometry</code> libraries. <code>google.maps.*</code> should be available on the global scope before the component is intiialized if you set this to <code>true</code>.</td>
+    </tr>
   </tbody>
 </table>

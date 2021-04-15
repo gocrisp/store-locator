@@ -25,6 +25,7 @@ export default async (): Promise<StoreLocatorMap> => {
       filterFn: (_, i) => i < 12,
       unitSystem: 'metric',
     },
+    skipLoadingGoogleMaps: true,
   });
 
   const { map, infoWindow, autocomplete, originMarker } = storeLocator;

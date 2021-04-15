@@ -22,6 +22,8 @@ export type StoreLocatorOptions = {
   infoWindowOptions?: InfoWindowOptions;
   searchBoxOptions?: SearchBoxOptions;
   storeListOptions?: StoreListOptions;
+  /** If you want to load the google maps library before initializing this component. */
+  skipLoadingGoogleMaps?: boolean;
 };
 
 export type StoreLocatorMap = {
@@ -51,65 +53,52 @@ const validateOptionsJs = (options?: Partial<StoreLocatorOptions>) => {
   }
 };
 
-// We can use a method if the options need to rely on google.maps.* enums,
-// Then we can wait until the google maps library has been loaded before we reference them
-type Options = StoreLocatorOptions | ((loaded: boolean) => StoreLocatorOptions);
-
-export const createStoreLocatorMap = (optionsArg: Options): Promise<StoreLocatorMap> => {
-  let options: StoreLocatorOptions;
-  if (optionsArg instanceof Function) {
-    // we mostly just need the `loaderOptions` here and they will never be using the
-    // google.maps.* references
-    options = optionsArg(false);
-  } else {
-    options = optionsArg;
-  }
+export const createStoreLocatorMap = async (
+  options: StoreLocatorOptions,
+): Promise<StoreLocatorMap> => {
   validateOptionsJs(options);
 
-  const loader = new Loader({ ...options.loaderOptions, libraries: ['places', 'geometry'] });
+  const {
+    container,
+    loaderOptions,
+    geoJson,
+    mapOptions,
+    formatLogoPath,
+    infoWindowOptions,
+    searchBoxOptions,
+    storeListOptions,
+    skipLoadingGoogleMaps,
+  } = options;
 
-  return loader.load().then(() => {
-    if (optionsArg instanceof Function) {
-      // Now we can determine the full options - including those with google.maps.* references
-      options = optionsArg(true);
-    }
+  if (!skipLoadingGoogleMaps) {
+    const loader = new Loader({ ...options.loaderOptions, libraries: ['places', 'geometry'] });
+    await loader.load();
+  }
 
-    const {
-      container,
-      loaderOptions,
-      geoJson,
-      mapOptions,
-      formatLogoPath,
-      infoWindowOptions,
-      searchBoxOptions,
-      storeListOptions,
-    } = options;
+  const map = new google.maps.Map(container, { ...defaultMapOptions, ...mapOptions });
 
-    const map = new google.maps.Map(container, { ...defaultMapOptions, ...mapOptions });
+  if (typeof geoJson === 'string') {
+    map.data.loadGeoJson(geoJson);
+  } else {
+    map.data.addGeoJson(geoJson);
+  }
 
-    if (typeof geoJson === 'string') {
-      map.data.loadGeoJson(geoJson);
-    } else {
-      map.data.addGeoJson(geoJson);
-    }
+  const { infoWindow, showInfoWindow } = addInfoWindowListenerToMap(
+    map,
+    loaderOptions.apiKey,
+    infoWindowOptions ?? {},
+    formatLogoPath,
+  );
 
-    const { infoWindow, showInfoWindow } = addInfoWindowListenerToMap(
-      map,
-      loaderOptions.apiKey,
-      infoWindowOptions ?? {},
-      formatLogoPath,
-    );
+  const { showStoreList } = addStoreListToMapContainer(
+    container,
+    map,
+    showInfoWindow,
+    storeListOptions ?? {},
+    formatLogoPath,
+  );
 
-    const { showStoreList } = addStoreListToMapContainer(
-      container,
-      map,
-      showInfoWindow,
-      storeListOptions ?? {},
-      formatLogoPath,
-    );
+  const searchBox = addSearchBoxToMap(map, showStoreList, searchBoxOptions ?? {});
 
-    const searchBox = addSearchBoxToMap(map, showStoreList, searchBoxOptions ?? {});
-
-    return { map, infoWindow, ...searchBox };
-  });
+  return { map, infoWindow, ...searchBox };
 };

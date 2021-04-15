@@ -1,7 +1,7 @@
 import { createStoreLocatorMap, StoreLocatorMap } from '../src';
 
 export default (): Promise<StoreLocatorMap> =>
-  createStoreLocatorMap((loaded: boolean) => ({
+  createStoreLocatorMap({
     container: document.getElementById('map-container') as HTMLElement,
     loaderOptions: { apiKey: 'AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk' },
     geoJson: {
@@ -48,10 +48,11 @@ export default (): Promise<StoreLocatorMap> =>
       originMarkerOptions: {
         label: 'Search Label',
       },
-      controlPosition: loaded ? google.maps.ControlPosition.BOTTOM_CENTER : undefined,
+      controlPosition: google.maps.ControlPosition.BOTTOM_CENTER,
     },
     storeListOptions: {
       filterFn: () => true,
       unitSystem: 'imperial',
     },
-  }));
+    skipLoadingGoogleMaps: true,
+  });

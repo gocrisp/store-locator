@@ -22,4 +22,5 @@ export default (): Promise<StoreLocatorMap> =>
       panelTemplate: '<ul id="map_store-list"></ul><div id="map_store-list-message"></div>',
       storeTemplate: ({ store }) => `<li>${store.feature.getProperty('name')}</li>`,
     },
+    skipLoadingGoogleMaps: true,
   });

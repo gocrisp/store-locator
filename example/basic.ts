@@ -25,4 +25,5 @@ export default (): Promise<StoreLocatorMap> =>
       filterFn: (_, i) => i < 12,
       unitSystem: 'metric',
     },
+    skipLoadingGoogleMaps: true,
   });
