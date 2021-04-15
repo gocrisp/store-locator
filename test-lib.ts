@@ -81,7 +81,7 @@ export const mockGoogleMaps = (
               // Should be the same three as defined in the getDistanceMatrix mock plus two others
               const returnInFirstSort = ['Bristol', 'Cardiff', 'Wimborne', 'Brighton', 'Newtown'];
               const store = getStoreByLocation(location);
-              if (store && returnInFirstSort.includes(store.properties.name)) {
+              if (store && returnInFirstSort.find(name => store.properties.store.includes(name))) {
                 return 0;
               }
 
@@ -108,11 +108,11 @@ export const mockGoogleMaps = (
           const elements = destinations.map((location: google.maps.LatLng) => {
             const store = getStoreByLocation(location);
             let value = getRandomInt() + 4;
-            if (store?.properties.name === 'Bristol') {
+            if (store?.properties.store === "Josie's Patisserie Bristol") {
               value = 1;
-            } else if (store?.properties.name === 'Cardiff') {
+            } else if (store?.properties.store === "Josie's Patisserie Cardiff") {
               value = 2;
-            } else if (store?.properties.name === 'Wimborne') {
+            } else if (store?.properties.store === "Josie's Patisserie Wimborne") {
               value = 3;
             }
 
@@ -136,8 +136,7 @@ export const mockGoogleMaps = (
       forEach: jest.fn().mockImplementation((callback: () => void) =>
         geoJson.features
           .map(f => ({
-            getProperty: (name: 'banner' | 'name' | 'formattedAddress') =>
-              f.properties[name] as string,
+            getProperty: (name: 'store' | 'storeFullAddress') => f.properties[name] as string,
             getGeometry: () => ({
               get: () => ({
                 lng: () => f.geometry.coordinates[0],
@@ -197,7 +196,7 @@ export const mockGoogleMaps = (
   dataAddListenerMock.mockImplementation(
     (_, handler: (event: { feature: google.maps.Data.Feature }) => void) => {
       marker.onclick = () => {
-        handler({ feature: mockFeature({ name: 'Store 2' }) });
+        handler({ feature: mockFeature({ store: 'Store 2' }) });
       };
     },
   );

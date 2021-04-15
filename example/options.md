@@ -34,9 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
             coordinates: [-98.7625347, 38.3627242],
           },
           properties: {
-            banner: "Fred's Smoothies",
-            name: 'Great Bend',
-            formattedAddress: '123 Main St, Great Bend, KS',
+            store: "Fred's Smoothies Great Bend',
+            storeFullAddress: '123 Main St, Great Bend, KS',
           },
         },
         {
@@ -46,9 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
             coordinates: [-98.3407384, 40.9212822],
           },
           properties: {
-            banner: "Fred's Smoothies",
-            name: 'Grand Island',
-            formattedAddress: '123 Main St, Grand Island, NE',
+            store: "Fred's Smoothies Grand Island',
+            storeFullAddress: '123 Main St, Grand Island, NE',
           },
         },
       ],
@@ -114,12 +112,12 @@ Logos are displayed on both the `infoWindow` (when you click on a map pin) and o
 
 You can also choose whether to display logos at all. If this option is omitted, no logo will be displayed. The intention of this method is to let you define where your logos are and what format they are in. It is also useful for removing special characters.
 
-If we have two files in the `/img` directory, [`josiescafe.png`](/img/josiescafe.png) and [`josiespatisserie.png`](/img/josiespatisserie.png), we could use this definition to format the path from banners with the values of "Josie's Cafe" and "Josie's Patisserie":
+If we have two files in the `/img` directory, [`josiescafe.png`](/img/josiescafe.png) and [`josiespatisserie.png`](/img/josiespatisserie.png), we could use this definition to format the path from the store names with the values of "Josie's Cafe" and "Josie's Patisserie":
 
 ```TypeScript
 formatLogoPath: feature =>
   `img/${feature
-    .getProperty('banner')
+    .getProperty('store')
     .toLowerCase()
     .replace(/[^a-z0-9]/g, '')}.png`,
 ```
