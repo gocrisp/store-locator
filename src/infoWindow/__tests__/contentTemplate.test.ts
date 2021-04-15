@@ -19,12 +19,11 @@ describe('infoWindow template', () => {
     expect(container.querySelectorAll('img').length).toBeFalsy();
   });
 
-  it('will show the banner, name, and address', () => {
+  it('will show the store name, and address', () => {
     container.innerHTML = contentTemplate({
       feature: mockFeature({
-        banner: 'Fake Cafe',
-        name: 'Buffalo',
-        formattedAddress: '123 Main St, Buffalo, NY 12345',
+        store: 'Fake Cafe Buffalo',
+        storeFullAddress: '123 Main St, Buffalo, NY 12345',
       }),
       apiKey: '',
     });
@@ -34,22 +33,22 @@ describe('infoWindow template', () => {
     expect(container.querySelectorAll('img').length).toBeFalsy();
   });
 
-  it('will show the banner logo if there is a banner and a `logoRootDir`', () => {
+  it('will show the store logo if there is a store and a `formatLogoPath`', () => {
     container.innerHTML = contentTemplate({
-      feature: mockFeature({ banner: 'Fake Cafe' }),
+      feature: mockFeature({ store: 'Fake Cafe Something' }),
       apiKey: '',
-      formatLogoPath: feature => `/img/${feature.getProperty('banner').replace(' ', '')}.png`,
+      formatLogoPath: feature => `/img/${feature.getProperty('store').replace(/ /gi, '')}.png`,
     });
 
     const img = container.querySelector('img');
 
     expect(img).toBeDefined();
-    expect(img?.src).toEqual('http://localhost/img/FakeCafe.png');
+    expect(img?.src).toEqual('http://localhost/img/FakeCafeSomething.png');
   });
 
   it('will show a streetview if the position is defined and we have an api key', () => {
     container.innerHTML = contentTemplate({
-      feature: mockFeature({ banner: 'Fake Cafe' }),
+      feature: mockFeature({ store: 'Fake Cafe' }),
       apiKey,
     });
 

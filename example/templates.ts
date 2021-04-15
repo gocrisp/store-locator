@@ -7,7 +7,7 @@ export default (): Promise<StoreLocatorMap> =>
     geoJson: './sample.json',
     mapOptions: { center: { lat: 52.632469, lng: -1.689423 }, zoom: 7 },
     infoWindowOptions: {
-      template: ({ feature }) => feature.getProperty('banner'),
+      template: ({ feature }) => feature.getProperty('store'),
     },
     searchBoxOptions: {
       autocompleteOptions: {

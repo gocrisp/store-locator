@@ -20,6 +20,7 @@ Create a [Google Maps API Key](https://developers.google.com/maps/gmp-get-starte
 - `Maps JavaScript API`
 - `Places API`
 - `Distance Matrix API`.
+- `Street View Static API`
 
 
 ### Simple Implementation

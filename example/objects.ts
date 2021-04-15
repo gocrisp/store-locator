@@ -8,8 +8,13 @@ export default async (): Promise<StoreLocatorMap> => {
     mapOptions: { center: { lat: 52.632469, lng: -1.689423 }, zoom: 7 },
     formatLogoPath: feature =>
       `img/${feature
-        .getProperty('banner')
+        .getProperty('store')
         .toLowerCase()
+        // remove after 2nd space
+        .split(' ')
+        .slice(0, 2)
+        .join('')
+        // remove special characters
         .replace(/[^a-z0-9]/g, '')}.png`,
     searchBoxOptions: {
       autocompleteOptions: {
@@ -24,10 +29,10 @@ export default async (): Promise<StoreLocatorMap> => {
 
   const { map, infoWindow, autocomplete, originMarker } = storeLocator;
 
-  // Custom map markers per "banner"
+  // Custom map markers per store name
   map.data.setStyle(feature => ({
     icon: `https://maps.google.com/mapfiles/ms/icons/${
-      feature.getProperty('banner') === "Josie's Patisserie" ? 'orange' : 'green'
+      (feature.getProperty('store') as string).startsWith("Josie's Patisserie") ? 'orange' : 'green'
     }.png`,
   }));
 
