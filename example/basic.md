@@ -11,7 +11,7 @@ Please refer to the [README on Github](https://github.com/gocrisp/store-locator)
 
 - [Google Maps Javascript API](https://developers.google.com/maps/documentation/javascript/overview)
 - [Google Maps Basic Store Locator Tutorial](https://developers.google.com/codelabs/maps-platform/google-maps-simple-store-locator)
-- [sample.json](/sample.json)
+- [sample.json](/store-locator/sample.json)
 
 ### Code
 
