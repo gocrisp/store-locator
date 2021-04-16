@@ -8,7 +8,6 @@ import { ContentTemplateArgs } from '../infoWindow/contentTemplate';
 
 jest.mock('@googlemaps/js-api-loader');
 const mockLoader = mocked(Loader, true);
-
 describe('storeLocator', () => {
   const loaderOptions = { apiKey: getRandomInt() + '' };
   const geoJson = 'http://example.com/geo.json';
@@ -16,35 +15,35 @@ describe('storeLocator', () => {
   let container: HTMLElement;
 
   beforeEach(() => {
-    mockLoader.mockClear();
+    mockLoader.mockReset();
+
+    // @ts-expect-error resetting
+    window.google = undefined;
+    // @ts-expect-error resetting
+    global.google = undefined;
+
     document.body.innerHTML = '<div id="map-container"></div>';
     container = document.getElementById('map-container') as HTMLElement;
 
-    // @ts-expect-error: not mocking the whole thing
-    mockLoader.mockImplementation(() => ({ load: () => Promise.resolve() }));
-
-    mockGoogleMaps(container);
+    mockGoogleMaps(container, mockLoader);
   });
 
-  it('will throw an error if there are no options', () => {
-    expect(() => {
-      // @ts-expect-error: we're testing the non-ts version
-      createStoreLocatorMap();
-    }).toThrowError('You must define the required options');
+  it('will throw an error if there are no options', async () => {
+    // @ts-expect-error: we're testing the non-ts version
+    await expect(createStoreLocatorMap()).rejects.toThrow('You must define the required options');
   });
 
-  it('will throw an error if there is no `container`', () => {
-    expect(() => {
+  it('will throw an error if there is no `container`', async () => {
+    await expect(
       // @ts-expect-error: we're testing the non-ts version
-      createStoreLocatorMap({ loaderOptions, geoJsonUrl: geoJson });
-    }).toThrowError('You must define a `container` element to put the map in.');
+      createStoreLocatorMap({ loaderOptions, geoJson }),
+    ).rejects.toThrowError('You must define a `container` element to put the map in.');
   });
 
-  it('will throw an error if there is no Google maps API key', () => {
-    expect(() => {
-      // @ts-expect-error: we're testing the non-ts version
-      createStoreLocatorMap({ container, geoJsonUrl: geoJson });
-    }).toThrowError('You must define the `loaderOptions` and its `apiKey`.');
+  it('will throw an error if there is no Google maps API key', async () => {
+    await expect(createStoreLocatorMap({ container, geoJson })).rejects.toThrowError(
+      'You must define the `loaderOptions` and its `apiKey`.',
+    );
   });
 
   it('will load the google maps api js with the provided options', () => {
@@ -94,11 +93,11 @@ describe('storeLocator', () => {
     });
   });
 
-  it('throws an error if there is no `geoJson` url', () => {
-    expect(() => {
+  it('throws an error if there is no `geoJson` url', async () => {
+    await expect(
       // @ts-expect-error: we're testing the non-ts version
-      createStoreLocatorMap({ container, loaderOptions });
-    }).toThrowError('You must define the `geoJson` as a URL or GeoJSON object.');
+      createStoreLocatorMap({ container, loaderOptions }),
+    ).rejects.toThrowError('You must define the `geoJson` as a URL or GeoJSON object.');
   });
 
   it('loads locations from the GeoJSON', async () => {
@@ -204,5 +203,14 @@ describe('storeLocator', () => {
     });
 
     expect(map.data.addGeoJson).toHaveBeenCalledWith(customJson);
+  });
+
+  it('will allow you to pre-load the google maps library', async () => {
+    // @ts-expect-error unknown is google maps
+    window.google = mockGoogleMaps(container);
+
+    await createStoreLocatorMap({ container, geoJson });
+
+    expect(mockLoader).not.toHaveBeenCalled();
   });
 });

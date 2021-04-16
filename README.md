@@ -29,7 +29,7 @@ Create a [Google Maps API Key](https://developers.google.com/maps/gmp-get-starte
 yarn add @gocrisp/store-locator
 ```
 or
-```
+```bash
 npm install @gocrisp/store-locator --save
 ```
 

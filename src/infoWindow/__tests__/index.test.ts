@@ -17,7 +17,7 @@ describe('InfoWindow', () => {
   it('will wire up the click listeners for the map points', async () => {
     const map = new google.maps.Map(container);
 
-    const { infoWindow } = addInfoWindowListenerToMap(map, apiKey, {});
+    const { infoWindow } = addInfoWindowListenerToMap(map, {}, apiKey);
 
     userEvent.click(getByTestId(container, 'mock-marker'));
 
@@ -31,7 +31,7 @@ describe('InfoWindow', () => {
   it('will apply custom options to the InfoWindow', () => {
     const map = new google.maps.Map(container);
 
-    addInfoWindowListenerToMap(map, apiKey, { infoWindowOptions: { maxWidth: 500 } });
+    addInfoWindowListenerToMap(map, { infoWindowOptions: { maxWidth: 500 } }, apiKey);
 
     expect(google.maps.InfoWindow).toHaveBeenCalledWith({
       pixelOffset: new google.maps.Size(0, -30),
@@ -42,7 +42,7 @@ describe('InfoWindow', () => {
   it('will close the info window when clicked away', () => {
     const map = new google.maps.Map(container);
 
-    const { infoWindow } = addInfoWindowListenerToMap(map, apiKey, {});
+    const { infoWindow } = addInfoWindowListenerToMap(map, {}, apiKey);
 
     expect(map.addListener).toHaveBeenCalledWith('click', expect.any(Function));
 

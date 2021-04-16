@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import 'highlight.js/styles/tomorrow-night-blue.css';
 
+import { Loader } from '@googlemaps/js-api-loader';
 import { StoreLocatorMap } from '../src';
 
 import BasicUsageMd from './basic.md';
@@ -26,7 +27,13 @@ const links: Page[] = [
   { ...ObjectsMd.meta, html: ObjectsMd.html, example: ObjectsExample },
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  const loader = new Loader({
+    apiKey: 'AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk',
+    libraries: ['places', 'geometry'],
+  });
+  await loader.load();
+
   const navContainer = document.querySelector('nav ul') as HTMLElement;
   const exampleContainer = document.getElementById('example-container') as HTMLElement;
 

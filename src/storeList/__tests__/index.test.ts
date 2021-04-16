@@ -12,7 +12,7 @@ describe('Store List', () => {
     document.body.innerHTML = '<div id="map-container"></div>';
     container = document.getElementById('map-container') as HTMLElement;
 
-    mockGoogleMaps(container, testMaxDestinationsPerRequest);
+    mockGoogleMaps(container, undefined, testMaxDestinationsPerRequest);
   });
 
   it('will not show a store list on load', () => {
