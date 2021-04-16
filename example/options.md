@@ -25,14 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // We need to load `google.maps.*` first so that we have access to the enum for `controlPosition` below
   // And then we use `skipLoadingGoogleMaps` so that it is not loaded twice
   const loader = new Loader({
-    apiKey: 'AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk',
+    apiKey: '<your Google Maps API key>',
     libraries: ['places', 'geometry'],
   });
   await loader.load();
 
   createStoreLocatorMap({
     container: document.getElementById('map-container') as HTMLElement,
-    loaderOptions: { apiKey: 'AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk' },
+    loaderOptions: { apiKey: '<your Google Maps API key>' },
     geoJson: {
       type: 'FeatureCollection',
       features: [
