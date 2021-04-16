@@ -8,7 +8,6 @@ import { ContentTemplateArgs } from '../infoWindow/contentTemplate';
 
 jest.mock('@googlemaps/js-api-loader');
 const mockLoader = mocked(Loader, true);
-
 describe('storeLocator', () => {
   const loaderOptions = { apiKey: getRandomInt() + '' };
   const geoJson = 'http://example.com/geo.json';
@@ -16,14 +15,17 @@ describe('storeLocator', () => {
   let container: HTMLElement;
 
   beforeEach(() => {
-    mockLoader.mockClear();
+    mockLoader.mockReset();
+
+    // @ts-expect-error resetting
+    window.google = undefined;
+    // @ts-expect-error resetting
+    global.google = undefined;
+
     document.body.innerHTML = '<div id="map-container"></div>';
     container = document.getElementById('map-container') as HTMLElement;
 
-    // @ts-expect-error: not mocking the whole thing
-    mockLoader.mockImplementation(() => ({ load: () => Promise.resolve() }));
-
-    mockGoogleMaps(container);
+    mockGoogleMaps(container, mockLoader);
   });
 
   it('will throw an error if there are no options', async () => {
@@ -205,12 +207,10 @@ describe('storeLocator', () => {
   });
 
   it('will allow you to pre-load the google maps library', async () => {
-    await createStoreLocatorMap({
-      container,
-      loaderOptions,
-      geoJson,
-      skipLoadingGoogleMaps: true,
-    });
+    // @ts-expect-error unknown is google maps
+    window.google = mockGoogleMaps(container);
+
+    await createStoreLocatorMap({ container, loaderOptions, geoJson });
 
     expect(mockLoader).not.toHaveBeenCalled();
   });

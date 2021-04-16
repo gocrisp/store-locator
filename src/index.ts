@@ -22,8 +22,6 @@ export type StoreLocatorOptions = {
   infoWindowOptions?: InfoWindowOptions;
   searchBoxOptions?: SearchBoxOptions;
   storeListOptions?: StoreListOptions;
-  /** If you want to load the google maps library before initializing this component. */
-  skipLoadingGoogleMaps?: boolean;
 };
 
 export type StoreLocatorMap = {
@@ -67,12 +65,15 @@ export const createStoreLocatorMap = async (
     infoWindowOptions,
     searchBoxOptions,
     storeListOptions,
-    skipLoadingGoogleMaps,
   } = options;
 
-  if (!skipLoadingGoogleMaps) {
+  if (!window.google || !window.google.maps || !window.google.maps.version) {
     const loader = new Loader({ ...options.loaderOptions, libraries: ['places', 'geometry'] });
     await loader.load();
+  } else if (!window.google.maps.geometry || !window.google.maps.places) {
+    throw new Error(
+      'If you are loading the Google Maps JS yourself, you need to load the `places` and `geometry` libraries with it.',
+    );
   }
 
   const map = new google.maps.Map(container, { ...defaultMapOptions, ...mapOptions });

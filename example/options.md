@@ -10,7 +10,7 @@ Anywhere that we are passing in an "options" object as defined by the Google Map
 These are described at a high level on our [Basic Usage](#) example. Template options are described [here](#templates).
 
 <div class="alert alert-info">
-Google Enums: Note that for any options that require the <code>google.maps.*</code> reference, you must pass in the options as a function. You will get an error if you try to reference <code>google.maps</code> as a value unless the maps library has loaded so this function will take one boolean parameter of whether or not the library has been loaded, that you can then use to determine whether it is safe to reference <code>google.maps</code> yet or not. See how we are defining <code>searchBoxOptions.controlPosition</code> below.
+Google Enums: Note that for any options that require the <code>google.maps.*</code> reference, you must load the google maps js library before initializing the store locator map. You will get an error if you try to reference <code>google.maps</code> as a value unless the maps library has loaded.
 </div>
 
 ### Code
@@ -83,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
       filterFn: () => true,
       unitSystem: 'imperial',
     },
-    skipLoadingGoogleMaps: true,
   });
 });
 ```

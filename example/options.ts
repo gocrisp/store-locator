@@ -54,5 +54,4 @@ export default (): Promise<StoreLocatorMap> =>
       filterFn: () => true,
       unitSystem: 'imperial',
     },
-    skipLoadingGoogleMaps: true,
   });

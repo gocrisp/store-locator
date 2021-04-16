@@ -1,3 +1,5 @@
+import { Loader } from '@googlemaps/js-api-loader';
+import { MockedObjectDeep } from 'ts-jest/dist/utils/testing';
 import geoJson from './static/sample.json';
 
 export const getRandomInt = (): number => Math.floor(Math.random() * Math.floor(10000));
@@ -39,8 +41,9 @@ enum DistanceMatrixStatus {
 
 export const mockGoogleMaps = (
   container: HTMLElement,
+  loaderMock?: MockedObjectDeep<typeof Loader>,
   limitDistanceMatrixService?: number,
-): void => {
+): unknown => {
   const mapAddListenerMock = jest.fn();
   const dataAddListenerMock = jest.fn();
 
@@ -56,15 +59,14 @@ export const mockGoogleMaps = (
         s.geometry.coordinates[1] === location.lat(),
     );
 
-  global.google = {
+  const googleMock = {
     maps: {
+      version: '1.0',
       Map: jest.fn(),
-      // @ts-expect-error: not mocking the whole thing
       Marker: jest.fn(),
       InfoWindow: jest.fn(),
       Size: jest.fn(),
       ControlPosition,
-      // @ts-expect-error: not mocking the whole thing
       places: {
         Autocomplete: jest.fn(),
       },
@@ -73,7 +75,6 @@ export const mockGoogleMaps = (
       UnitSystem,
       DistanceMatrixStatus,
       geometry: {
-        // @ts-expect-error: not mocking the whole thing
         spherical: {
           computeDistanceBetween: jest
             .fn()
@@ -92,7 +93,7 @@ export const mockGoogleMaps = (
     },
   };
 
-  (global.google.maps.DistanceMatrixService as jest.Mock).mockImplementation(() => ({
+  (googleMock.maps.DistanceMatrixService as jest.Mock).mockImplementation(() => ({
     getDistanceMatrix: jest
       .fn()
       .mockImplementation(
@@ -124,7 +125,7 @@ export const mockGoogleMaps = (
       ),
   }));
 
-  (global.google.maps.Map as jest.Mock).mockImplementation(() => ({
+  (googleMock.maps.Map as jest.Mock).mockImplementation(() => ({
     setZoom: jest.fn(),
     setCenter: jest.fn(),
     getCenter: jest.fn().mockImplementation(() => 'map-center'),
@@ -148,23 +149,23 @@ export const mockGoogleMaps = (
       ),
     },
     controls: {
-      [google.maps.ControlPosition.BOTTOM_RIGHT]: {
+      [googleMock.maps.ControlPosition.BOTTOM_RIGHT]: {
         push: jest.fn(component => container.appendChild(component)),
       },
-      [google.maps.ControlPosition.TOP_RIGHT]: {
+      [googleMock.maps.ControlPosition.TOP_RIGHT]: {
         push: jest.fn(component => container.appendChild(component)),
       },
     },
   }));
 
-  (global.google.maps.InfoWindow as jest.Mock).mockImplementation(() => ({
+  (googleMock.maps.InfoWindow as jest.Mock).mockImplementation(() => ({
     setContent: jest.fn(),
     setPosition: jest.fn(),
     open: jest.fn(),
     close: jest.fn(),
   }));
 
-  (global.google.maps.places.Autocomplete as jest.Mock).mockImplementation(function (
+  (googleMock.maps.places.Autocomplete as jest.Mock).mockImplementation(function (
     input: HTMLInputElement,
   ) {
     return {
@@ -183,8 +184,7 @@ export const mockGoogleMaps = (
     };
   });
 
-  // @ts-expect-error: not mocking the whole thing
-  (global.google.maps.Marker as jest.Mock).mockImplementation(() => ({
+  (googleMock.maps.Marker as jest.Mock).mockImplementation(() => ({
     setVisible: jest.fn(),
     setPosition: jest.fn(),
   }));
@@ -200,6 +200,27 @@ export const mockGoogleMaps = (
       };
     },
   );
+
+  // @ts-expect-error: not mocking the whole thing
+  loaderMock?.mockImplementation(() => ({
+    load: () =>
+      new Promise<void>(resolve => {
+        // @ts-expect-error Not mocking the whole thing
+        global.google = googleMock;
+        // @ts-expect-error Not mocking the whole thing
+        window.google = googleMock;
+        resolve();
+      }),
+  }));
+
+  if (!loaderMock) {
+    // @ts-expect-error not mocking the whole thing
+    global.google = googleMock;
+    // @ts-expect-error not mocking the whole thing
+    window.google = googleMock;
+  }
+
+  return googleMock;
 };
 
 export const mockFeature = (properties: Record<string, unknown>): google.maps.Data.Feature =>
