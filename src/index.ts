@@ -11,8 +11,9 @@ export type StoreLocatorOptions = {
   /** From https://www.npmjs.com/package/@googlemaps/js-api-loader
    * We are defaulting the use of `libraries: ['places', 'geometry']`.
    * You should also at least include an `apiKey`.
+   * Optional only if you are pre-loading the google maps library.
    */
-  loaderOptions: LoaderOptions;
+  loaderOptions?: LoaderOptions;
   /** The URL provided from your GeoJSON destination connector OR Custom GeoJSON that has already been loaded into the browser */
   geoJson: string | object; // eslint-disable-line @typescript-eslint/ban-types
   /** By default we are centering on the entire US */
@@ -43,9 +44,6 @@ const validateOptionsJs = (options?: Partial<StoreLocatorOptions>) => {
   if (!options.container) {
     throw new Error('You must define a `container` element to put the map in.');
   }
-  if (!options.loaderOptions || !options.loaderOptions.apiKey) {
-    throw new Error('You must define the `loaderOptions` and its `apiKey`.');
-  }
   if (!options.geoJson) {
     throw new Error('You must define the `geoJson` as a URL or GeoJSON object.');
   }
@@ -68,6 +66,9 @@ export const createStoreLocatorMap = async (
   } = options;
 
   if (!window.google || !window.google.maps || !window.google.maps.version) {
+    if (!options.loaderOptions || !options.loaderOptions.apiKey) {
+      throw new Error('You must define the `loaderOptions` and its `apiKey`.');
+    }
     const loader = new Loader({ ...options.loaderOptions, libraries: ['places', 'geometry'] });
     await loader.load();
   } else if (!window.google.maps.geometry || !window.google.maps.places) {
@@ -86,8 +87,8 @@ export const createStoreLocatorMap = async (
 
   const { infoWindow, showInfoWindow } = addInfoWindowListenerToMap(
     map,
-    loaderOptions.apiKey,
     infoWindowOptions ?? {},
+    loaderOptions?.apiKey,
     formatLogoPath,
   );
 

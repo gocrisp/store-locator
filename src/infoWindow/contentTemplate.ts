@@ -1,6 +1,6 @@
 export type ContentTemplateArgs = {
   feature: google.maps.Data.Feature;
-  apiKey: string;
+  apiKey?: string;
   formatLogoPath?: (feature: google.maps.Data.Feature) => string;
 };
 

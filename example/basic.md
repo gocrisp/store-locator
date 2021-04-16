@@ -74,10 +74,12 @@ All of the available configurations options are listed below. More customization
     </tr>
     <tr>
       <td><code>loaderOptions</code></td>
-      <td>✅</td>
+      <td>✅*</td>
       <td><code>LoaderOptions</code></td>
       <td>
         The options as defined for the <a href="https://www.npmjs.com/package/@googlemaps/js-api-loader">Google Maps Javascript API Loader</a>. We are requiring an <code>apiKey</code> be passed in. We are automatically including the "places" and "geometry" libraries, since they are necessary for the functionality in this component, but this can be easily overridden here.
+        <br/><br/>
+        *This is required unless you are pre-loading the google maps library. If you omit it in that case, the streetview not be shown in the <code>InfoWindow</code>.
       </td>
     </tr>
     <tr>

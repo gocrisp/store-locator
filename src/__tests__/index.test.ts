@@ -36,15 +36,14 @@ describe('storeLocator', () => {
   it('will throw an error if there is no `container`', async () => {
     await expect(
       // @ts-expect-error: we're testing the non-ts version
-      createStoreLocatorMap({ loaderOptions, geoJsonUrl: geoJson }),
+      createStoreLocatorMap({ loaderOptions, geoJson }),
     ).rejects.toThrowError('You must define a `container` element to put the map in.');
   });
 
   it('will throw an error if there is no Google maps API key', async () => {
-    await expect(
-      // @ts-expect-error: we're testing the non-ts version
-      createStoreLocatorMap({ container, geoJsonUrl: geoJson }),
-    ).rejects.toThrowError('You must define the `loaderOptions` and its `apiKey`.');
+    await expect(createStoreLocatorMap({ container, geoJson })).rejects.toThrowError(
+      'You must define the `loaderOptions` and its `apiKey`.',
+    );
   });
 
   it('will load the google maps api js with the provided options', () => {
@@ -210,7 +209,7 @@ describe('storeLocator', () => {
     // @ts-expect-error unknown is google maps
     window.google = mockGoogleMaps(container);
 
-    await createStoreLocatorMap({ container, loaderOptions, geoJson });
+    await createStoreLocatorMap({ container, geoJson });
 
     expect(mockLoader).not.toHaveBeenCalled();
   });

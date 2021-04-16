@@ -12,8 +12,8 @@ export type MapInfoWindow = {
 
 export const addInfoWindowListenerToMap = (
   map: google.maps.Map,
-  apiKey: string,
   { template = defaultTemplate, infoWindowOptions }: InfoWindowOptions,
+  apiKey?: string,
   formatLogoPath?: (feature: google.maps.Data.Feature) => string,
 ): MapInfoWindow => {
   const defaultOptions = { pixelOffset: new google.maps.Size(0, -30) };
