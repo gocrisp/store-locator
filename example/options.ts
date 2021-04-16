@@ -3,7 +3,7 @@ import { createStoreLocatorMap, StoreLocatorMap } from '../src';
 export default (): Promise<StoreLocatorMap> =>
   createStoreLocatorMap({
     container: document.getElementById('map-container') as HTMLElement,
-    loaderOptions: { apiKey: 'AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk' },
+    loaderOptions: { apiKey: process.env.GOOGLE_MAPS_API_KEY as string },
     geoJson: {
       type: 'FeatureCollection',
       features: [

@@ -22,3 +22,5 @@ jobs:
         with:
           branch: docs # The branch the action should deploy to.
           folder: example/dist # The folder the action should deploy.
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}

@@ -29,7 +29,7 @@ const links: Page[] = [
 
 document.addEventListener('DOMContentLoaded', async () => {
   const loader = new Loader({
-    apiKey: 'AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk',
+    apiKey: process.env.GOOGLE_MAPS_API_KEY as string,
     libraries: ['places', 'geometry'],
   });
   await loader.load();
