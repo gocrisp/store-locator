@@ -35,7 +35,7 @@ export default (): Promise<StoreLocatorMap> =>
       zoom: 6,
       scrollwheel: false,
     },
-    formatLogoPath: () => `http://maps.google.com/mapfiles/ms/icons/blue.png`,
+    formatLogoPath: () => `https://maps.google.com/mapfiles/ms/icons/blue.png`,
     infoWindowOptions: {
       infoWindowOptions: {
         minWidth: 600,

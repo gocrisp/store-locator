@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
       zoom: 6,
       scrollwheel: false,
     },
-    formatLogoPath: () => `http://maps.google.com/mapfiles/ms/icons/blue.png`,
+    formatLogoPath: () => `https://maps.google.com/mapfiles/ms/icons/blue.png`,
     infoWindowOptions: {
       infoWindowOptions: {
         minWidth: 600,
@@ -163,7 +163,7 @@ searchBoxOptions: {
     map, // reference to the map
     visible: false, // this gets set to "true" on search
     position: map.getCenter(), // based on search results
-    icon: 'http://maps.google.com/mapfiles/ms/icons/blue.png',
+    icon: 'https://maps.google.com/mapfiles/ms/icons/blue.png',
   },
   controlPosition: google.maps.ControlPosition.TOP_RIGHT,
   template: string, // see "templates" doc

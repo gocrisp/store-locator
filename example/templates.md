@@ -97,7 +97,7 @@ This is the static part of the search results panel on the left of the map, so i
 ```HTML
 <h2 id="store-list-header">Nearby Locations</h2>
 <button type="button" id="map_close-store-list-button" class="close-button">
-  <img alt="Close Store List" src="http://www.google.com/intl/en_us/mapfiles/close.gif" />
+  <img alt="Close Store List" src="https://www.google.com/intl/en_us/mapfiles/close.gif" />
 </button>
 <ul id="map_store-list"></ul>
 <div id="map_store-list-message"></div>

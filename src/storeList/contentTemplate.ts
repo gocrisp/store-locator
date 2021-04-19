@@ -37,7 +37,7 @@ export const storeTemplate = ({ store, formatLogoPath }: ContentTemplateArgs): s
 export const panelTemplate = `
   <h2 id="store-list-header">Nearby Locations</h2>
   <button type="button" id="${closeButtonId}" class="close-button">
-    <img alt="Close Store List" src="http://www.google.com/intl/en_us/mapfiles/close.gif" />
+    <img alt="Close Store List" src="https://www.google.com/intl/en_us/mapfiles/close.gif" />
   </button>
   <ul id="${listId}"></ul>
   <div id="${messageId}"></div>`;

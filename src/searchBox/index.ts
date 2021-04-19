@@ -46,7 +46,7 @@ export const addSearchBoxToMap = (
     map,
     visible: false,
     position: map.getCenter(),
-    icon: 'http://maps.google.com/mapfiles/ms/icons/blue.png',
+    icon: 'https://maps.google.com/mapfiles/ms/icons/blue.png',
     ...originMarkerOptions,
   });
 
