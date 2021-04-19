@@ -11,7 +11,7 @@ Please refer to the [README on Github](https://github.com/gocrisp/store-locator)
 
 - [Google Maps Javascript API](https://developers.google.com/maps/documentation/javascript/overview)
 - [Google Maps Basic Store Locator Tutorial](https://developers.google.com/codelabs/maps-platform/google-maps-simple-store-locator)
-- [sample.json](/sample.json)
+- [sample.json](/store-locator/sample.json)
 
 ### Code
 
@@ -23,7 +23,7 @@ import '@gocrisp/store-locator/dist/store-locator.css';
 document.addEventListener('DOMContentLoaded', () => {
   createStoreLocatorMap({
     container: document.getElementById('map-container') as HTMLElement,
-    loaderOptions: { apiKey: 'AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk' },
+    loaderOptions: { apiKey: '<your Google Maps API key>' },
     geoJson: './sample.json',
     mapOptions: { center: { lat: 52.632469, lng: -1.689423 }, zoom: 7 },
     formatLogoPath: feature =>

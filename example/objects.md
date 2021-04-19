@@ -24,7 +24,7 @@ import '@gocrisp/store-locator/dist/store-locator.css';
 document.addEventListener('DOMContentLoaded', () => {
   const { map, infoWindow, autocomplete, originMarker } = await createStoreLocatorMap({
     container: document.getElementById('map-container') as HTMLElement,
-    loaderOptions: { apiKey: 'AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk' },
+    loaderOptions: { apiKey: '<your Google Maps API key>' },
     geoJson: './sample.json',
     mapOptions: { center: { lat: 52.632469, lng: -1.689423 }, zoom: 7 },
     formatLogoPath: feature =>

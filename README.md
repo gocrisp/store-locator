@@ -52,6 +52,8 @@ Most of the Google Maps JavaScript API options and objects are available for cus
 
 ## Run the Example App Locally
 
+You should add a `.env.local` file that contains a `GOOGLE_MAPS_API_KEY`, otherwise the Google Maps will be limited.
+
 To run the [example app](https://gocrisp.github.io/store-locator) locally, you need to build the npm package into `dist` and then run the example app. You can either run the store-locator code with `yarn dev` to watch for changes or build it once with `yarn build`, but with the former you will need to run `dev` and `example` simultaneously.
 
 ```bash
