@@ -4,7 +4,7 @@ export default async (): Promise<StoreLocatorMap> => {
   const storeLocator = await createStoreLocatorMap({
     container: document.getElementById('map-container') as HTMLElement,
     loaderOptions: { apiKey: process.env.GOOGLE_MAPS_API_KEY as string },
-    geoJson: './store-locator/sample.json',
+    geoJson: 'sample.json',
     mapOptions: { center: { lat: 52.632469, lng: -1.689423 }, zoom: 7 },
     formatLogoPath: feature =>
       `img/${feature

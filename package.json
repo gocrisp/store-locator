@@ -49,7 +49,7 @@
     "dev": "microbundle watch -o dist/ --sourcemap false --compress false",
     "start": "yarn build && yarn example",
     "build-docs": "parcel build example/index.html --out-dir example/dist --public-url /store-locator/",
-    "example": "parcel example/index.html --out-dir example/dist --public-url /store-locator/",
+    "example": "parcel example/index.html --out-dir example/dist",
     "test": "jest --watch --setupTestFrameworkScriptFile=./test-setup.ts",
     "test-ci": "jest --ci --coverage --setupTestFrameworkScriptFile=./test-setup.ts",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --report-unused-disable-directives --max-warnings 0"
