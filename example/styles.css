@@ -1,0 +1,67 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 { margin: .67em 0 }
+h2 { margin: .75em 0 }
+h3 { margin: .83em 0 }
+h5 { margin: 1.5em 0 }
+h6 { margin: 1.67em 0 }
+
+.navbar-brand img {
+  margin: 0 14px 0 28px;
+}
+
+.nav-item {
+  margin-left: 1.3rem;
+}
+
+.nav-link {
+  color: #393939 !important;
+  font-weight: 400;
+}
+
+.active {
+  border-bottom: 2px #dadada solid;
+  margin: 1px .5rem 0;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+footer a {
+  color: #666;
+  text-decoration: none;
+  font-size: .8rem;
+}
+
+footer a:hover, footer a:active {
+  color: #333;
+  text-decoration: underline;
+}
+
+footer img {
+  margin-right: 10px;
+  height: 50px;
+}
+
+.icon-wrapper {
+  margin-left: 5px;
+  position: relative;
+  top: -1px;
+}
+
+a {
+  color: #00807f;
+  text-decoration: none;
+}
+a:hover, a:active {
+  color: #00807f;
+  text-decoration: underline;
+}
+
+/* Undo the reboot.scss from bootstrap so we aren't assuming things! */
+#map-container *,
+#map-container *::before,
+#map-container *::after {
+  box-sizing: content-box;
+}

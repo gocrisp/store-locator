@@ -1,0 +1,130 @@
+.map_infowindow_content {
+  width: 390px;
+}
+
+.map_infowindow_content .map_info {
+  display: inline-block;
+}
+
+.map_infowindow_content .map_info h2 {
+  max-width: 290px;
+  font-size: 20px;
+}
+
+.map_infowindow_content .map_logo {
+  float: right;
+  max-width: 50px;
+  max-height: 50px;
+  margin-right: 10px;
+  vertical-align: top;
+}
+
+.map_infowindow_content .map_streetView {
+  display: inline-block;
+  margin-top: 15px;
+}
+
+/* Search Box */
+.map_search-box-card {
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  margin: 10px 10px 0 0;
+  -moz-box-sizing: border-box;
+  width: 300px;
+}
+
+.map_search-box-card label {
+  display: block;
+  color: #fff;
+  background-color: #374f63;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  width: calc(100% - 2rem);
+}
+
+.map_search-box-input-container {
+  padding: 0.9rem;
+}
+
+.map_search-box-card input {
+  font-size: 1rem;
+  font-weight: lighter;
+  padding: 0.3rem 0.8rem;
+  text-overflow: ellipsis;
+  width: calc(100% - 1.6rem);
+}
+
+/* Store List */
+
+.map_store-list-panel {
+  height: 100%;
+  width: 0;
+  padding: 0;
+  background-color: white;
+  position: absolute;
+  z-index: 1;
+  overflow-x: auto;
+  transition: width .2s ease-out;
+  border: 0;
+}
+.map_store-list-panel.open {
+  width: 300px;
+  padding: 15px;
+  border: 1px solid lightgray;
+}
+
+.map_store-list-panel h2 {
+  font-size: 1.5rem;
+}
+
+.map_store-list-panel .close-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: 0;
+  background: transparent;
+}
+
+.map_store-list-panel ul {
+  list-style: none;
+  padding: 0;
+}
+
+.map_store-list-panel li {
+  padding: 10px;
+  border-top: 1px solid lightgray;
+  position: relative;
+}
+
+.map_store-list-panel li button {
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+}
+
+.map_store-list-panel .map_banner {
+  width: calc(100% - 32px);
+}
+
+.map_store-list-panel .map_distance {
+  color: #666;
+  font-size: 0.8em;
+}
+
+.map_store-list-panel .map_address {
+  font-size: 0.75em;
+  margin-bottom: 0;
+}
+
+.map_store-list-panel .map_logo {
+  max-width: 32px;
+  max-height: 32px;
+  position: absolute;
+  top: 10px;
+  right: 5px;
+}

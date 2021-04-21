@@ -1,0 +1,85 @@
+{
+  "name": "@gocrisp/store-locator",
+  "version": "0.4.0",
+  "description": "Store locator widget, intended for use with the Crisp GeoJSON connector.",
+  "main": "dist/store-locator.js",
+  "umd:main": "dist/store-locator.umd.js",
+  "module": "dist/store-locator.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "readme.md"
+  ],
+  "dependencies": {
+    "@googlemaps/js-api-loader": "^1.11.3"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^7.30.0",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/user-event": "^13.0.16",
+    "@types/google.maps": "^3.44.2",
+    "@types/jest": "^26.0.14",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "babel-polyfill": "^6.26.0",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.0.2",
+    "eslint-plugin-jest-dom": "^3.6.5",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-testing-library": "^3.10.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.4.2",
+    "markdown-it-highlightjs": "^3.4.0",
+    "microbundle": "^0.13.0",
+    "parcel-bundler": "^1.12.5",
+    "parcel-plugin-markdown-it": "^1.0.0",
+    "parcel-plugin-static-files-copy": "^2.6.0",
+    "prettier": "^2.0.4",
+    "ts-jest": "^26.3.0",
+    "typescript": "^4.0.3"
+  },
+  "resolutions": {
+    "is-svg": ">=4.2.2"
+  },
+  "scripts": {
+    "build": "microbundle -o dist/ --sourcemap false --compress false",
+    "dev": "microbundle watch -o dist/ --sourcemap false --compress false",
+    "start": "yarn build && yarn example",
+    "build-docs": "parcel build example/index.html --out-dir example/dist --public-url /store-locator/ --no-cache",
+    "example": "parcel example/index.html --out-dir example/dist",
+    "test": "jest --watch --setupTestFrameworkScriptFile=./test-setup.ts",
+    "test-ci": "jest --ci --coverage --setupTestFrameworkScriptFile=./test-setup.ts",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src --report-unused-disable-directives --max-warnings 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gocrisp/store-locator"
+  },
+  "keywords": [
+    "crisp",
+    "gocrisp",
+    "geojson",
+    "google maps",
+    "store locator"
+  ],
+  "jest": {
+    "testEnvironment": "jsdom",
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "dist",
+      "coverage"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|jpg|png)$": "identity-obj-proxy"
+    },
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    }
+  },
+  "author": "Crisp",
+  "license": "MIT",
+  "homepage": "https://gocrisp.github.io/store-locator/"
+}
