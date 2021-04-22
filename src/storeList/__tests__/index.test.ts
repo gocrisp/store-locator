@@ -34,8 +34,11 @@ describe('Store List', () => {
   describe('when we search for a location', () => {
     let map: google.maps.Map;
     let showStoreList: () => Promise<void>;
+    const extraListener = jest.fn();
 
     beforeEach(() => {
+      extraListener.mockReset();
+
       map = new google.maps.Map(container);
       const storeList = addStoreListToMapContainer(
         container,
@@ -48,6 +51,8 @@ describe('Store List', () => {
         testMaxDestinationsPerRequest,
       );
       showStoreList = storeList.showStoreList;
+
+      storeList.addListener('item_click', extraListener);
     });
 
     it('will show a store list when given a list of stores', async () => {
@@ -89,6 +94,7 @@ describe('Store List', () => {
       expect(panel).toHaveClass('open');
       userEvent.click(closeButton);
       expect(panel).not.toHaveClass('open');
+      expect(extraListener).not.toHaveBeenCalled();
     });
 
     it('will zoom in on the location when a result is clicked', async () => {
@@ -103,6 +109,7 @@ describe('Store List', () => {
       expect(map.setCenter).toHaveBeenCalledWith(expect.objectContaining({ lat: 51.479756 }));
       expect(map.setCenter).toHaveBeenCalledWith(expect.objectContaining({ lng: -3.155305 }));
       expect(map.setZoom).toHaveBeenCalledWith(13);
+      expect(extraListener).toHaveBeenLastCalledWith(cardiffItem);
     });
   });
 

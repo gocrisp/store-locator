@@ -17,8 +17,11 @@ export type StoreListOptions = {
   storeTemplate?: (args: ContentTemplateArgs) => string;
 };
 
-type StoreList = {
+export type StoreList = {
   showStoreList: () => Promise<void>;
+  hideStoreList: () => void;
+  closeButton: HTMLButtonElement;
+  addListener: (type: 'item_click', listener: (button: HTMLButtonElement) => void) => void;
 };
 
 export type DistanceResult = {
@@ -151,6 +154,8 @@ const showLocation = (
   }
 };
 
+const resultOnClickListeners = Array<(button: HTMLButtonElement) => void>();
+
 const showStoreList = (
   map: google.maps.Map,
   showInfoWindow: (feature: google.maps.Data.Feature) => void,
@@ -183,13 +188,15 @@ const showStoreList = (
     message.innerHTML = '';
 
     list.querySelectorAll('button').forEach(button => {
-      button.onclick = () =>
+      button.onclick = () => {
         showLocation(
           map,
           showInfoWindow,
           +(button.getAttribute('data-lat') || 0),
           +(button.getAttribute('data-lng') || 0),
         );
+        resultOnClickListeners.forEach(listener => listener(button));
+      };
     });
   } else {
     list.innerHTML = '';
@@ -216,11 +223,11 @@ export const addStoreListToMapContainer = (
   panel.innerHTML = options.panelTemplate ?? panelTemplate;
   container.appendChild(panel);
 
+  const hideStoreList = () => panel.classList.remove('open');
+
   const closeButton = document.getElementById(closeButtonId) as HTMLButtonElement;
   if (closeButton) {
-    closeButton.onclick = () => {
-      panel.classList.remove('open');
-    };
+    closeButton.addEventListener('click', hideStoreList);
   }
 
   return {
@@ -231,5 +238,13 @@ export const addStoreListToMapContainer = (
       maxDestinationsPerDistanceMatrixRequest,
       formatLogoPath,
     ),
+    hideStoreList,
+    closeButton,
+    addListener: (type: 'item_click', listener: (button: HTMLButtonElement) => void) => {
+      if (type != 'item_click') {
+        throw new Error('only `item_click` type available');
+      }
+      resultOnClickListeners.push(listener);
+    },
   };
 };

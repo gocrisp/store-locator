@@ -27,7 +27,7 @@ export default async (): Promise<StoreLocatorMap> => {
     },
   });
 
-  const { map, infoWindow, autocomplete, originMarker } = storeLocator;
+  const { map, infoWindow, autocomplete, originMarker, storeList } = storeLocator;
 
   // Custom map markers per store name
   map.data.setStyle(feature => ({
@@ -48,6 +48,15 @@ export default async (): Promise<StoreLocatorMap> => {
 
   // remove the originMarker completely (the one that appears on search)
   originMarker.setMap(null);
+
+  storeList.closeButton.addEventListener('click', () => {
+    console.log('Search Results Closed');
+  });
+
+  // only `item_click` is available
+  storeList.addListener('item_click', (button: HTMLButtonElement) => {
+    console.log(`Search Result Chosen: ${button.title}`);
+  });
 
   return storeLocator;
 };

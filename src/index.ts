@@ -1,7 +1,7 @@
 import { Loader, LoaderOptions } from '@googlemaps/js-api-loader';
 import { addInfoWindowListenerToMap, InfoWindowOptions } from './infoWindow';
 import { addSearchBoxToMap, SearchBoxOptions } from './searchBox';
-import { addStoreListToMapContainer, StoreListOptions } from './storeList';
+import { addStoreListToMapContainer, StoreList, StoreListOptions } from './storeList';
 
 import './styles.css';
 
@@ -30,6 +30,7 @@ export type StoreLocatorMap = {
   infoWindow: google.maps.InfoWindow;
   autocomplete: google.maps.places.Autocomplete;
   originMarker: google.maps.Marker;
+  storeList: StoreList;
 };
 
 export const defaultCenter = { lat: 39.8283, lng: -98.5795 };
@@ -92,7 +93,7 @@ export const createStoreLocatorMap = async (
     formatLogoPath,
   );
 
-  const { showStoreList } = addStoreListToMapContainer(
+  const storeList = addStoreListToMapContainer(
     container,
     map,
     showInfoWindow,
@@ -100,7 +101,7 @@ export const createStoreLocatorMap = async (
     formatLogoPath,
   );
 
-  const searchBox = addSearchBoxToMap(map, showStoreList, searchBoxOptions ?? {});
+  const searchBox = addSearchBoxToMap(map, storeList.showStoreList, searchBoxOptions ?? {});
 
-  return { map, infoWindow, ...searchBox };
+  return { map, infoWindow, ...searchBox, storeList };
 };

@@ -14,6 +14,18 @@ Wherever we create a new object with the Google Maps Javascript API, we are retu
 
 Note that the `originMarker` is the pin that gets placed in the center of the map on search. If you'd like to customize the markers used on the store locations, that is done via the `map` object as seen below.
 
+
+We are also exposing one non-Google object for the Search Results Pane, `storeList` which exposes a few things you may want to hook into:
+
+```TypeScript
+type StoreList = {
+  showStoreList: () => Promise<void>;
+  hideStoreList: () => void;
+  closeButton: HTMLButtonElement;
+  addListener: (type: string, listener: (element: HTMLButtonElement) => void)
+};
+```
+
 ### Code
 
 ```TypeScript
@@ -22,7 +34,7 @@ import { createStoreLocatorMap, StoreLocatorMap } from '@gocrisp/store-locator';
 import '@gocrisp/store-locator/dist/store-locator.css';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const { map, infoWindow, autocomplete, originMarker } = await createStoreLocatorMap({
+  const { map, infoWindow, autocomplete, originMarker, storeList } = await createStoreLocatorMap({
     container: document.getElementById('map-container') as HTMLElement,
     loaderOptions: { apiKey: '<your Google Maps API key>' },
     geoJson: 'sample.json',
@@ -68,6 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // remove the originMarker completely (the one that appears on search)
   originMarker.setMap(null);
+
+  storeList.closeButton.addEventListener('click', () => {
+    console.log('Search Results Closed');
+  });
+
+  // only `item_click` is available
+  storeList.addListener('item_click', (button: HTMLButtonElement) => {
+    console.log(`Search Result Chosen: ${button.title}`);
+  });
 });
 ```
 
