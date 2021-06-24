@@ -156,55 +156,57 @@ const showLocation = (
 
 const resultOnClickListeners = Array<(button: HTMLButtonElement) => void>();
 
-const showStoreList = (
-  map: google.maps.Map,
-  showInfoWindow: (feature: google.maps.Data.Feature) => void,
-  options: StoreListOptions,
-  maxDestinationsPerDistanceMatrixRequest: number,
-  formatLogoPath?: (feature: google.maps.Data.Feature) => string,
-) => async (): Promise<void> => {
-  const panel = document.getElementById(storeListPanelId) as HTMLElement;
-  const list = document.getElementById(listId) as HTMLElement;
-  const message = document.getElementById(messageId) as HTMLElement;
+const showStoreList =
+  (
+    map: google.maps.Map,
+    showInfoWindow: (feature: google.maps.Data.Feature) => void,
+    options: StoreListOptions,
+    maxDestinationsPerDistanceMatrixRequest: number,
+    formatLogoPath?: (feature: google.maps.Data.Feature) => string,
+  ) =>
+  async (): Promise<void> => {
+    const panel = document.getElementById(storeListPanelId) as HTMLElement;
+    const list = document.getElementById(listId) as HTMLElement;
+    const message = document.getElementById(messageId) as HTMLElement;
 
-  let sortedStores;
-  try {
-    sortedStores = await getStoresClosestToCenterOfMap(
-      map,
-      options,
-      maxDestinationsPerDistanceMatrixRequest,
-    );
-  } catch (e) {
-    console.error(e);
-    list.innerHTML = '';
-    message.innerHTML = 'There was an error determining the closest stores.';
+    let sortedStores;
+    try {
+      sortedStores = await getStoresClosestToCenterOfMap(
+        map,
+        options,
+        maxDestinationsPerDistanceMatrixRequest,
+      );
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '';
+      message.innerHTML = 'There was an error determining the closest stores.';
+      panel.classList.add('open');
+      return;
+    }
+
+    if (sortedStores.length) {
+      const template = options.storeTemplate ?? storeTemplate;
+      list.innerHTML = sortedStores.map(store => template({ store, formatLogoPath })).join('');
+      message.innerHTML = '';
+
+      list.querySelectorAll('button').forEach(button => {
+        button.onclick = () => {
+          showLocation(
+            map,
+            showInfoWindow,
+            +(button.getAttribute('data-lat') || 0),
+            +(button.getAttribute('data-lng') || 0),
+          );
+          resultOnClickListeners.forEach(listener => listener(button));
+        };
+      });
+    } else {
+      list.innerHTML = '';
+      message.innerHTML = 'There are no locations that match the given criteria.';
+    }
+
     panel.classList.add('open');
-    return;
-  }
-
-  if (sortedStores.length) {
-    const template = options.storeTemplate ?? storeTemplate;
-    list.innerHTML = sortedStores.map(store => template({ store, formatLogoPath })).join('');
-    message.innerHTML = '';
-
-    list.querySelectorAll('button').forEach(button => {
-      button.onclick = () => {
-        showLocation(
-          map,
-          showInfoWindow,
-          +(button.getAttribute('data-lat') || 0),
-          +(button.getAttribute('data-lng') || 0),
-        );
-        resultOnClickListeners.forEach(listener => listener(button));
-      };
-    });
-  } else {
-    list.innerHTML = '';
-    message.innerHTML = 'There are no locations that match the given criteria.';
-  }
-
-  panel.classList.add('open');
-};
+  };
 
 export const addStoreListToMapContainer = (
   container: HTMLElement,
