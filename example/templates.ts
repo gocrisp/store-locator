@@ -20,6 +20,6 @@ export default (): Promise<StoreLocatorMap> =>
       filterFn: (_, i) => i < 12,
       unitSystem: 'metric',
       panelTemplate: '<ul id="map_store-list"></ul><div id="map_store-list-message"></div>',
-      storeTemplate: ({ store }) => `<li>${store.feature.getProperty('name')}</li>`,
+      storeTemplate: ({ store }) => `<li>${store.feature.getProperty('store')}</li>`,
     },
   });
