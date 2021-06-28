@@ -12,6 +12,8 @@ import TemplatesMd from './templates.md';
 import TemplatesExample from './templates';
 import ObjectsMd from './objects.md';
 import ObjectsExample from './objects';
+import AddingMd from './adding.md';
+import AddingExample from './adding';
 
 type Page = {
   title: string;
@@ -23,6 +25,7 @@ type Page = {
 const links: Page[] = [
   { ...BasicUsageMd.meta, html: BasicUsageMd.html, example: BasicUsageExample },
   { ...OptionsMd.meta, html: OptionsMd.html, example: OptionsExample },
+  { ...AddingMd.meta, html: AddingMd.html, example: AddingExample },
   { ...TemplatesMd.meta, html: TemplatesMd.html, example: TemplatesExample },
   { ...ObjectsMd.meta, html: ObjectsMd.html, example: ObjectsExample },
 ];
