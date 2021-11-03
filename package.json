@@ -1,6 +1,6 @@
 {
   "name": "@gocrisp/store-locator",
-  "version": "0.5.2",
+  "version": "0.5.4",
   "description": "Store locator widget, intended for use with the Crisp GeoJSON connector.",
   "main": "dist/store-locator.js",
   "umd:main": "dist/store-locator.umd.js",
