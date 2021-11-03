@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="store-locator.css" />
+    <link rel="stylesheet" href="https://storage.googleapis.com/crisp-store-locator/${package_version}/store-locator.css" />
     <title>Store Locator Example</title>
 
     <script type="text/javascript">
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geometry,places"></script>
-    <script src="./store-locator.umd.js"></script>
+    <script src="https://storage.googleapis.com/crisp-store-locator/${package_version}/store-locator.umd.js"></script>
   </head>
   <body>
     <h1>Map Example</h1>

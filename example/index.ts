@@ -50,7 +50,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     newActiveLink.setAttribute('aria-current', 'page');
 
     // update displayed doc
-    exampleContainer.innerHTML = page.html;
+    exampleContainer.innerHTML = page.html.replace(
+      /\${package_version}/g,
+      // @ts-expect-error global variables
+      process.env.npm_package_version,
+    );
     // for bootstrap styles
     exampleContainer.querySelector('table')?.classList.add('table');
     // make sure relative links do the onclick
