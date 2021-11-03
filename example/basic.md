@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdH3QeHDu3XGXwcIF9sMHQmbn2YS4N4Kk&libraries=geometry,places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geometry,places"></script>
     <script src="./store-locator.umd.js"></script>
   </head>
   <body>
