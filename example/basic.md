@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', function () {
-        window["storeLocator"].createStoreLocatorMap({
+        window.storeLocator.createStoreLocatorMap({
           container: document.getElementById("map-container"),
           geoJson: 'sample.json',
           mapOptions: { center: { lat: 52.632469, lng: -1.689423 }, zoom: 7 },
