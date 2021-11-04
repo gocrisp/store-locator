@@ -15,17 +15,19 @@ Please refer to the [README on Github](https://github.com/gocrisp/store-locator)
 
 ### Code
 
+We recommend you use NPM to install the `@gocrisp/store-locator` package, but if you are not using modern tooling the "Script tag" example will show you how to use our hosted version.
+
 <div class="tabs-body">
   <ul class="nav nav-tabs tabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <a class="nav-link active" id="es6-tab" data-bs-toggle="tab" data-bs-target="#es6" type="button" role="tab" aria-controls="es6" aria-selected="true">ES6</a>
+      <a class="nav-link active" id="npm-tab" data-bs-toggle="tab" data-bs-target="#npm" type="button" role="tab" aria-controls="npm" aria-selected="true">NPM</a>
     </li>
     <li class="nav-item" role="presentation">
-      <a class="nav-link" id="legacy-tab" data-bs-toggle="tab" data-bs-target="#legacy" type="button" role="tab" aria-controls="legacy" aria-selected="false">Legacy</a>
+      <a class="nav-link" id="legacy-tab" data-bs-toggle="tab" data-bs-target="#legacy" type="button" role="tab" aria-controls="legacy" aria-selected="false">Script tag</a>
     </li>
   </ul>
   <div class="tab-content">
-    <div class="tab-pane fade show active" id="es6" role="tabpanel" aria-labelledby="es6-tab">
+    <div class="tab-pane fade show active" id="npm" role="tabpanel" aria-labelledby="npm-tab">
 
 
 ```TypeScript
@@ -70,17 +72,19 @@ document.addEventListener('DOMContentLoaded', () => {
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://storage.googleapis.com/crisp-store-locator/${package_version}/store-locator.css" />
+    <link rel="stylesheet" href="https://storage.googleapis.com/crisp-store-locator/${package_version}/dist/store-locator.css" />
     <title>Store Locator Example</title>
 
     <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', function () {
         window.storeLocator.createStoreLocatorMap({
           container: document.getElementById("map-container"),
+          // Replace with the URL from the GeoJSON Outbound Connector
           geoJson: 'sample.json',
           mapOptions: { center: { lat: 52.632469, lng: -1.689423 }, zoom: 7 },
           formatLogoPath: function (feature) {
-            return `img/${feature
+            // Replace with the path to your logos
+            return `https://storage.googleapis.com/crisp-store-locator/${package_version}/static/img/${feature
               .getProperty('store')
               .toLowerCase()
               // remove after 2nd space
@@ -103,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geometry,places"></script>
-    <script src="https://storage.googleapis.com/crisp-store-locator/${package_version}/store-locator.umd.js"></script>
+    <script src="https://storage.googleapis.com/crisp-store-locator/${package_version}/dist/store-locator.umd.js"></script>
   </head>
   <body>
     <h1>Map Example</h1>
