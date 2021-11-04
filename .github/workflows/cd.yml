@@ -34,6 +34,6 @@ jobs:
       - name: Sync dist
         run: |
           BUCKET=gs://crisp-store-locator/${{ steps.package-version.outputs.current-version}}
-          gsutil -m rsync -d -c -r dist $BUCKET
-          gsutil -m rsync -d -c -r static $BUCKET
+          gsutil -m rsync -d -c -r dist $BUCKET/dist
+          gsutil -m rsync -d -c -r static $BUCKET/static
           gsutil -m setmeta -h "Cache-Control:no-cache,max-age=0" "$BUCKET/**/*.*"
