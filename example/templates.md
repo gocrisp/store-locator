@@ -1,9 +1,4 @@
----
-title: 'Templates'
-href: '#templates'
----
-
-## Templates
+## Custom Templates
 
 Templates are specific display options that let you control the html that we are using on the different pieces of the Store Locator.
 

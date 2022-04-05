@@ -1,8 +1,3 @@
----
-title: 'Map Objects'
-href: '#objects'
----
-
 ## Map Objects
 
 Wherever we create a new object with the Google Maps Javascript API, we are returning it from `createStoreLocatorMap` so that you can perform further customizations on it after it is loaded. This includes the `Map` itself as well as the `InfoWindow`, `Autocomplete`, and search result `Marker`. We are not exposing anything from the search results panel because that is available in the DOM once it is rendered.

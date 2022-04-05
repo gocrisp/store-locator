@@ -64,6 +64,7 @@ a:hover, a:active {
 #map-container *::before,
 #map-container *::after {
   box-sizing: content-box;
+  height: 400px;
 }
 
 .tabs-body {

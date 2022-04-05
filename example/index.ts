@@ -1,4 +1,6 @@
 import 'babel-polyfill';
+import MarkdownIt from 'markdown-it';
+import HighlightJs from 'markdown-it-highlightjs';
 import 'highlight.js/styles/tomorrow-night-blue.css';
 
 import { Loader } from '@googlemaps/js-api-loader';
@@ -23,14 +25,23 @@ type Page = {
 };
 
 const links: Page[] = [
-  { ...BasicUsageMd.meta, html: BasicUsageMd.html, example: BasicUsageExample },
-  { ...OptionsMd.meta, html: OptionsMd.html, example: OptionsExample },
-  { ...AddingMd.meta, html: AddingMd.html, example: AddingExample },
-  { ...TemplatesMd.meta, html: TemplatesMd.html, example: TemplatesExample },
-  { ...ObjectsMd.meta, html: ObjectsMd.html, example: ObjectsExample },
+  { title: 'Basic Usage', href: '#', html: BasicUsageMd, example: BasicUsageExample },
+  { title: 'Display Options', href: '#options', html: OptionsMd, example: OptionsExample },
+  { title: 'Adding Data', href: '#adding', html: AddingMd, example: AddingExample },
+  { title: 'Templates', href: '#templates', html: TemplatesMd, example: TemplatesExample },
+  { title: 'Map Objects', href: '#objects', html: ObjectsMd, example: ObjectsExample },
 ];
 
+const md = new MarkdownIt({
+  html: true,
+}).use(HighlightJs);
+
 document.addEventListener('DOMContentLoaded', async () => {
+  const mapContainer = document.getElementById('map-container');
+  if (mapContainer) {
+    mapContainer.style.height = '400px';
+  }
+
   const loader = new Loader({
     apiKey: process.env.GOOGLE_MAPS_API_KEY as string,
     libraries: ['places', 'geometry'],
@@ -50,10 +61,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     newActiveLink.setAttribute('aria-current', 'page');
 
     // update displayed doc
-    exampleContainer.innerHTML = page.html.replace(
-      /\${package_version}/g,
-      // @ts-expect-error global variables
-      process.env.npm_package_version,
+    exampleContainer.innerHTML = md.render(
+      page.html.replace(
+        /\${package_version}/g,
+        // @ts-expect-error global variables
+        process.env.npm_package_version,
+      ),
     );
     // for bootstrap styles
     exampleContainer.querySelector('table')?.classList.add('table');

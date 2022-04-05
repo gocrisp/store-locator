@@ -1,8 +1,3 @@
----
-title: 'Adding Data'
-href: '#adding'
----
-
 ## Adding Data
 
 Similarly to how you are able to use any json as the source for the map, you can add your own data to the data from the Crisp GeoJSON connector wherever you are setting up the map. Below are a few examples of how to do this.
