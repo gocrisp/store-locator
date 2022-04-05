@@ -14,6 +14,8 @@
     "@googlemaps/js-api-loader": "^1.11.3"
   },
   "devDependencies": {
+    "@parcel/config-default": "^2.4.1",
+    "@parcel/transformer-raw": "^2.4.1",
     "@testing-library/dom": "^7.30.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/user-event": "^13.0.16",
@@ -41,6 +43,7 @@
     "parcel-plugin-static-files-copy": "^2.6.0",
     "parcel-transformer-markdown": "^2.1.0",
     "prettier": "^2.0.4",
+    "rimraf": "^3.0.2",
     "ts-jest": "^26.3.0",
     "typescript": "^4.0.3"
   },
@@ -56,11 +59,12 @@
     "build": "microbundle -o dist/ --sourcemap false --compress false",
     "dev": "microbundle watch -o dist/ --sourcemap false --compress false",
     "start": "yarn build && yarn example",
-    "build-docs": "parcel build example/index.html --dist-dir example/dist --public-url /store-locator/ --no-cache",
-    "example": "parcel example/index.html --dist-dir example/dist",
+    "build-docs": "yarn clean && parcel build example/index.html example/sample.json --dist-dir example/dist --public-url /store-locator/ --no-cache",
+    "example": "yarn clean && parcel example/index.html example/sample.json --dist-dir example/dist",
     "test": "jest --watch --setupTestFrameworkScriptFile=./test-setup.ts",
     "test-ci": "jest --ci --coverage --setupTestFrameworkScriptFile=./test-setup.ts",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx src --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src --report-unused-disable-directives --max-warnings 0",
+    "clean": "rimraf example/dist"
   },
   "repository": {
     "type": "git",
@@ -89,5 +93,10 @@
   },
   "author": "Crisp",
   "license": "MIT",
-  "homepage": "https://gocrisp.github.io/store-locator/"
+  "homepage": "https://gocrisp.github.io/store-locator/",
+  "targets": {
+    "module": false,
+    "main": false,
+    "types": false
+  }
 }

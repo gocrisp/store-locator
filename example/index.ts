@@ -37,11 +37,6 @@ const md = new MarkdownIt({
 }).use(HighlightJs);
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const mapContainer = document.getElementById('map-container');
-  if (mapContainer) {
-    mapContainer.style.height = '400px';
-  }
-
   const loader = new Loader({
     apiKey: process.env.GOOGLE_MAPS_API_KEY as string,
     libraries: ['places', 'geometry'],
