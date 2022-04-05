@@ -121,8 +121,6 @@ const getStoresClosestToCenterOfMap = async (
     .filter((result, index) => filterFn(result, index, map));
 };
 
-// This is getting detected incorrectly
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const findFeatureByLatLng = (map: google.maps.Map, lat: number, lng: number) => {
   const featuresWithLatLng: Array<{
     lat: number;
