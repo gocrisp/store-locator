@@ -1,6 +1,6 @@
 import { Loader } from '@googlemaps/js-api-loader';
 import { MockedObjectDeep } from 'ts-jest/dist/utils/testing';
-import geoJson from './static/sample.json';
+import geoJson from './example/sample.json';
 
 export const getRandomInt = (): number => Math.floor(Math.random() * Math.floor(10000));
 
