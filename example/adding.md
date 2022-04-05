@@ -1,8 +1,3 @@
----
-title: 'Adding Data'
-href: '#adding'
----
-
 ## Adding Data
 
 Similarly to how you are able to use any json as the source for the map, you can add your own data to the data from the Crisp GeoJSON connector wherever you are setting up the map. Below are a few examples of how to do this.
@@ -128,7 +123,7 @@ const extraStores = [
 As long as the CSV is hosted online somewhere that can be accessed by the user loading the map, you can use the CSV directly with something like [papaparse](https://www.papaparse.com/).
 
 Assuming your columns are: Store Name, Store Address, Latitutde, Longitude, and you have this file ("sample.csv"):
-```CSV
+```
 Quadrant Shopping Centre,Dilwyn St Swansea SA1 3QW United Kingdom,51.620153,-3.934483
 Bullring Open Market,5BB Edgbaston St Birmingham United Kingdom,52.476142,-1.891116
 ```

@@ -15,7 +15,7 @@ export type StoreLocatorOptions = {
    */
   loaderOptions?: LoaderOptions;
   /** The URL provided from your GeoJSON destination connector OR Custom GeoJSON that has already been loaded into the browser */
-  geoJson: string | object; // eslint-disable-line @typescript-eslint/ban-types
+  geoJson: string | object;
   /** By default we are centering on the entire US */
   mapOptions?: google.maps.MapOptions;
   /** Optional - if you don't include this then logos won't be shown */
@@ -67,10 +67,10 @@ export const createStoreLocatorMap = async (
   } = options;
 
   if (!window.google || !window.google.maps || !window.google.maps.version) {
-    if (!options.loaderOptions || !options.loaderOptions.apiKey) {
+    if (!loaderOptions || !loaderOptions.apiKey) {
       throw new Error('You must define the `loaderOptions` and its `apiKey`.');
     }
-    const loader = new Loader({ ...options.loaderOptions, libraries: ['places', 'geometry'] });
+    const loader = new Loader({ ...loaderOptions, libraries: ['places', 'geometry'] });
     await loader.load();
   } else if (!window.google.maps.geometry || !window.google.maps.places) {
     throw new Error(

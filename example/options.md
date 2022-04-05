@@ -1,8 +1,3 @@
----
-title: 'Display Options'
-href: '#options'
----
-
 ## Display Options
 
 Anywhere that we are passing in an "options" object as defined by the Google Maps Javascript API, we are including it in the `StoreLocatorOptions` for you to customize. We use minimal defaults so that they are easy to override.
@@ -15,7 +10,7 @@ Google Enums: Note that for any options that require the <code>google.maps.*</co
 
 ### Code
 
-```TypeScript
+```Typescript
 import { Loader } from '@googlemaps/js-api-loader';
 import { createStoreLocatorMap, StoreLocatorMap } from '@gocrisp/store-locator';
 
@@ -185,7 +180,7 @@ This just defines where on the map the search box will be displayed. We are defa
 
 ##### searchZoom
 
-This is defaulted to 9. The intention is to zoom in on a pin once you have searched for a location. 
+This is defaulted to 9. The intention is to zoom in on a pin once you have searched for a location.
 
 #### storeListOptions
 

@@ -1,8 +1,3 @@
----
-title: 'Basic Usage'
-href: '#'
----
-
 ## Basic Usage
 
 Please refer to the [README on Github](https://github.com/gocrisp/store-locator) for basic installation instructions. Below is how we are initializing the example above.

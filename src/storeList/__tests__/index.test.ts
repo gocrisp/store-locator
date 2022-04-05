@@ -102,7 +102,7 @@ describe('Store List', () => {
 
       const panel = screen.getByRole('region', { name: 'Nearby Locations' });
 
-      const cardiffItem = getByRole(panel, 'button', { name: "Josie's Patisserie Cardiff" });
+      const cardiffItem = getByRole(panel, 'button', { name: /^Josie's Patisserie Cardiff/ });
 
       userEvent.click(cardiffItem);
 
