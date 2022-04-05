@@ -224,9 +224,9 @@ export const mockGoogleMaps = (
 };
 
 export const mockFeature = (properties: Record<string, unknown>): google.maps.Data.Feature =>
-  (({
+  ({
     getProperty: (name: string) => properties[name],
     getGeometry: () => ({
       get: () => ({ lat: () => 1, lng: () => 2, positionName: 'testPosition' }),
     }),
-  } as unknown) as google.maps.Data.Feature);
+  } as unknown as google.maps.Data.Feature);
