@@ -57,11 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // update displayed doc
     exampleContainer.innerHTML = md.render(
-      page.html.replace(
-        /\${package_version}/g,
-        // @ts-expect-error global variables
-        process.env.npm_package_version,
-      ),
+      page.html.replace(/\${package_version}/g, 'PACKAGE_VERSION'),
     );
     // for bootstrap styles
     exampleContainer.querySelector('table')?.classList.add('table');
