@@ -1,5 +1,7 @@
 # @gocrisp/store-locator
 
+**Archival note:** The Crisp GeoJSON outbound connector is deprecated and no longer available.
+
 [![Package Version](https://img.shields.io/npm/v/@gocrisp/store-locator.svg)](https://www.npmjs.com/package/@gocrisp/store-locator) [![MIT License](https://img.shields.io/npm/l/stack-overflow-copy-paste.svg)](http://opensource.org/licenses/MIT)
 
 A store locator component for use on any website. Intended for use with the Crisp GeoJSON connector. 
